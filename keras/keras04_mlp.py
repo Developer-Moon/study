@@ -56,4 +56,4 @@ print('[10, 1.4]의 예측값 : ', result)            # ValueError : Data cardin
 
 print(x)
 print(x.shape) #(10, 2)
-# sdsdsd 123123
+# sdsdsd 123123    33333333
