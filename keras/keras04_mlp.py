@@ -42,7 +42,7 @@ model.add(Dense (2))
 model.add(Dense (1))
 
 
-#3. 컴파일, 훈련0
+#3. 컴파일, 훈련
 model.compile(loss='mae', optimizer='adam')
 model.fit(x, y, epochs=500, batch_size=1)        # batch_size=3일때 123, 456, 789, 10 으로 훈련시킨다
 
@@ -56,4 +56,3 @@ print('[10, 1.4]의 예측값 : ', result)            # ValueError : Data cardin
 
 print(x)
 print(x.shape) #(10, 2)
-# sdsdsd 123123    333333331111111111111
