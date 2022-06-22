@@ -26,7 +26,7 @@ model.fit(x, y, epochs=1900)                       # 훈련(fit) 데이터 x와 
 
 
 #4. 평가, 예측
-loss = model.evaluate(x, y)   # loss = x와 y를 넣은값을 평가해라            x와 y를 넣은값을 평가(evaluate)한다    이 값을 loss 에 반환한다 
+loss = model.evaluate(x, y)                        # loss = x와 y를 넣은값을 평가해라            x와 y를 넣은값을 평가(evaluate)한다    이 값을 loss 에 반환한다 
 print('loss : ', loss)        # 출력해라  loss : 위의 값을 
 
 

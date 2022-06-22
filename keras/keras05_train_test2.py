@@ -6,16 +6,11 @@ from tensorflow.keras.layers import Dense
 #1. 데이터
 x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 y = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) 
-# x_train = np.array([1, 2, 3, 4, 5, 6, 7])
-# x_test = np.array([8, 9, 10])
-# y_train = np.array([1, 2, 3, 4, 5, 6, 7])
-# y_test = np.array([8, 9, 10])
 
 
 #과제 넘파이 리스트의 슬라이싱!! 7:3으로 잘라라
-
-x_train = x[0:7]
-x_test = x[0:7]
+x_train = x[0:7]    # = x[:7]   이런식으로 절대 안 자른다        30%를 자른다면 [1, 2, 4, 5, 7, 8, 9] 중간에 랜덤하게 뺀다 (셔플) 하는 이유 -  
+x_test = x[0:7]     # = x[7:]                                  이런식으로 작업하면 일부를 변화 시킬때 나눈지점에서 기울기가 틀어진다 그러지 않기 위해 셔플하여 자른다?
 y_train = x[7:10]
 y_test = x[7:10]
 
@@ -25,14 +20,10 @@ print(x_train)
 print(y_test)
 
 
-
-
-
 #2. 모델구성
 model = Sequential()  
-model.add(Dense(10, input_dim=1))          #히든레이어가 1개라고 딥러닝이 아니라는거 아니다 딥러닝이다  레이어가 없어도 성능만 좋으면 굿
+model.add(Dense(10, input_dim=1))      
 model.add(Dense(1))
- 
  
  
 #3. 컴파일, 훈련
