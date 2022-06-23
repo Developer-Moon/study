@@ -24,8 +24,8 @@ model.add(Dense(1))
 
 
 #3. 컴파일, 훈련
-model.compile(loss='mse', optimizer='adam')                   #회귀모델 : 결과값이 딱 떨어지는게 아이라...  이 모델의 보조는 R2(결정계수)모델 or R제곱   R2의 수치가 높을수록 좋다
-model.fit(x_train, y_train, epochs=500, batch_size=1)           # R2는 보조지표?
+model.compile(loss='mse', optimizer='adam')                   # 회귀모델 : 결과값이 딱 떨어지는게 아이라...  이 모델의 보조는 R2(결정계수)모델 or R제곱   R2의 수치가 높을수록 좋다
+model.fit(x_train, y_train, epochs=500, batch_size=1)         # R2는 보조지표?                 에큐러시에서 1과 0.00001은 다르다
 
 
 

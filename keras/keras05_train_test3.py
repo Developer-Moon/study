@@ -9,8 +9,8 @@ x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 y = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) 
 
 #[검색] train과 test를 섞어서 7:3으로 찾을 수 있는 방법을 찾아라
-x_train, x_test, y_train, y_test = train_test_split(            
-    x, y, train_size=0.7,
+x_train, x_test, y_train, y_test = train_test_split(                 # 데이터셋 전체를 훈련의 범위로 잡고 그 중 일부를 빼서 섞어(셔플) 70프로를 훈련시킨다
+    x, y, train_size=0.7,                                            # 트레인과 테스트 셋은 간섭이 없어야 한다
     test_size=0.3,
     # shuffle=Ture, 디폴트값
     random_state=66
