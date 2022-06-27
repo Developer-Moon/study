@@ -19,11 +19,11 @@ y = datasets.target
 print(x)                  
 print(y)                  
 
-print(x.shape, y.shape)      #(506, 13) (506,) 506개의 데이터 개수   13개의 컬럼 (input_dim=13)      (506개의 스칼라 1개의 벡터)
+print(x.shape, y.shape)          #(506, 13) (506,) 506개의 데이터 개수   13개의 컬럼 (input_dim=13)      (506개의 스칼라 1개의 벡터)
 
-print(datasets.feature_names) # ['CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT'] 컬럼셋 b는 흑인 그래서 이 데이터 셋은 못 쓰게한다
+print(datasets.feature_names)    # ['CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT'] 컬럼셋 b는 흑인 그래서 이 데이터 셋은 못 쓰게한다
 
-print(datasets.DESCR)   #DESCR 설명하다 묘사하다 - 컬럼들의 소개가 나온다
+print(datasets.DESCR)            #DESCR 설명하다 묘사하다 - 컬럼들의 소개가 나온다
 
 
 x_train, x_test, y_train, y_test = train_test_split(x, y,
@@ -50,13 +50,13 @@ import time
 #3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')                   
 
-start_time = time.time() #현재시간을 보여준다
-print(start_time)  # 스타트지점 1656033369.6949103
+start_time = time.time()                                        #현재시간을 보여준다
+print(start_time)                                               # 스타트지점 1656033369.6949103
 model.fit(x_train, y_train, epochs=50, batch_size=1, verbose=0) # verbose = 훈련과정을 보여주지 않는다 -> 바로 결과가 나온다                                
                                                                 # 사람에게 훈련과정을 보여주게 위해 딜레이를 걸어 시간이 걸린다 그 과정을 안하기 위해 쓴다
 end_time = time.time() - start_time 
 
-print("걸린시간 : ", end_time) # 10.109211683273315   
+print("걸린시간 : ", end_time)                                   # 10.109211683273315   
 
 """
 verbose 0일때 걸린시간 : 10.109211683273315 / 출력이 없다.

@@ -14,7 +14,7 @@ y = datasets.target
 
 print(x)
 print(y)
-print(x.shape, y.shape)   # (20640, 8) (20640,)    
+print(x.shape, y.shape)        # (20640, 8) (20640,)    
 
 print(datasets.feature_names)  #['MedInc', 'HouseAge', 'AveRooms', 'AveBedrms', 'Population', 'AveOccup', 'Latitude', 'Longitude']
 print(datasets.DESCR)          #Number of Instances: 20640(행) 

@@ -3,20 +3,20 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense 
 
 #1. 데이터
-x = np.array([range(10)])     # range함수 : 0부터 10 이전 까지 - 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+x = np.array([range(10)])    
 #print(range(10))
-#for i in range(10):           # for문:반복문  해석 : 0부터 9까지 i라는 인수에 반복 해라??????????????????????????????검색
+#for i in range(10):          
 #    print(i)
 print(x.shape) #(1, 10)
-x = np.transpose(x)                   #   x = x.T   이거랑 같다          행과 열을 바꾼다
+x = np.transpose(x)                 
 print(x.shape) #(10, 1)
 
 
-y = np.array([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],          # 2행 10열 이므로 트랜스포즈
+y = np.array([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
              [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9],
-             [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]])        
+             [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]])           # 3행 10열 이므로 트랜스포즈
 y = np.transpose(y)                                     # y를transpose한다음에 덮어쓰겠다
-print(y.shape)
+print(y.shape) #(10, 3)
 
 
 #2 모델

@@ -3,21 +3,21 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense 
 
 #1. 데이터
-x = np.array([range(10), range(21, 31), range(201, 211)])     # range함수 : 0부터 10 이전 까지 - 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+x = np.array([range(10), range(21, 31), range(201, 211)])     
 #print(range(10))
-#for i in range(10):           # for문:반복문  해석 : 0부터 9까지 i라는 인수에 반복 해라??????????????????????????????검색
+#for i in range(10):           
 #    print(i)
 print(x.shape) #(3, 10)
 
 
-x = np.transpose(x)                   #   x = x.T   이거랑 같다          행과 열을 바꾼다
+x = np.transpose(x)                 
 print(x.shape)
 
 
-y = np.array([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],          # 2행 10열 이므로 트랜스포즈
+y = np.array([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],         
              [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9],
              [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]])        
-y = np.transpose(y)                                     # y를transpose한다음에 덮어쓰겠다
+y = np.transpose(y)                                    
 print(y.shape)
 
 
@@ -39,7 +39,7 @@ model.fit(x, y, epochs=1000, batch_size=1)
 
 
 
-#4 결과, 예측 [[9, 30, 210]]   10, 1.9 얼마나 가깝고 loss가 얼마나 줄어드느냐
+#4 결과, 예측 [[9, 30, 210]]   
 loss = model.evaluate(x, y)
 print('loss :', loss)
 result = model.predict([[9, 30, 210]])

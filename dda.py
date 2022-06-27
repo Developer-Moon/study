@@ -6,12 +6,12 @@ import pandas as pd
 from tensorflow.keras.models import Sequential 
 from tensorflow.keras.layers import Dense
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error             #, mean_squared_error 이게 rmse
+from sklearn.metrics import r2_score, mean_squared_error  #, mean_squared_error 이게 rmse
 
 #1. 데이타 
-path = './_data/ddarung/'                                            # 경로 
-train_set = pd.read_csv(path + 'train.csv',                          # 판다스로 csv(엑셀시트)파일을 읽어라  path + train.csv
-                        index_col=0)                                 # id가 첫번째로 와라
+path = './_data/ddarung/'              # 경로 
+train_set = pd.read_csv(path + 'train.csv',       # 판다스로 csv(엑셀시트)파일을 읽어라  path + train.csv
+                        index_col=0)              # id가 첫번째로 와라
 
 print(train_set)
 print(train_set.shape) #(1459, 10) 컬럼 10개(인덱스 제외)
@@ -32,11 +32,9 @@ print(train_set.describe())  # 판다스로 땡겨왔기 때문에 DESCR보다 �
 #### 결측치 처리 1. 제거 (이렇게 하는건 멍청한거다) ####
 
 print(train_set.isnull().sum()) #널이 있는 곳에     널의 합계를 구한다?
-test_set = test_set.fillna(test_set.mean())  # 결측지처리 nan 값에 0 기입
 train_set = train_set.dropna()  #행별로 싹 날려뿌겠다
 print(train_set.isnull().sum())
 print(train_set.shape)     #(1328, 10)   결측치 130개 정도 지워짐 
-
 
 #                       컬럼당 널의 개수
 # hour                        0 
@@ -65,7 +63,7 @@ print(y)
 print(y.shape)  #(1459,) 1459개의 스칼라  output 개수 1개       여기까지 #1 데이터 부분을 잡은것
 
 x_train, x_test, y_train, y_test = train_test_split(x, y,
-    train_size=0.9,
+    train_size=0.99,
     shuffle=True, 
     random_state=3
     )
@@ -73,7 +71,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(500,input_dim=9, activation='relu'))  #처음 output값이 1 이면 성능이 쓰레기다    
+model.add(Dense(500,input_dim=9))  #처음 output값이 1 이면 성능이 쓰레기다 
 model.add(Dense(110))
 model.add(Dense(120))
 model.add(Dense(130))
@@ -87,6 +85,7 @@ model.add(Dense(140))
 model.add(Dense(150))
 model.add(Dense(140))
 model.add(Dense(150))
+
 model.add(Dense(150))
 model.add(Dense(140))
 model.add(Dense(150))
@@ -100,7 +99,7 @@ model.add(Dense(1))
 
 #3. 컴파일, 훈련
 model.compile(loss='mae', optimizer='adam')    #loss는 rmse를 제공하지 않는다고 한다
-model.fit(x_train, y_train, epochs=500, batch_size=500)   #, verbose=0
+model.fit(x_train, y_train, epochs=1000, batch_size=500)
 
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
@@ -117,28 +116,8 @@ def RMSE(y_test, y_predict):  # ()괄호안 함수를 받아들이겠다    나�
 rmse = RMSE(y_test, y_predict)  
 print("RMSE :", rmse)           #로스에 루트 씌운값이 rmse다
 
-
 # loss : 23.453350067138672
 # RMSE : 29.564602970449258
-
-y_summit = model.predict(test_set)
-
-print(y_summit)
-print(y_summit.shape) # (715, 1)
-
-############# .to_csv() 함수를 사용해서 
-############# submission 을 완성하시오!!!
-
-submission = pd.read_csv('./_data/ddarung/submission.csv')
-submission['count'] = y_summit
-print(submission)
-submission.to_csv('./_data/ddarung/submission2.csv', index = False)
-
-
-
-
-
-
 
 
 

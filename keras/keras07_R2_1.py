@@ -34,34 +34,8 @@ print('loss :', loss)
 
 y_predict = model.predict(x) 
 
-from sklearn.metrics import r2_score       #metrice 행렬              from sklearn.metrics import r2, accuracy_score 남자여자 구분할때 쓴다
-r2 = r2_score(y, y_predict)                #결과를 스코어로 반환
-print('r2스코어 :', r2)
-
-
-
- 
- 
- #답이 안나온다....
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-# import matplotlib.pyplot as plt          
-
-
-# plt.scatter(x, y)                         
-# plt.plot(x, y_predict, color='red')       
-# plt.show()                                
+from sklearn.metrics import r2_score       
+r2 = r2_score(y, y_predict)                             #결과를 스코어로 반환
+print('r2스코어 :', r2) 
 
 

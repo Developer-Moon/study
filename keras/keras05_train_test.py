@@ -31,3 +31,6 @@ loss = model.evaluate(x_test, y_test)
 print('loss :', loss)
 result = model.predict([11]) 
 print('11의 예측값은 :', result)
+
+# loss : 9.508648872724734e-07
+# 11의 예측값은 : [[10.998798]]
