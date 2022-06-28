@@ -6,25 +6,25 @@ import pandas as pd
 from tensorflow.keras.models import Sequential 
 from tensorflow.keras.layers import Dense
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error             #, mean_squared_error 이게 rmse
+from sklearn.metrics import r2_score, mean_squared_error          #, mean_squared_error 이게 rmse
 
 #1. 데이타 
-path = './_data/ddarung/'                                            # 경로 
-train_set = pd.read_csv(path + 'train.csv',                          # 판다스로 csv(엑셀시트)파일을 읽어라  path + train.csv
-                        index_col=0)                                 # id가 첫번째로 와라
+path = './_data/ddarung/'                                         # path(변수)에 경로를 넣음
+train_set = pd.read_csv(path + 'train.csv',                       # 판다스로 csv(엑셀시트)파일을 읽어라   path(경로) + train.csv
+                        index_col=0)                              # id가 첫번째로 와라
 
 print(train_set)
 print(train_set.shape) #(1459, 10) 컬럼 10개(인덱스 제외)
 
 test_set = pd.read_csv(path + 'test.csv',
-                       index_col=0)           #이 값은 예측 부분에서 쓴다
+                       index_col=0)                               #이 값은 예측 부분에서 쓴다
 
-print(test_set)               #[715 rows x 9 columns]
-print(test_set.shape)         #(715, 9)
+print(test_set)        #[715 rows x 9 columns]
+print(test_set.shape)  #(715, 9)
 
 
 
-print(train_set.columns) # 컬럼
+print(train_set.columns)     # 컬럼
 print(train_set.info())  
 print(train_set.describe())  # 판다스로 땡겨왔기 때문에 DESCR보다 더 많은 정보들을 준다
 
@@ -32,7 +32,7 @@ print(train_set.describe())  # 판다스로 땡겨왔기 때문에 DESCR보다 �
 #### 결측치 처리 1. 제거 (이렇게 하는건 멍청한거다) ####
 
 print(train_set.isnull().sum()) #널이 있는 곳에     널의 합계를 구한다?
-test_set = test_set.fillna(test_set.mean())  # 결측지처리 nan 값에 0 기입
+test_set = test_set.fillna(test_set.mean())  # 결측지처리 nan 값에 0 기입   추가코드
 train_set = train_set.dropna()  #행별로 싹 날려뿌겠다
 print(train_set.isnull().sum())
 print(train_set.shape)     #(1328, 10)   결측치 130개 정도 지워짐 
@@ -99,7 +99,7 @@ model.add(Dense(1))
 
 
 #3. 컴파일, 훈련
-model.compile(loss='mae', optimizer='adam')    #loss는 rmse를 제공하지 않는다고 한다
+model.compile(loss='mae', optimizer='adam')               #loss는 rmse를 제공하지 않는다고 한다
 model.fit(x_train, y_train, epochs=500, batch_size=500)   #, verbose=0
 
 #4. 평가, 예측

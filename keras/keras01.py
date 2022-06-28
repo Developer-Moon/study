@@ -30,7 +30,7 @@ loss = model.evaluate(x, y)                        # loss = x와 y를 넣은값�
 print('loss : ', loss)                             # 출력해라(print)  loss : 위의 값을 
 
 
-result = model.predict([4])                        # result=W x 4를 한 값       
+result = model.predict([4])                        # predict은 입력한 값(예측하고 싶은 값을 넣는다)에 예측 값을 구하는 것이다  result=W x 4를 한 값       
 print('4의 예측값은 : ', result)
 
 # ctrl + c = 훈련중 훈련종료
