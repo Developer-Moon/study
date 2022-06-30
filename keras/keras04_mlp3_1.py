@@ -15,7 +15,7 @@ print(x.shape)      # (10, 3)
 
 
 y = np.array([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],          
-             [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9]])  # x.shape는 (3,10) t,shape는 (2,10) 이므로 행렬 변환(transpose)
+             [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9]])  # x.shape는 (3,10) y,shape는 (2,10) 이므로 행렬 변환(transpose)
 y = np.transpose(y)                                              # y를 변환(transpose)한 다음 덮어쓰겠다
 print(y.shape)
 

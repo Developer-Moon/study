@@ -22,8 +22,34 @@ print(x.shape, y.shape)         #(506, 13) (506,) 506개의 데이터 개수   1
 
 print(datasets.feature_names)   # ['CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT'] 컬럼셋 b는 흑인 그래서 이 데이터 셋은 못 쓰게한다
 
-print(datasets.DESCR)           #DESCR 설명하다 묘사하다 - 컬럼들의 소개가 나온다
+        
+print(datasets.feature_names) # ['CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT'] 
+print(datasets.DESCR)         # DESCR 설명하다 묘사하다 - 컬럼들의 소개가 나온다
+"""
+**Data Set Characteristics:**
 
+    :Number of Instances: 506                                                                                    (행)
+
+    :Number of Attributes: 13 numeric/categorical predictive. Median Value (attribute 14) is usually the target. (열)
+
+    :Attribute Information (in order):                                                                           13개의 상세내용
+        - CRIM     per capita crime rate by town
+        - ZN       proportion of residential land zoned for lots over 25,000 sq.ft.
+        - INDUS    proportion of non-retail business acres per town
+        - CHAS     Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)
+        - NOX      nitric oxides concentration (parts per 10 million)
+        - RM       average number of rooms per dwelling
+        - AGE      proportion of owner-occupied units built prior to 1940
+        - DIS      weighted distances to five Boston employment centres
+        - RAD      index of accessibility to radial highways
+        - TAX      full-value property-tax rate per $10,000
+        - PTRATIO  pupil-teacher ratio by town
+        - B        1000(Bk - 0.63)^2 where Bk is the proportion of black people by town
+        - LSTAT    % lower status of the population
+        - MEDV     Median value of owner-occupied homes in $1000's
+
+    :Missing Attribute Values: None
+"""
 
 x_train, x_test, y_train, y_test = train_test_split(x, y,
     train_size=0.7,
@@ -60,3 +86,7 @@ print('r2스코어 :', r2)
 
 
 # 2. r2 0.8 이상
+
+
+# loss :  26.182411193847656
+# r2스코어 :  0.6830872635840707

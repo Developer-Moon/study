@@ -19,8 +19,8 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
 model = Sequential()
 model.add(Dense(5, input_dim=1))
 model.add(Dense(4))
-model.add(Dense(4))
-model.add(Dense(4))
+model.add(Dense(3))
+model.add(Dense(2))
 model.add(Dense(1))
 
 
@@ -38,7 +38,7 @@ y_predict = model.predict(x)                             # weight가 수정된 �
  
           
 plt.scatter(x, y)                                        # 뿌리다 점을 찍겠다
-plt.plot(x, y_predict, color='red')                      # 선을 그리다 - 빨강선이 나온다 (파이썬은 css처럼 바로 적용시키나?)
+plt.plot(x, y_predict, color='red')                      # x와 y를 잇는 선을 그리다 - 빨강선이 나온다 (파이썬은 css처럼 바로 적용시키나?)
 plt.show()                                               # 맵이 뜬다  그리기      평가 지표는 항상 2개 이상 잡는다
 
 

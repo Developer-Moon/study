@@ -2,7 +2,7 @@ import numpy as np
 from tensorflow.keras.models import Sequential   
 from tensorflow.keras.layers import Dense    
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split 
 
 #1. 데이터
 x = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
@@ -13,7 +13,7 @@ x_train, x_test, y_train, y_test = train_test_split(                 # 데이터
     x, y, train_size=0.7,                                            # 트레인과 테스트 셋은 간섭이 없어야 한다
     test_size=0.3,
     shuffle=True,                                                    # shuffle=True, 디폴트값 or shuffle=False(셔플하지 않는다)
-    random_state=66                                                  # random_state : 랜덤난수(난수값- 난수표의 66번 값을 써라), 기입하지 않으면 랜덤 난수 반환
+    random_state=1004                                                # random_state : 랜덤난수(난수값- 난수표의 66번 값을 써라), 기입하지 않으면 랜덤 난수 반환
 )
 
 print(x_train) #[2 7 6 3 4 8 5]

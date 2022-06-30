@@ -54,8 +54,8 @@ print(train_set.shape)     #(1328, 10)   결측치 130개 정도 지워짐
 
 ###########################
 
-
-x = train_set.drop(['count'], axis=1)   #drop 뺀다         axis=1 열이라는걸 명시
+ 
+x = train_set.drop(['count'], axis=1)   #drop 뺀다         axis=1 열이라는걸 명시  axis=0  행 
 print(x)
 print(x.columns) #[1459 rows x 9 columns]
 print(x.shape)   #(1459, 9)   input_dim=9
