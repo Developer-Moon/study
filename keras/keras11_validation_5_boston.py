@@ -1,8 +1,8 @@
 from tensorflow.python.keras.models import Sequential 
 from tensorflow.python.keras.layers import Dense  
-import numpy as np 
 from sklearn.model_selection import train_test_split  
 from sklearn.datasets import load_boston   
+import numpy as np 
 
 
 #1. 데이터
