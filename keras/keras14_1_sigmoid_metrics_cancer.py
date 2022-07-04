@@ -16,14 +16,9 @@ rc('font', family=font)
 
 #1. 데이터 
 datasets = load_breast_cancer()
-print(datasets.DESCR)
-# Number of Instances: 569 (행)
-# Number of Attributes: 30  (열)   (569,30)
-# print(datasets.feature_names)
-
-x = datasets.data   # x = datasets['data'] 으로도 쓸 수 있다.
+x = datasets.data              # x = datasets['data'] 으로도 쓸 수 있다.
 y = datasets.target 
-print(x.shape, y.shape) # (569, 30) (569,)
+print(x.shape, y.shape)        # (569, 30) (569,)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y,
     train_size=0.8,
@@ -39,13 +34,13 @@ model.add(Dense(100, activation='linear'))
 model.add(Dense(100, activation='linear'))  
 model.add(Dense(100, activation='sigmoid'))
 model.add(Dense(100, activation='linear'))
-model.add(Dense(1, activation='sigmoid'))                  # sigmoid를 쓰면 무조건 0과 1 사이의 값이 나온다 (분류모델일때만 사용가능) 
+model.add(Dense(1, activation='sigmoid'))                  # sigmoid를 쓰면 무조건 0과 1 사이의 값이 나온다 (분류모델중 이중분류 일때만 사용가능) 
                                                            # 그 이후 compile쪽에서 loss='binary_crossentropy'사용
 
 #3. 컴파일, 훈련
-model.compile(loss='binary_crossentropy',   # 분류 모델중 이진 분류는 무조건 binary_crossentropy를 쓴다    에큐러시는 분류모델일때만 쓴다    
+model.compile(loss='binary_crossentropy',   # 분류 모델중 이진 분류는 무조건 binary_crossentropy를 쓴다    
               optimizer='adam',
-              metrics=['accuracy', 'mse'])  # metrics = 평가지표를 판단, 리스트형태(2개 이상) ['accuracy', 'mse']  
+              metrics=['accuracy', 'mse'])  # metrics = 평가지표를 판단, 리스트형태(2개 이상) ['accuracy', 'mse'] 에큐러시는 분류모델일때만 쓴다   
                                             # True 또는 False, 양성 또는 음성 등 2개의 클래스를 분류할 수 있는 분류기를 의미?? 어디선가 놓친부분??
                                             
 from tensorflow.python.keras.callbacks import EarlyStopping      

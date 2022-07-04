@@ -1,12 +1,21 @@
-# 데이콘 따릉이 문제풀이
-
-import datetime as dt
-import numpy as np                                               
-import pandas as pd
-from tensorflow.python.keras.models import Sequential   
+import numpy as np
+from sklearn import metrics         
+from sklearn.datasets import load_breast_cancer  
+from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense 
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error         
+from sklearn.model_selection import train_test_split   
+from sklearn.metrics import r2_score, mean_squared_error  
+from sklearn.metrics import r2_score 
+import numpy as np 
+import time
+import pandas as pd
+
+#plt 폰트 깨짐 현상 #
+from matplotlib import font_manager, rc
+font_path = "C:/Windows/Fonts/malgun.TTF"
+font = font_manager.FontProperties(fname=font_path).get_name()
+rc('font', family=font)
+#plt 폰트 깨짐 현상 #
 
 #1. 데이타 
 path = './_data/kaggle_bike/'      
@@ -28,41 +37,11 @@ print(train_set.info())
 print(train_set.describe()) 
 
 
-
-
-
-
-
-
-#### 결측치 처리 ####
-"""
-# object -> 날짜 형식으로 변환
-train_set['datetime'] = pd.to_datetime(train_set['datetime'])
-test_set['datetime'] = pd.to_datetime(test_set['datetime'])
-
-train_set['year'] = train_set['datetime'].dt.year
-train_set['month'] = train_set['datetime'].dt.month
-train_set['day'] = train_set['datetime'].dt.day
-train_set['hour'] = train_set['datetime'].dt.hour
-train_set['minute'] = train_set['datetime'].dt.minute
-train_set['second'] = train_set['datetime'].dt.second
-# 요일 (0: 월 ~ 6: 일)
-train_set['dayofweek'] = train_set['datetime'].dt.dayofweek
-"""
-
-
-
-
-
-
 print(train_set.isnull().sum()) 
 test_set = test_set.fillna(test_set.mean())  # 결측지처리 nan 값에 0 기입   추가코드
 train_set = train_set.dropna()  
 print(train_set.isnull().sum())
 print(train_set.shape)     
-
-
-
 
 
 x = train_set.drop(['casual', 'registered', 'count'], axis=1)   #drop 뺀다         axis=1 열이라는걸 명시
@@ -80,27 +59,31 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
     random_state=5
     )
 
-
+#2. 모델구성
 #2. 모델구성
 model = Sequential()
 model.add(Dense(100,input_dim=8))      
+model.add(Dense(100, activation='relu'))
+model.add(Dense(100, activation='relu'))
 model.add(Dense(100))
 model.add(Dense(100))
 model.add(Dense(100))
+model.add(Dense(100, activation='relu'))
+model.add(Dense(100, activation='relu'))
 model.add(Dense(100))
 model.add(Dense(100))
 model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
-model.add(Dense(100))
+model.add(Dense(100, activation='relu'))
 model.add(Dense(1))
 
 
 #3. 컴파일, 훈련
-model.compile(loss='mae', optimizer='adam')               
-model.fit(x_train, y_train, epochs=1000, batch_size=50)  
+model.compile(loss='mae', optimizer='adam', metrics=['mse'])                                                 
+from tensorflow.python.keras.callbacks import EarlyStopping      
+earlyStopping = EarlyStopping(monitor='val_loss', patience=100, mode='min', verbose=1, restore_best_weights=True)          
+hist = model.fit(x_train, y_train, epochs=300, batch_size=5, validation_split=0.2, callbacks=[earlyStopping], verbose=1)   # callbacks=[earlyStopping] 이것도 리스트 형태 2가지 이상
+
+
 
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
@@ -134,5 +117,42 @@ print(sampleSubmission)
 sampleSubmission.to_csv('./_data/kaggle_bike/sampleSubmission_m.csv', index = False)
 
 
-# loss : 104.90857696533203
-# RMSE : 146.90824146658113
+
+
+
+
+
+
+
+
+
+import matplotlib.pyplot as plt    
+plt.figure(figsize=(9,6))                                                   
+plt.plot(hist.history['loss'], marker='.', c='red', label='loss')           
+plt.plot(hist.history['val_loss'], marker='.', c='blue', label='val_loss') 
+
+
+plt.grid()            
+plt.title('안결바보') 
+plt.xlabel('epochs')
+plt.ylabel('loss')
+
+plt.legend() 
+plt.show()
+
+
+# loss :  0.11895273625850677
+# val_loss: 0.1199
+# r2스코어 : 0.4834914503626927
+
+
+# sigmoid 쓸때
+# loss :  0.15451954305171967
+# val_loss: 0.0693
+# r2스코어 : 0.7946649335930135
+
+
+
+
+#과제 보스턴, 켈리포니아, 디아벳 액티베이션 활용해서 성능 향상시키기
+# 따릉이 바이크 부동산

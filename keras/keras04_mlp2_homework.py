@@ -1,6 +1,6 @@
 import numpy as np 
-from tensorflow.keras.models import Sequential      
-from tensorflow.keras.layers import Dense     
+from tensorflow.python.keras.models import Sequential   
+from tensorflow.python.keras.layers import Dense    
 
 #1. 데이터
 x = np.array([[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],                     # (3,10)

@@ -16,8 +16,8 @@ from scipy.stats import norm, skew #for some statistics
 
 
 import datetime as dt
-from tensorflow.keras.models import Sequential 
-from tensorflow.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential   
+from tensorflow.python.keras.layers import Dense 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error        
 

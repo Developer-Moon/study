@@ -1,6 +1,6 @@
 import numpy as np 
-from tensorflow.keras.models import Sequential      
-from tensorflow.keras.layers import Dense 
+from tensorflow.python.keras.models import Sequential   
+from tensorflow.python.keras.layers import Dense 
 
 #1. 데이터
 x = np.array([range(10), range(21, 31), range(201, 211)])        # range 함수는 연속적인 숫자 객체를 만들어서 반환해주는 함수 - range(10) 호출 : 0, 1, 2, 3, 4, 5, 6, 7, 8, 9가 반환     
