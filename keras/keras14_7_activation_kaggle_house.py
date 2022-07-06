@@ -37,7 +37,8 @@ model.add(Dense(30, activation='relu'))
 model.add(Dense(20, activation='relu'))
 model.add(Dense(10, activation='relu'))
 model.add(Dense(1))
-# model.add(Dense(1, activation='sigmoid')) 
+model.summary() # Total params: 1,967
+
 
 
 #3. 컴파일, 훈련

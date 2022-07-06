@@ -58,26 +58,72 @@ print(test_set.isnull().sum())
 # Cabin       327
 # Embarked      0
 
-drop_cols = ['Cabin']
+drop_cols = ['Cabin','Ticket']
 train_set.drop(drop_cols, axis = 1, inplace =True)
-test_set = test_set.fillna(test_set.mean())
-train_set['Embarked'].fillna('S')
-train_set = train_set.fillna(train_set.mean())
-
-print(train_set) 
-print(train_set.isnull().sum())
-
 test_set.drop(drop_cols, axis = 1, inplace =True)
-cols = ['Name','Sex','Ticket','Embarked']
+
+test_set = test_set.fillna(test_set.mean())
+print(train_set['Embarked'].value_counts())
+train_set['Embarked'].fillna('S', inplace=True)
+# print('Oldereest Passenger was of : ', train_set['Age'].max(), 'Years')
+# print('Younged Passenger was of : ', train_set['Age'].min(), 'Years')
+# print('Average Passenger was of : ', train_set['Age'].mean(), 'Years')
+train_set['Initial'] = 0
+for i in train_set:
+    train_set['Initial']=train_set.Name.str.extract('([A-Za-z]+)\.')
+train_set.groupby('Initial')['Age'].mean()
+train_set['Initial'].replace(['Mlle','Mme','Ms','Dr','Major','Lady','Countess','Jonkheer','Col','Rev','Capt','Sir','Don'],
+                             ['Miss','Miss','Miss','Mr','Mr','Mrs','Mrs','Other','Other','Other','Mr','Mr','Mr'],
+                             inplace=True)
+test_set['Initial'] = 0
+for i in test_set:
+    test_set['Initial']=test_set.Name.str.extract('([A-Za-z]+)\.')
+test_set['Initial'].replace(['Mlle','Mme','Ms','Dr','Major','Lady','Countess','Jonkheer','Col','Rev','Capt','Sir','Don'],
+                             ['Miss','Miss','Miss','Mr','Mr','Mrs','Mrs','Other','Other','Other','Mr','Mr','Mr'],
+                             inplace=True)    
+# print(train_set.groupby('Initial')['Age'].mean())
+train_set.loc[(train_set.Age.isnull()) & (train_set.Initial=='Mr'),'Age']=33
+train_set.loc[(train_set.Age.isnull()) & (train_set.Initial=='Mrs'),'Age']=36
+train_set.loc[(train_set.Age.isnull()) & (train_set.Initial=='Master'),'Age']=5
+train_set.loc[(train_set.Age.isnull()) & (train_set.Initial=='Miss'),'Age']=22
+train_set.loc[(train_set.Age.isnull()) & (train_set.Initial=='Other'),'Age']=46
+###############################
+test_set.loc[(test_set.Age.isnull()) & (test_set.Initial=='Mr'),'Age']=33
+test_set.loc[(test_set.Age.isnull()) & (test_set.Initial=='Mrs'),'Age']=36
+test_set.loc[(test_set.Age.isnull()) & (test_set.Initial=='Master'),'Age']=5
+test_set.loc[(test_set.Age.isnull()) & (test_set.Initial=='Miss'),'Age']=22
+test_set.loc[(test_set.Age.isnull()) & (test_set.Initial=='Other'),'Age']=46
+train_set['Age_band'] = 0
+train_set.loc[train_set['Age'] <= 16, 'Age_band'] = 0
+train_set.loc[(train_set['Age'] > 16) & (train_set['Age'] <= 32), 'Age_band'] = 1
+train_set.loc[(train_set['Age'] > 32) & (train_set['Age'] <= 48), 'Age_band'] = 2
+train_set.loc[(train_set['Age'] > 48) & (train_set['Age'] <= 64), 'Age_band'] = 3
+train_set.loc[train_set['Age'] > 64, 'Age_band'] = 4
+test_set['Age_band'] = 0
+test_set.loc[test_set['Age'] <= 16, 'Age_band'] = 0
+test_set.loc[(test_set['Age'] > 16) & (test_set['Age'] <= 32), 'Age_band'] = 1
+test_set.loc[(test_set['Age'] > 32) & (test_set['Age'] <= 48), 'Age_band'] = 2
+test_set.loc[(test_set['Age'] > 48) & (test_set['Age'] <= 64), 'Age_band'] = 3
+test_set.loc[test_set['Age'] > 64, 'Age_band'] = 4
+
+print(train_set['Age_band']) 
+print(train_set.isnull().sum())
+print(train_set.shape)# (891,11)
+
+
+drop_cols = ['Name','Age']
+train_set.drop(drop_cols, axis = 1, inplace =True)
+test_set.drop(drop_cols, axis = 1, inplace =True)
+
+cols = ['Sex','Embarked','Initial']
 for col in tqdm_notebook(cols):
     le = LabelEncoder()
     train_set[col]=le.fit_transform(train_set[col])
     test_set[col]=le.fit_transform(test_set[col])
 x = train_set.drop(['Survived'],axis=1) #axis는 컬럼 
-print(x) #(891, 9)
+print(x) #(891, 8)
 y = train_set['Survived']
 print(y.shape) #(891,)
-
 
 # test_set.drop(drop_cols, axis = 1, inplace =True)
 gender_submission = pd.read_csv(path + 'gender_submission.csv',#예측에서 쓸거야!!
@@ -93,14 +139,15 @@ gender_submission = pd.read_csv(path + 'gender_submission.csv',#예측에서 쓸
 
 
 
-x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.91,shuffle=True ,random_state=100)
+x_train, x_test, y_train, y_test = train_test_split(x,y, train_size=0.75,shuffle=True ,random_state=100)
 #셔플을 False 할 경우 순차적으로 스플릿하다보니 훈련에서는 나오지 않는 값이 생겨 정확도가 떨어진다.
 #디폴트 값인  shuffle=True 를 통해 정확도를 올린다.
 
 #2. 모델 구성
 
 model = Sequential()
-model.add(Dense(100,input_dim=9))
+model.add(Dense(100,input_dim=8))
+model.add(Dense(100, activation='relu'))
 model.add(Dense(100, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 #다중 분류로 나오는 아웃풋 노드의 개수는 y 값의 클래스의 수와 같다.활성화함수 'softmax'를 통해 
@@ -108,20 +155,21 @@ model.add(Dense(1, activation='sigmoid'))
 
 
 #3. 컴파일,훈련
-earlyStopping = EarlyStopping(monitor='loss', patience=200, mode='min', 
+earlyStopping = EarlyStopping(monitor='loss', patience = 150, mode='min', 
                               verbose=1,restore_best_weights=True)
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(x_train, y_train, epochs=100, batch_size=20, 
+model.fit(x_train, y_train, epochs=530, batch_size=8, 
                 validation_split=0.3,
                 callbacks = [earlyStopping],
                 verbose=2
                 )
+
 #다중 분류 모델은 'categorical_crossentropy'만 사용한다 !!!!
 
 #4.  평가,예측
 
-# loss,acc = model.evaluate(x_test,y_test)
-# print('loss :',loss)
+loss = model.evaluate(x_test,y_test)
+print('loss :',loss)
 # print('accuracy :',acc)
 # print("+++++++++  y_test       +++++++++")
 # print(y_test[:5])
@@ -172,7 +220,8 @@ submission [(submission >=0.5)] = 1
 submission = submission.astype(int)
 submission.to_csv('test21.csv',index=True)
 
+# loss : [1.284850001335144, 0.8206278085708618]
+# acc 스코어 : 0.820627802690583
 
-# acc 스코어 : 0.7654320987654321
-
+# 확인
 

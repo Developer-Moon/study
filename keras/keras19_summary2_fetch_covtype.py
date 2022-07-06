@@ -1,3 +1,7 @@
+# keras18.gpu.test3파일의 서머리를 확인해보시오 
+# 서머리와 시간
+# 에포 10에포
+
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense 
 from sklearn.model_selection import train_test_split        
@@ -75,6 +79,12 @@ model.add(Dense(200))
 model.add(Dense(100))           
 model.add(Dense(7, activation='softmax')) 
 
+model.summary()
+
+# Total params: 429,207
+
+
+
 start_time = time.time()
 
 #3. 컴파일, 훈련
@@ -116,10 +126,6 @@ print(end_time)
 # acc스코어 : 0.5815765591913797
 ###################################
 
-# cpu - 81.91835141181946
-# gpu - 43.12423348426819
 
-
-# cpu - 103.1009271144867
-
-# gpu - 149.70587754249573
+# cpu - 100.24889802932739   # Total params: 429,207   batch_size=100
+# gpu - 144.52120995521545   # Total params: 429,207   batch_size=100

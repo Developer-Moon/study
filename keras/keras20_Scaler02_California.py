@@ -1,12 +1,13 @@
+from sklearn.datasets import fetch_california_housing  
 import numpy as np
 from sklearn import metrics         
-from sklearn.datasets import fetch_california_housing  
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler    
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense 
 from sklearn.model_selection import train_test_split   
 from sklearn.metrics import r2_score 
-import numpy as np 
 import time
+
 
 #plt 폰트 깨짐 현상 #
 from matplotlib import font_manager, rc
@@ -15,15 +16,32 @@ font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
 #plt 폰트 깨짐 현상 #
 
+
 #1. 데이터 
 datasets = fetch_california_housing()
-x = datasets.data   # x = datasets['data'] 으로도 쓸 수 있다.
+x = datasets.data  
 y = datasets.target 
 
 x_train, x_test, y_train, y_test = train_test_split(x, y,
     train_size=0.8,
     random_state=66
     )
+
+
+# scaler = MinMaxScaler() 
+# scaler = StandardScaler()
+scaler = MaxAbsScaler()
+# scaler = RobustScaler()
+scaler.fit(x_train)    
+x_train = scaler.transform(x_train)     
+x_test = scaler.transform(x_test)       
+
+print(np.min(x_train))  
+print(np.max(x_train))  
+print(np.min(x_test)) 
+print(np.max(x_test))  
+
+
 
 #2. 모델구성
 model = Sequential()
@@ -67,17 +85,6 @@ r2 = r2_score(y_test, y_predict)
 print('r2스코어 :', r2)
 
 
-# 메트릭스를 쓰면 로스가 두개가 나온다   앞에껀 binary_crossentropy 뒤에껀 에큐러시(정확도)
-# loss :  [0.2551944851875305, 0.9122806787490845]   
-
-# 이진분류에서는 mse를 신뢰할 수 없다
-
-
-
-
-
-
-
 
 import matplotlib.pyplot as plt    
 plt.figure(figsize=(9,6))                                                   
@@ -109,4 +116,54 @@ plt.show()
 # val_mae : 0.5020
 # r2스코어 : 0.6514661215114226
 ####################################
+
+"""""""""""""""""""""""""""""""""
+[scaler = MinMaxScaler]
+
+loss     : 0.2817
+val_loss : 0.2567
+mae      : 0.3486
+val_mae  : 0.3382
+r2스코어 : 0.7979576497705312
+"""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""
+[scaler = StandardScaler]        <<<<<<<<<<< Fantastic
+
+loss     : 0.2064
+val_loss : 0.2372
+mae      : 0.3123
+val_mae  : 0.3234
+r2스코어 : 0.8105301815995982
+
+[scaler = MaxAbsScaler]
+
+loss     : 0.4123687744140625
+r2스코어 : 0.7041968935115241
+"""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""
+[scaler = RobustScaler]
+
+loss     : 0.2834553122520447
+r2스코어 : 0.7966699568426323
+"""""""""""""""""""""""""""""""""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             
+
+
 

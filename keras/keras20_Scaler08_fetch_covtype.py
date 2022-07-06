@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd 
 import tensorflow as tf
 import time
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler  
+
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 print(gpus)
@@ -66,6 +68,23 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
 
 
 
+# scaler = MinMaxScaler() 
+# scaler = StandardScaler()
+# scaler = MaxAbsScaler()
+scaler = RobustScaler()
+
+
+scaler.fit(x_train)     # 스케일링을 했다.
+x_train = scaler.transform(x_train)      # 변환해준다  x_train이 0과 1사이가 된다.
+x_test = scaler.transform(x_test)       # train이 변한 범위에 맞춰서 변환됨
+
+print(np.min(x_train))  # 0.0                   0과 1사이
+print(np.max(x_train))  # 1.0000000000000002    0과 1사이
+print(np.min(x_test))   # -0.06141956477526944  0미만
+print(np.max(x_test))   # 1.1478180091225068    0초과 범위
+
+
+
 #2. 모델구성
 model = Sequential()
 model.add(Dense(500, input_dim=54))  
@@ -115,11 +134,37 @@ print(end_time)
 # accuracy :  0.5815765857696533
 # acc스코어 : 0.5815765591913797
 ###################################
+"""""""""""""""""""""""""""""""""
+[scaler = MinMaxScaler]
 
-# cpu - 81.91835141181946
-# gpu - 43.12423348426819
+loss     :  0.6416857838630676      <<<<<<<<<<< Fantastic
+val_loss :
+mae      : 
+val_mae  : 
+acc스코어 : 0.7219116067051228
+"""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""
+[scaler = StandardScaler]           
+
+loss     : 0.6408393979072571
+mae      :
+val_mae  :
+acc스코어 : 0.7222193246894134
 
 
-# cpu - 103.1009271144867
 
-# gpu - 149.70587754249573
+[scaler = MaxAbsScaler]
+
+loss      : 0.6470345258712769
+acc스코어 : 0.7148080152711569
+
+
+[scaler = RobustScaler]
+
+loss      : 0.6389427185058594
+acc스코어 : 0.722855622894218
+"""""""""""""""""""""""""""""""""
+
+
+
+

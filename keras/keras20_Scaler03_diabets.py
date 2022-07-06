@@ -5,9 +5,10 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense 
 from sklearn.model_selection import train_test_split   
 from sklearn.metrics import r2_score 
-import numpy as np 
 import time
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler 
 
+   
 #plt 폰트 깨짐 현상 #
 from matplotlib import font_manager, rc
 font_path = "C:/Windows/Fonts/malgun.TTF"
@@ -26,7 +27,22 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
     random_state=66
     )
 
-#2. 모델구성
+# scaler = MinMaxScaler() 
+# scaler = StandardScaler()
+# scaler = MaxAbsScaler()
+scaler = RobustScaler()
+
+scaler.fit(x_train)     # 스케일링을 했다.
+x_train = scaler.transform(x_train)      # 변환해준다  x_train이 0과 1사이가 된다.
+x_test = scaler.transform(x_test)       # train이 변한 범위에 맞춰서 변환됨
+
+print(np.min(x_train))  # 0.0                   0과 1사이
+print(np.max(x_train))  # 1.0000000000000002    0과 1사이
+print(np.min(x_test))   # -0.06141956477526944  0미만
+print(np.max(x_test))   # 1.1478180091225068    0초과 범위
+
+
+
 #2. 모델구성
 model = Sequential()
 model.add(Dense(10, input_dim=10))
@@ -42,7 +58,7 @@ model.summary() # Total params: 42,631
 #3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])                                                 
 from tensorflow.python.keras.callbacks import EarlyStopping      
-earlyStopping = EarlyStopping(monitor='loss', patience=100, mode='min', verbose=1, restore_best_weights=True)          
+earlyStopping = EarlyStopping(monitor='val_loss', patience=100, mode='min', verbose=1, restore_best_weights=True)          
 hist = model.fit(x_train, y_train, epochs=500, batch_size=5, validation_split=0.2, callbacks=[earlyStopping], verbose=1)
 
 
@@ -100,6 +116,37 @@ plt.show()
 # r2스코어 : 0.41338157521308094
 ####################################
 
+"""""""""""""""""""""""""""""""""
+[scaler = MinMaxScaler]
 
-#과제 보스턴, 켈리포니아, 디아벳 액티베이션 활용해서 성능 향상시키기
-# 따릉이 바이크 부동산
+loss     : 5143.45166015625
+val_loss : 48.58793640136719
+mae      : 1.0021
+val_mae  : 2.9203
+r2스코어 : 0.48744652984284853
+"""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""
+[scaler = StandardScaler]           <<<<<<<<<<< Fantastic
+
+loss     : 3343.350830078125
+val_loss : 47.08863067626953
+mae      : 0.6448
+val_mae  : 3.0111
+r2스코어 : 0.49632361216845167
+
+
+[scaler = MaxAbsScaler]
+
+loss     : 3423.301025390625
+r2스코어 : 0.4725301075221435
+
+
+
+[sclaer = RobustScaler]
+
+loss     : 3281.2236328125
+r2스코어 : 0.49442168387100893
+"""""""""""""""""""""""""""""""""
+
+
+

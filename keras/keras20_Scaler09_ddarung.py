@@ -5,9 +5,9 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense 
 from sklearn.model_selection import train_test_split   
 from sklearn.metrics import r2_score 
-import numpy as np 
 import time
 import pandas as pd 
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler  
 
 #plt 폰트 깨짐 현상 #
 from matplotlib import font_manager, rc
@@ -53,9 +53,27 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
 
 
 
+# scaler = MinMaxScaler() 
+# scaler = StandardScaler()
+scaler = MaxAbsScaler()
+# scaler = RobustScaler()
+
+scaler.fit(x_train)                      # 스케일링을 했다.
+x_train = scaler.transform(x_train)      # 변환해준다  x_train이 0과 1사이가 된다.
+x_test = scaler.transform(x_test)        # train이 변한 범위에 맞춰서 변환됨
+test_set = scaler.transform(test_set)  
+# y_summit = model.predict(test_set) test셋은 스케일링이 상태가 아니니 summit전에 스케일링을 해서  y_summit = model.predict(test_set) 에 넣어줘야 한다 
+# summit하기 전에만 해주면 상관이 없다
+
+print(np.min(x_train))  # 0.0                   0과 1사이
+print(np.max(x_train))  # 1.0000000000000002    0과 1사이
+print(np.min(x_test))   # -0.06141956477526944  0미만
+print(np.max(x_test))   # 1.1478180091225068    0초과 범위
 
 
-#2. 모델구성
+
+
+#2. 모델구성             시퀀셜모델, 함수형 모델이 있다.
 model = Sequential()
 model.add(Dense(500, input_dim=9))  #처음 output값이 1 이면 성능이 쓰레기다    
 model.add(Dense(110, activation='relu'))
@@ -96,6 +114,8 @@ print('loss : ', loss)
 print(hist.history['val_loss'])
 
 y_predict = model.predict(x_test)
+r2 = r2_score(y_test, y_predict)
+print('r2스코어 :', r2)
 
 from sklearn.metrics import r2_score, mean_squared_error
 def RMSE(y_test, y_predict): 
@@ -104,14 +124,12 @@ def RMSE(y_test, y_predict):
 rmse = RMSE(y_test, y_predict)  
 print("RMSE :", rmse)  
 
-y_summit = model.predict(test_set)
+# y_summit = model.predict(test_set)
 
-submission = pd.read_csv('./_data/ddarung/submission.csv')
-submission['count'] = y_summit
-print(submission)
-submission.to_csv('./_data/ddarung/submission2.csv', index = False)
-
-
+# submission = pd.read_csv('./_data/ddarung/submission.csv')
+# submission['count'] = y_summit
+# print(submission)
+# submission.to_csv('./_data/ddarung/submission2.csv', index = False)
 
 
 
@@ -142,7 +160,42 @@ plt.show()
 # r2스코어 : 0.7946649335930135
 
 
+"""""""""""""""""""""""""""""""""
+[scaler = MinMaxScaler]
+
+loss     : 29.081787109375      <<<<<<<<<<< Fantastic
+val_loss :
+mae      : 
+val_mae  : 
+r2스코어 : 0.7602982634083626
+"""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""
+[scaler = StandardScaler]           
+
+loss     : 27.495046615600586
+mae      :
+val_mae  :
+r2스코어 : 0.7864036711410145
 
 
-#과제 보스턴, 켈리포니아, 디아벳 액티베이션 활용해서 성능 향상시키기
-# 따릉이 바이크 부동산
+
+[scaler : RobustScaler]
+
+RMSE : 43.29038281863755
+loss      : 29.677953720092773
+r2스코어 : 0.7685157965658219
+
+
+
+
+[scaler = MaxAbsScaler]
+
+loss  : 29.999553680419922
+RMSE : 47.767997909414
+r2스코어 : 0.7181535392090139
+"""""""""""""""""""""""""""""""""
+
+
+
+
+

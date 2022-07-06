@@ -6,9 +6,10 @@ from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split   
 from sklearn.metrics import r2_score, mean_squared_error  
 from sklearn.metrics import r2_score 
-import numpy as np 
 import time
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler  
+
 
 #plt 폰트 깨짐 현상 #
 from matplotlib import font_manager, rc
@@ -59,7 +60,34 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
     random_state=5
     )
 
-#2. 모델구성
+
+
+
+# scaler = MinMaxScaler() 
+# scaler = StandardScaler()
+# scaler = MaxAbsScaler()
+scaler = RobustScaler()
+
+scaler.fit(x_train)                      # 스케일링을 했다.
+x_train = scaler.transform(x_train)      # 변환해준다  x_train이 0과 1사이가 된다.
+x_test = scaler.transform(x_test)        # train이 변한 범위에 맞춰서 변환됨
+test_set = scaler.transform(test_set)  
+# y_summit = model.predict(test_set) test셋은 스케일링이 상태가 아니니 summit전에 스케일링을 해서  y_summit = model.predict(test_set) 에 넣어줘야 한다 
+# summit하기 전에만 해주면 상관이 없다
+
+print(np.min(x_train))  # 0.0                   0과 1사이
+print(np.max(x_train))  # 1.0000000000000002    0과 1사이
+print(np.min(x_test))   # -0.06141956477526944  0미만
+print(np.max(x_test))   # 1.1478180091225068    0초과 범위
+
+
+
+
+
+
+
+
+
 #2. 모델구성
 model = Sequential()
 model.add(Dense(100,input_dim=8))      
@@ -91,9 +119,12 @@ loss = model.evaluate(x_test, y_test)
 print('loss :', loss)     
 
 y_predict = model.predict(x_test) 
+r2 = r2_score(y_test, y_predict)
+print('r2스코어 :', r2)
 
 def RMSE(y_test, y_predict):  
     return np.sqrt(mean_squared_error(y_test, y_predict))  
+
 
 
 
@@ -104,23 +135,18 @@ print("RMSE :", rmse)
 
 
 
-y_summit = model.predict(test_set)
-y_summit = abs(y_summit)
-print(y_summit)
-print(y_summit.shape) # (715, 1)
+# y_summit = model.predict(test_set)
+# y_summit = abs(y_summit)
+# print(y_summit)
+# print(y_summit.shape) # (715, 1)
 
 
 
 
-sampleSubmission = pd.read_csv('./_data/kaggle_bike/sampleSubmission.csv')
-sampleSubmission['count'] = y_summit
-print(sampleSubmission)
-sampleSubmission.to_csv('./_data/kaggle_bike/sampleSubmission_m.csv', index = False)
-
-
-
-
-
+# sampleSubmission = pd.read_csv('./_data/kaggle_bike/sampleSubmission.csv')
+# sampleSubmission['count'] = y_summit
+# print(sampleSubmission)
+# sampleSubmission.to_csv('./_data/kaggle_bike/sampleSubmission_m.csv', index = False)
 
 
 
@@ -152,8 +178,35 @@ plt.show()
 # val_loss: 0.0693
 # r2스코어 : 0.7946649335930135
 
+"""""""""""""""""""""""""""""""""
+[scaler = MinMaxScaler]
+
+loss    : 94.74781036376953
+RMSE : 132.61366283303457
+r2스코어 : 0.3720846203747413
 
 
 
-#과제 보스턴, 켈리포니아, 디아벳 액티베이션 활용해서 성능 향상시키기
-# 따릉이 바이크 부동산
+[scaler = StandardScaler]
+
+loss  : 98.58602142333984
+RMSE : 134.48355989318304
+r2스코어 : 0.35425214428662666
+
+
+
+[scaler = MaxAbsScaler]
+
+loss : 96.19011688232422
+RMSE : 130.84778375347693
+r2스코어 : 0.38869588178805736
+
+
+[scaler = RobustScaler]
+
+loss : 99.41264343261719
+RMSE : 136.78056213557568
+r2스코어 : 0.3320047908030268
+
+"""""""""""""""""""""""""""""""""
+
