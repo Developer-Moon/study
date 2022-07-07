@@ -1,12 +1,8 @@
 from tensorflow.python.keras.models import Sequential 
 from tensorflow.python.keras.layers import Dense 
-from sklearn.model_selection import train_test_split  
+from sklearn.model_selection import train_test_split 
+import numpy as np  
 from sklearn.datasets import load_boston   
-import numpy as np 
-
-# [실습] 아래를 완성할 것
-# 1. train 0.7
-# 2. R2 0.8 이상
 
 
 #1. 데이터
@@ -16,13 +12,10 @@ y = datasets.target
 
 print(x)                        
 print(y)                  
-print(x.shape, y.shape)         # (506, 13) (506,) 506개의 데이터 개수   13개의 컬럼 (input_dim=13)      (506개의 스칼라 1개의 벡터)
-
+print(x.shape, y.shape)         # (506, 13) (506,) 506개의 데이터 개수   13개의 컬럼-(input_dim=13)      (506개의 스칼라 1개의 벡터)
 print(datasets.feature_names)   # ['CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT'] 컬럼셋 b는 흑인 그래서 이 데이터 셋은 못 쓰게한다
-
-        
-print(datasets.feature_names)   # ['CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT'] 
 print(datasets.DESCR)           # DESCR 설명하다 묘사하다 - 컬럼들의 소개가 나온다
+
 """
 **Data Set Characteristics:**
 
@@ -49,27 +42,25 @@ print(datasets.DESCR)           # DESCR 설명하다 묘사하다 - 컬럼들의
     :Missing Attribute Values: None
 """
 
-x_train, x_test, y_train, y_test = train_test_split(x, y,
-    train_size=0.7,
-    shuffle=False
-    # random_state=66
-    )
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=66)
 
 
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(14, input_dim=13))
-model.add(Dense(20))
+model.add(Dense(50, input_dim=13))
+model.add(Dense(40))
 model.add(Dense(30))
 model.add(Dense(20))
 model.add(Dense(10))
 model.add(Dense(1))
 
 
+
 #3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')                   
-model.fit(x_train, y_train, epochs=300, batch_size=5)
+model.fit(x_train, y_train, epochs=300, batch_size=1)
+
 
 
 #4. 평가 예측
@@ -80,11 +71,8 @@ y_predict = model.predict(x_test)
 
 from sklearn.metrics import r2_score 
 r2 = r2_score(y_test, y_predict)
-print('r2스코어 :', r2)
+print('r2 :', r2)
 
-
-# 2. r2 0.8 이상
-
-
-# loss :  26.182411193847656
-# r2스코어 :  0.6830872635840707
+# 2. R2 0.8 이상
+# loss : 17.665739059448242
+# r2   : 0.7861733271876131

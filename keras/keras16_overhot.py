@@ -10,7 +10,7 @@
 #  - get_dummies()는 즉각적으로 값을 변환하여 주기 때문에 직관적 
 #  - pandas.get_dummies() 함수 안에 본인이 변환하고자 dataframe을 넣어주면 됨
 # 
-#    y = pd.get_dummies(data)
+
 # 
 #  - 주의해야할 것은 pandas가 isinstance()라는 함수를 활용해서 string일 때에 모두 더미화시킴
 #    즉, 주어진 수치형 자료가 string 형태로 들어가있지 않도록 주의해야 함
