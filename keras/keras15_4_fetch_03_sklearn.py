@@ -29,7 +29,7 @@ print(np.unique(y, return_counts=True))     # (array([1, 2, 3, 4, 5, 6, 7]), arr
 
 from sklearn.preprocessing import OneHotEncoder
 one = OneHotEncoder(categories='auto',sparse= False) # False로 할 경우 넘파이 배열로 반환
-y = y.reshape(-1,1)
+y = y.reshape(-1,1)        # -1은 자동으로 맞춰준다
 one.fit(y)
 y = one.transform(y)
 
