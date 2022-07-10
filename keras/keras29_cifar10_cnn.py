@@ -1,7 +1,7 @@
 from tensorflow.python.keras.models import Sequential, Model, load_model                             # 컬러 - softmax 100개
 from tensorflow.python.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout, Input  
 from sklearn.model_selection import train_test_split        
-from tensorflow.keras.datasets import cifar10
+from keras.datasets import mnist,  cifar10
 from sklearn.metrics import r2_score
 import numpy as np 
 import pandas as pd 
@@ -24,7 +24,7 @@ y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 print(y_train)
 print(y_test)
-print(y_train.shape) # (581012, 8)                  !!!!!!!!!!!!!!!!! - 갑자기 여기서는 왜 8개가 나오나??
+print(y_train.shape) # (581012, 8)                
 print(y_test.shape)
 
 
@@ -92,5 +92,5 @@ print(y_test)
 acc = accuracy_score(y_test, y_predict)  
 print('acc스코어 :', acc)
 
-loss :  1.1806913614273071
-accuracy :  0.5965999960899353
+# loss :  1.1806913614273071
+# accuracy :  0.5965999960899353

@@ -1,7 +1,8 @@
 from tensorflow.python.keras.models import Sequential, Model, load_model                             # 컬러 - softmax 100개
 from tensorflow.python.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout, Input  
 from sklearn.model_selection import train_test_split        
-from tensorflow.keras.datasets import cifar100
+from keras.datasets import mnist, cifar10, cifar100
+
 from sklearn.metrics import r2_score
 import numpy as np 
 import pandas as pd 
@@ -14,6 +15,10 @@ print(x_train.shape, y_train.shape)  # (50000, 32, 32, 3) (50000, 1)
 print(x_test.shape, y_test.shape)    # (10000, 32, 32, 3) (10000, 1)
 
 print(np.unique(y_train, return_counts=True)) # y값의 라벨확인
+x_train = x_train.reshape(50000, 32*32* 3)
+
+# x_train = x_train.reshape(50000, 32*32* 3)
+# x_test = x_test.reshape(10000, 32*32*3)
 
 
 from tensorflow.keras.utils import to_categorical # 범주
@@ -63,7 +68,7 @@ mcp = ModelCheckpoint(moniter='val_loss', mode='auto', verbose=1,
                       )   
 
   
-hist = model.fit(x_train, y_train, epochs=300, batch_size=100, validation_split=0.2, callbacks=[earlyStopping, mcp], verbose=1)  
+hist = model.fit(x_train, y_train, epochs=10, batch_size=100, validation_split=0.2, callbacks=[earlyStopping, mcp], verbose=1)  
 
 
 
