@@ -9,8 +9,6 @@ y = np.array([1,2,3])
 
 
 #2. 모델구성
-
-
 model = Sequential()                                    # 시퀀셜 모델(순차적인 모델)                  
 model.add(Dense(4, input_dim=1))                        # output:4 input:1 인 처음 layer - 모델의 시작 
 model.add(Dense(5))                                     # 5개의 노드(뉴런)로 이루어진 layer - 2번째 부턴 input_dim 사용X(윗줄 4:input 5:output)
