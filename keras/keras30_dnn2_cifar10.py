@@ -18,13 +18,13 @@ print(np.unique(y_train, return_counts=True)) # y값의 라벨확인
 # (array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=uint8), array([5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]))
 
 
-x_train = x_train.reshape(50000, 32*32* 3)
+x_train = x_train.reshape(50000, 32*32*3)
 x_test = x_test.reshape(10000, 32*32*3)
 print(x_train.shape) # (50000, 3072)
 print(x_test.shape)  # (10000, 3072)
 
 
-from tensorflow.keras.utils import to_categorical # 범주
+from tensorflow.python.keras.utils.np_utils import to_categorical # 범주
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 print(y_train.shape) # (50000, 10)              
@@ -74,8 +74,8 @@ print('acc스코어 :', acc)
 
 
 # CNN 사용
-# loss :  1.1806913614273071
-# accuracy :  0.5965999960899353
+# loss :  1.0057822465896606
+# accuracy :  0.6510000228881836
 
 
 # DNN 사용

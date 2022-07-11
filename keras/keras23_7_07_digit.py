@@ -9,7 +9,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, Ro
 
 
 import tensorflow as tf            
-tf.random.set_seed(66)         #텐서플로의 난수표 66번 사용 이 난수는 w = 웨이트
+tf.random.set_seed(66)         # 처음 들어가는 weight값이 랜덤인데 그걸 텐서플로의 난수표 66번 사용 이 난수는 w = 웨이트
 
 
 #1. 데이터

@@ -7,7 +7,9 @@ import numpy as np
 import tensorflow as tf            
 tf.random.set_seed(66)
 
-#성능은 CNN 보다 좋게
+#성능은 CNN 보다 좋게 - 3차원 데이터를 2차원으로 만들어야 하는 경우가 생길때 이렇게 쓴다고 한다 
+
+# img모델을 만들때는 CNN, DNN 2가지로 만들 수 있다
 
 #1. 데이터
 (x_train, y_train), (x_test, y_test) = mnist.load_data()

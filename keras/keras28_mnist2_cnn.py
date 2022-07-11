@@ -5,13 +5,12 @@ from sklearn.metrics import r2_score
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler
 import numpy as np                            
 import pandas as pd 
-from tensorflow.keras.datasets import mnist
+from keras.datasets import mnist
 
 import tensorflow as tf            
 tf.random.set_seed(66)
 
 # acc 0.98이상
-
 
 #1. 데이터
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -20,6 +19,10 @@ print(x_train.shape, y_train.shape)           # (60000, 28, 28) (60000,)
 print(x_test.shape, y_test.shape)             # (10000, 28, 28) (10000,) 
                                               # reshape할때 모든 객체의 곱은 같아야 한다, 순서는 바뀌면 안되지만 모양만 바꾸면 된다
 
+
+
+
+
 x_train = x_train.reshape(60000, 28, 28, 1)
 x_test = x_test.reshape(10000, 28, 28, 1)
 print(x_train.shape) # (60000, 28, 28, 1)
@@ -27,9 +30,16 @@ print(np.unique(y_train, return_counts=True)) #  y값의 라벨이 먼지 확인
                                               # (array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=uint8),
                                               # array([5923, 6742, 5958, 6131, 5842, 5421, 5918, 6265, 5851, 5949], dtype=int64))
 
-y_train = pd.get_dummies(y_train)
-y_test = pd.get_dummies(y_test)
-print(pd.get_dummies(y_train))
+
+from tensorflow.python.keras.utils.np_utils import to_categorical # 범주
+y_train = to_categorical(y_train)
+y_test = to_categorical(y_test)
+
+
+
+# y_train = pd.get_dummies(y_train)
+# y_test = pd.get_dummies(y_test)
+# print(pd.get_dummies(y_train))
 print(y_train.shape)                          # (60000, 10)
 
 

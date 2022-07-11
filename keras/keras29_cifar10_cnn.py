@@ -15,6 +15,19 @@ tf.random.set_seed(66)
 print(x_train.shape, y_train.shape)  # (50000, 32, 32, 3) (50000, 1) 
 print(x_test.shape, y_test.shape)    # (10000, 32, 32, 3) (10000, 1)
 
+# loss의 스케일 조정을 위해 0 ~ 255 -> 0 ~ 1 범위로 만들어줌
+x_train = x_train.astype('float32')
+x_test = x_test.astype('float32')
+x_train = x_train/255
+x_test = x_test/255
+
+mean = np.mean(x_train, axis=(0 , 1 , 2 , 3))
+std = np.std(x_train, axis=(0 , 1 , 2 , 3))
+x_train = (x_train-mean)/std
+x_test = (x_test-mean)/std
+
+
+
 print(np.unique(y_train, return_counts=True)) # y값의 라벨확인
 # (array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=uint8), array([5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]))
 
