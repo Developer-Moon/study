@@ -69,6 +69,19 @@ filepath = './_ModelCheckPoint/K24/'
 filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
 
 
+#3. 컴파일 훈련
+from tensorflow.python.keras.callbacks import EarlyStopping,ModelCheckpoint
+earlyStopping = EarlyStopping(monitor='loss', patience=50, mode='min', 
+                              verbose=1,restore_best_weights=True)
+
+
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+model.fit(x_train, y_train, epochs=350, batch_size=5000, 
+                callbacks = [earlyStopping,mcp],
+                verbose=2
+                )
+
 
 #3. 컴파일 훈련
 from tensorflow.python.keras.callbacks import EarlyStopping,ModelCheckpoint
@@ -81,6 +94,7 @@ model.fit(x_train, y_train, epochs=350, batch_size=5000,
                 callbacks = [earlyStopping],
                 verbose=2
                 )
+
 
 #4. 평가 예측
 loss = model.evaluate(x_test, y_test)
