@@ -15,21 +15,40 @@ model = Sequential()                                                            
 model.add(Conv2D(filters=10, kernel_size=(4,4), input_shape=(8, 8, 1)))                            # --------------------------------------------------------                                                                                
 model.add(Conv2D(7, (2, 2), activation='relu'))  # filters 7   kernel_size (2, 2)                  # 출력 (N, 5, 5, 7)             출력 (N, 3, 3, 7)     
 model.add(Conv2D(5, (2, 2), activation='relu'))  # filters 7   kernel_size (2, 2)                  # 출력 (N, 5, 5, 7)             출력 (N, 3, 3, 7)     
-# model.add(Flatten()) # (N, 252)                                                                           (N, 175)                       (N, 63) 
-# model.add(Dense(32, activation='relu'))                                                                                                         
-# model.add(Dense(32, activation='relu'))
-# model.add(Dense(10, activation='softmax'))
+model.add(Flatten()) # (N, 252)                                                                           (N, 175)                       (N, 63) 
+model.add(Dense(32, activation='relu'))                                                                                                         
+model.add(Dense(32, activation='relu'))
+model.add(Dense(10, activation='softmax'))
 model.summary() 
 
+"""
+Layer (type)                 Output Shape              Param #
+=================================================================
+conv2d (Conv2D)              (None, 5, 5, 10)          170
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 4, 4, 7)           287
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 3, 3, 5)           145
+_________________________________________________________________
+flatten (Flatten)            (None, 45)                0
+_________________________________________________________________
+dense (Dense)                (None, 32)                1472
+_________________________________________________________________
+dense_1 (Dense)              (None, 32)                1056
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                330
+=================================================================
+Total params: 3,460
+Trainable params: 3,460
+Non-trainable params: 0
+"""
 
-
-# filters : node의 개수 [10을 곱해주겠다 output이 된다?]
-# kernel_size=(2,2) : 이미지를 자르는 규격 2x2사이즈로 이미지를 자른다
-# input_shape=(5, 5, 1) : 5 x 5짜리 1 흑백이미지          컬러면 3          (batch_size, rows, columns, channels)
-
-# 4차원을 2차원으로 바꿀때 (N, 4, 3, 2) -> (N, 4x3x2)  데이터를 펼친다
-
+# filters : node의 개수(10)
+# kernel_size=(4,4) : 이미지를 자르는 규격 4x4 사이즈로 이미지를 자른다
+# input_shape=(5, 5, 1) : 5x5 사이즈 1 흑백이미지(컬러는 3) - (batch_size, rows, columns, channels)
+# 4차원을 2차원으로 바꿀때 model.add(Flatten()) 사용  (N, 4, 3, 2) -> (N, 4x3x2)  데이터를 펼친다
 # outputshape의 row, columns수 = (input_shape - kernal_size) + 1
+
 # CNN모델 output shape의 형태는 (batch_size, row, columns, channls)로 출력됨
 # Dense모델 param 갯수 = (input_dim x units) + bias node(nuit)
 # CNN모델 param 갯수 = (kernel_size x channels x filters) + bias node(filter) - 죄송합니다 ㅜㅜ

@@ -15,6 +15,12 @@ tf.random.set_seed(66)
 print(x_train.shape, y_train.shape)  # (50000, 32, 32, 3) (50000, 1) 
 print(x_test.shape, y_test.shape)    # (10000, 32, 32, 3) (10000, 1)
 
+
+import matplotlib.pyplot as plt        
+plt.imshow(x_train, 'gray')
+plt.show()
+
+"""
 print(np.unique(y_train, return_counts=True)) # y값의 라벨확인
 # (array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=uint8), array([5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]))
 
@@ -94,3 +100,5 @@ print('acc스코어 :', acc)
 
 # loss :  1.1806913614273071
 # accuracy :  0.5965999960899353
+
+"""

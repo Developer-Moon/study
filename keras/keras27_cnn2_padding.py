@@ -12,7 +12,7 @@ model.summary()
 
 # CNN모델                                                                                         
 model = Sequential()                                                                             
-model.add(Conv2D(filters=64, kernel_size=(3,3),
+model.add(Conv2D(filters=64, kernel_size=(3,3), # Conv2D 복잡한
                  padding='same',           # padding 0이라는 패딩을 씌워서 이미지를 조각낼때 가장자리 부분을 두번 이상 넣어줘서 다른 부분보다 덜 학습되는걸 방지 
                  input_shape=(28, 28, 1)))  # 통상 shape를 다음 레이어에도 유지하고 싶을때 padding을 쓴다                                                                                                         
 model.add(MaxPooling2D())    #(14, 14, 64) 

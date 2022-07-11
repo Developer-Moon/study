@@ -12,6 +12,17 @@ import numpy as np
 print(x_train.shape,y_train.shape) #(60000, 28, 28) (60000,)
 print(x_test.shape,y_test.shape) #(10000, 28, 28) (10000,)
 
+
+
+import matplotlib.pyplot as plt        
+plt.imshow(x_train[5], 'gray')
+plt.show()
+
+
+
+
+
+"""
 x_train = x_train.reshape(60000, 28, 28, 1)
 x_test = x_test.reshape(10000, 28, 28, 1)
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler, QuantileTransformer, PowerTransformer
@@ -67,9 +78,6 @@ model.add(Dense(10, activation='softmax'))
 model.summary()
 filepath = './_ModelCheckPoint/K24/'
 filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
-
-
-
 #3. 컴파일 훈련
 from tensorflow.python.keras.callbacks import EarlyStopping,ModelCheckpoint
 earlyStopping = EarlyStopping(monitor='loss', patience=50, mode='min', 
@@ -78,7 +86,7 @@ earlyStopping = EarlyStopping(monitor='loss', patience=50, mode='min',
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 model.fit(x_train, y_train, epochs=350, batch_size=5000, 
-                callbacks = [earlyStopping],
+                callbacks = [earlyStopping,mcp],
                 verbose=2
                 )
 
@@ -95,3 +103,7 @@ y_predict = np.argmax(y_predict,axis=1)
 
 acc = accuracy_score(y_test, y_predict)
 print('acc 스코어 :', acc)
+
+
+
+"""
