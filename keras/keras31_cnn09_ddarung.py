@@ -56,26 +56,30 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
     random_state=3
     )
 
+from sklearn.preprocessing import MaxAbsScaler,RobustScaler 
+from sklearn.preprocessing import MinMaxScaler,StandardScaler
+# scaler = MinMaxScaler()
+# scaler = StandardScaler()
+# scaler = MaxAbsScaler()
+scaler = RobustScaler()
+scaler.fit(x_train) #여기까지는 스케일링 작업을 했다.
+scaler.transform(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
 
 
-print(x_train) # (1195, 9)
-print(x_test)  # (133, 9)
-print(y_train.shape) # 
-print(y_test.shape)  # 
-
-# x_train = x_train.reshape(1195, 9, 1, 1)
-# x_test = x_test.reshape(133, 9, 1, 1)
+x_train = x_train.reshape(1195, 3, 3, 1)
+x_test = x_test.reshape(133, 3, 3, 1)
 
 
 #2. 모델구성         
 model = Sequential()
 model.add(Conv2D(filters=64, kernel_size=(1, 1), input_shape=(3, 3, 1)))
-model.add(MaxPooling2D(1, 1))    #(14, 14, 64) 
 model.add(Conv2D(32, (1, 1),
                  padding='valid',          # 디폴트
                  activation='relu'))
 model.add(Dropout(0.2))
-model.add(MaxPooling2D(1, 1))    #(14, 14, 64) 
+ 
 model.add(Conv2D(4, (1, 1),
                  padding='valid',          # 디폴트
                  activation='relu'))
@@ -123,3 +127,7 @@ print("RMSE :", rmse)
 
 # r2스코어 : 0.6035844061804955
 # RMSE : 56.65080837027634
+
+
+# r2스코어 : 0.7530413363160167
+# RMSE : 44.7139338080419

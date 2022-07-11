@@ -169,7 +169,7 @@ model.summary()
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])                                                 
 from tensorflow.python.keras.callbacks import EarlyStopping      
 earlyStopping = EarlyStopping(monitor='val_loss', patience=50, mode='min', verbose=1, restore_best_weights=True)          
-hist = model.fit(x_train, y_train, epochs=200, batch_size=300, validation_split=0.2, callbacks=[earlyStopping], verbose=1)   # callbacks=[earlyStopping] 이것도 리스트 형태 2가지 이상
+hist = model.fit(x_train, y_train, epochs=300, batch_size=10, validation_split=0.2, callbacks=[earlyStopping], verbose=1)   # callbacks=[earlyStopping] 이것도 리스트 형태 2가지 이상
 
 
 
