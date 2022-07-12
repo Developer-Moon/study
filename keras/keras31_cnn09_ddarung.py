@@ -56,8 +56,8 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
     random_state=3
     )
 
-from sklearn.preprocessing import MaxAbsScaler,RobustScaler 
-from sklearn.preprocessing import MinMaxScaler,StandardScaler
+from sklearn.preprocessing import MaxAbsScaler,RobustScaler, MinMaxScaler, StandardScaler
+
 # scaler = MinMaxScaler()
 # scaler = StandardScaler()
 # scaler = MaxAbsScaler()

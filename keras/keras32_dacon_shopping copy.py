@@ -74,18 +74,7 @@ test_set = test_set.drop(['Date'], axis=1)
 # boolean값이 단일 열 일때 0 or 1로 변환
 train_set["IsHoliday"] = train_set["IsHoliday"].astype(int)
 test_set["IsHoliday"] = test_set["IsHoliday"].astype(int)
-"""
-train_set['Promotion1'] = train_set['Promotion1'].fillna(train_set.Promotion1.dropna().mode()[0])  # NaN값을 최빈값으로 채운다
-test_set['Promotion1'] = test_set['Promotion1'].fillna(train_set.Promotion1.dropna().mode()[0])
-train_set['Promotion2'] = train_set['Promotion2'].fillna(train_set.Promotion2.dropna().mode()[0])  # NaN값을 최빈값으로 채운다
-test_set['Promotion2'] = test_set['Promotion2'].fillna(train_set.Promotion2.dropna().mode()[0])
-train_set['Promotion3'] = train_set['Promotion3'].fillna(train_set.Promotion3.dropna().mode()[0])  # NaN값을 최빈값으로 채운다
-test_set['Promotion3'] = test_set['Promotion3'].fillna(train_set.Promotion3.dropna().mode()[0])
-train_set['Promotion4'] = train_set['Promotion4'].fillna(train_set.Promotion4.dropna().mode()[0])  # NaN값을 최빈값으로 채운다
-test_set['Promotion4'] = test_set['Promotion4'].fillna(train_set.Promotion4.dropna().mode()[0])
-train_set['Promotion5'] = train_set['Promotion5'].fillna(train_set.Promotion5.dropna().mode()[0])  # NaN값을 최빈값으로 채운다
-test_set['Promotion5'] = test_set['Promotion5'].fillna(train_set.Promotion5.dropna().mode()[0])
-"""
+
 
 train_set['Promotion1'] = train_set['Promotion1'].fillna(train_set.mean())  
 test_set['Promotion1'] = test_set['Promotion1'].fillna(test_set.mean())  
@@ -100,12 +89,7 @@ test_set['Promotion5'] = test_set['Promotion5'].fillna(test_set.mean())
 
 
 
-
-
-
 print(train_set)
-
-
 
 
 
@@ -147,7 +131,7 @@ print(np.max(x_test))   # 1.1478180091225068    0초과 범위
 
 
 #2. 모델구성
-input_01 = Input(shape=(11,))
+input_01 = Input(shape=(10,))
 dense_01 = Dense(100)(input_01)
 dropout_01 = Dropout(0.2)(dense_01)
 dense_02 = Dense(100, activation="relu")(dropout_01)

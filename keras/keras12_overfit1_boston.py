@@ -1,17 +1,9 @@
 from tensorflow.python.keras.models import Sequential 
-from tensorflow.python.keras.layers import Dense  
-from sklearn.model_selection import train_test_split  
-from sklearn.datasets import load_boston   
-from sklearn.metrics import r2_score 
-import numpy as np 
+from tensorflow.python.keras.layers import Dense 
+from sklearn.model_selection import train_test_split 
+import numpy as np  
 import time
-
-#plt 폰트 깨짐 현상 #
-from matplotlib import font_manager, rc
-font_path = "C:/Windows/Fonts/malgun.TTF"
-font = font_manager.FontProperties(fname=font_path).get_name()
-rc('font', family=font)
-#plt 폰트 깨짐 현상 #
+from sklearn.datasets import load_boston   
 
 
 #1. 데이터
@@ -19,32 +11,36 @@ datasets = load_boston()
 x = datasets.data
 y = datasets.target      
 
-x_train, x_test, y_train, y_test = train_test_split(x, y,
-    train_size=0.8,
-    random_state=66)
+print(x)                        
+print(y)                  
+print(x.shape, y.shape)         # (506, 13) (506,) - 데이터 : 506개,   컬럼 : 13 - input_dim (506개의 스칼라 1개의 벡터)
+print(datasets.feature_names)   # ['CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT'] 컬럼셋 b는 흑인이라 사용X
+print(datasets.DESCR)  
+
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=66)
 
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(14, input_dim=13))
+model.add(Dense(30, input_dim=13))
 model.add(Dense(20))
-model.add(Dense(30))
-model.add(Dense(20))
+model.add(Dense(10))
+model.add(Dense(10))
 model.add(Dense(10))
 model.add(Dense(1))
 
 
 start_time = time.time()
 #3. 컴파일, 훈련
-model.compile(loss='mse', optimizer='adam')                                                            
-hist = model.fit(x_train, y_train, epochs=100, batch_size=10, verbose=1, validation_split=0.2)  # hist = history 
+model.compile(loss='mse', optimizer='adam')                   
+hist = model.fit(x_train, y_train, epochs=300, batch_size=10, validation_split=0.2) # hist = history 
+                                                        
 
-                                                                
 
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
-print('loss : ', loss) # loss :  49.679412841796875    val_loss: 65.4229
-
+print('loss : ', loss)
 print("===================================================================================================")
 # print(hist) # <tensorflow.python.keras.callbacks.History object at 0x000001D47242FE80>
 print("===================================================================================================")
@@ -68,7 +64,7 @@ print('걸린시간 :', end_time)
 
 import matplotlib.pyplot as plt    
 plt.figure(figsize=(9,6))                                                   # 판 크기
-plt.plot(hist.history['loss'], marker='.', c='red', label='loss')           # marker=로스부분 .으로 표시      c='red' 그래프를 붉은컬러로     label='loss' 이그래프의 이름(label)은 loss
+plt.plot(hist.history['loss'], marker='.', c='red', label='loss')           # marker=로스부분 .으로 표시   c='red' 그래프를 붉은컬러로  label='loss' 이그래프의 이름(label)은 loss
 plt.plot(hist.history['val_loss'], marker='.', c='blue', label='val_loss') 
 
 

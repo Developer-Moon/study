@@ -1,6 +1,8 @@
-import numpy as np    
 from tensorflow.python.keras.models import Sequential   
 from tensorflow.python.keras.layers import Dense 
+import numpy as np 
+
+
 
 #1. 데이터
 x = np.array([1,2,3,5,4])
@@ -17,7 +19,7 @@ model.add(Dense(1))
 
 #3. 컴파일, 훈련
 model.compile(loss='mae', optimizer='adam')            
-model.fit(x, y, epochs=1000, batch_size=1)              # batch_size=1 작업하는데 1개씩 잘라서 작업하겠다 (하이퍼 파라미터) - 쓰는이유? : 메모리 및 그래픽카드 때문?
+model.fit(x, y, epochs=1000, batch_size=1)              # batch_size=1 작업하는데 1개씩 잘라서 작업하겠다
                                                         # ex) batch_size=3 일때 1 2 3,    4 5 6,    789,    10 으로 훈련시킨다
                                                         # 단점 : size 값이 낮을수록 시간이 오래 걸린다
                                                         # 장점 : 메모리가 할당량이 작게 잡힌다, 훈련량이 많아져 loss값이 작아지고 weight값이 정확해진다

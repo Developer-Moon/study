@@ -1,8 +1,11 @@
 from tensorflow.python.keras.models import Sequential   # 모듈을 불러온다 - 1. import 모듈:모듈 전체를 가져옴, 2. from 모듈 import 이름:모듈속 이름의 파일만 가져옴   
 from tensorflow.python.keras.layers import Dense        # tensorflow안 keras안 layers이라는 폴더에 Dense를 inport    Dense : 밀도       
+import numpy as np 
+
+
 
 #1. 데이터 
-import numpy as np                                      # unmpy(=Numerical Python, 파이썬 라이브러리) : 벡터 및 행렬 연산에 있어서 매우 편리한 기능을 제공
+                                     # unmpy(=Numerical Python, 파이썬 라이브러리) : 벡터 및 행렬 연산에 있어서 매우 편리한 기능을 제공
 x = np.array([1,2,3])                                   # numpy에서는 기본적으로 array(배열, 행렬)라는 단위로 데이터를 관리하며 이에 대해 연산을 수행
 y = np.array([1,2,3])
 
