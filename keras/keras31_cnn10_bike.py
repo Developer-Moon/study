@@ -63,7 +63,18 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
 print(x_train.shape) # (10777, 8)
 print(x_test.shape)  # (109, 8)
 
+# scaler = MinMaxScaler()
+# scaler = StandardScaler()
+# scaler = MaxAbsScaler()
+scaler = RobustScaler()
+scaler.fit(x_train) #여기까지는 스케일링 작업을 했다.
+scaler.transform(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
 
+
+x_train = x_train.reshape(10777, 4, 2, 1)
+x_test = x_test.reshape(109, 4, 2, 1)
 
 
 
@@ -72,13 +83,12 @@ print(x_test.shape)  # (109, 8)
 
 #2. 모델구성         
 model = Sequential()
-model.add(Conv2D(filters=64, kernel_size=(1, 1), input_shape=(3, 3, 1)))
-model.add(MaxPooling2D(1, 1))    #(14, 14, 64) 
+model.add(Conv2D(filters=64, kernel_size=(1, 1), input_shape=(4, 2, 1)))
 model.add(Conv2D(32, (1, 1),
                  padding='valid',          # 디폴트
                  activation='relu'))
 model.add(Dropout(0.2))
-model.add(MaxPooling2D(1, 1))    #(14, 14, 64) 
+ 
 model.add(Conv2D(4, (1, 1),
                  padding='valid',          # 디폴트
                  activation='relu'))
@@ -91,12 +101,11 @@ model.summary()
 
 
 
-
 #3. 컴파일, 훈련
 model.compile(loss='mae', optimizer='adam', metrics=['mse'])                                                 
 from tensorflow.python.keras.callbacks import EarlyStopping      
 earlyStopping = EarlyStopping(monitor='val_loss', patience=100, mode='min', verbose=1, restore_best_weights=True)          
-hist = model.fit(x_train, y_train, epochs=300, batch_size=5, validation_split=0.2, callbacks=[earlyStopping], verbose=1)   # callbacks=[earlyStopping] 이것도 리스트 형태 2가지 이상
+hist = model.fit(x_train, y_train, epochs=300, batch_size=100, validation_split=0.2, callbacks=[earlyStopping], verbose=1)   # callbacks=[earlyStopping] 이것도 리스트 형태 2가지 이상
 
 
 
@@ -133,6 +142,10 @@ print("RMSE :", rmse)
 # sampleSubmission['count'] = y_summit
 # print(sampleSubmission)
 # sampleSubmission.to_csv('./_data/kaggle_bike/sampleSubmission_m.csv', index = False)
+
+# loss : [98.38937377929688, 18617.521484375]
+# r2스코어 : 0.33526823728305
+# RMSE : 136.44603685839692
 
 
 

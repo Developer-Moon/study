@@ -4,7 +4,7 @@ from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler
 from tensorflow.python.keras.models import Sequential, Model
-from tensorflow.python.keras.layers import Dense, Input, Dropout, Conv2D, Flatten, MaxPooling2D
+from tensorflow.python.keras.layers import Dense, Input, Dropout
 from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.metrics import r2_score, accuracy_score, mean_squared_error
 import time
@@ -248,32 +248,27 @@ scaler.fit(x_train)
 x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test)
 
-print(x_train.shape) # (1312, 79)
-print(x_test.shape)  # (146, 79)
+print(x_train)
+print(x_test)
 
-x_train = x_train.reshape(1312, 79, 1, 1)
-x_test = x_test.reshape(146, 79, 1, 1)
+# x_train = x_train.reshape(10777, 4, 2, 1)
+# x_test = x_test.reshape(109, 4, 2, 1)
 
 
 
 
 
 #2. 모델구성
-model = Sequential()
-model.add(Conv2D(filters=64, kernel_size=(1, 1), input_shape=(79, 1, 1)))
-model.add(Conv2D(32, (1, 1),
-                 padding='valid',          # 디폴트
-                 activation='relu'))
-model.add(Dropout(0.2))
- 
-model.add(Conv2D(4, (1, 1),
-                 padding='valid',          # 디폴트
-                 activation='relu'))
-model.add(Dropout(0.2))
-model.add(Flatten()) # (N, 252)                                                                         
-model.add(Dense(32, activation='relu'))                                                                                                         
-model.add(Dense(32, activation='relu'))
-model.add(Dense(1))
+input_01 = Input(shape=(79,))
+dense_01 = Dense(100)(input_01)
+dense_02 = Dense(100, activation="relu")(dense_01)
+dense_03 = Dense(100, activation="relu")(dense_02)
+dropout_01 = Dropout(0.3)(dense_03)
+dense_04 = Dense(100, activation="relu")(dropout_01)
+dense_05 = Dense(100, activation="relu")(dense_04)
+dropout_02 = Dropout(0.3)(dense_05)
+output_01 = Dense(1)(dropout_02)
+model = Model(inputs=input_01, outputs=output_01)
 model.summary()
 
 """기존 Sequential모델
@@ -295,7 +290,7 @@ earlyStopping = EarlyStopping(monitor='val_loss', patience=200, mode='min',
                               restore_best_weights=True, 
                               verbose=1)
 start_time = time.time()
-hist = model.fit(x_train, y_train, epochs=200, batch_size=100,
+hist = model.fit(x_train, y_train, epochs=4000, batch_size=100,
                  validation_split=0.2,
                  callbacks=[earlyStopping],
                  verbose=1)
@@ -335,11 +330,3 @@ q2 = submission['SalePrice'].quantile(0.99)
 # loss :  [24979.123046875, 1827197568.0]
 # RMSE :  42745.72931532216
 # R2 :  0.7953561463996094
-
-
-
-
-
-# loss :  [34235.2421875, 3474785536.0]
-# RMSE :  58947.312080322816
-# R2 :  0.6108282959621131
