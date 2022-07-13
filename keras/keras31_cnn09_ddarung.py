@@ -87,7 +87,7 @@ model.add(Dropout(0.2))
 model.add(Flatten()) # (N, 252)                                                                         
 model.add(Dense(32, activation='relu'))                                                                                                         
 model.add(Dense(32, activation='relu'))
-model.add(Dense(1))
+model.add(Dense(1)) 
 model.summary()
 
 
