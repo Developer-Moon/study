@@ -68,8 +68,8 @@ print(test_set.shape)
 # train_set['Month'] = train_set['Date'].apply(get_month)
 # test_set['Month'] = test_set['Date'].apply(get_month)
 
-train_set = train_set.drop(['Date'], axis=1)
-test_set = test_set.drop(['Date'], axis=1)
+train_set = train_set.drop(['Date', 'promotion1', 'promotion2', 'promotion3', 'promotion4', 'promotion5'], axis=1)
+test_set = test_set.drop(['Date', 'promotion1', 'promotion2', 'promotion3', 'promotion4', 'promotion5'], axis=1)
 # , 'Promotion1', 'Promotion2', 'Promotion3', 'Promotion4', 'Promotion5'
 print(train_set.columns)
 
@@ -96,7 +96,7 @@ print(train_set)
 
 
 
-x = train_set.drop(['Weekly_Sales', 'Promotion1', 'Promotion2', 'Promotion3', 'Promotion4', 'Promotion5'], axis=1)
+x = train_set.drop(['Weekly_Sales'], axis=1)
 print(x.columns)
 # ['Store', 'Date', 'Temperature', 'Fuel_Price', 'Promotion1', 'Promotion2', 'Promotion3', 'Promotion4', 'Promotion5', 'Unemployment', 'IsHoliday']
 
@@ -153,7 +153,7 @@ model.summary()
 
 
 #3. 컴파일, 훈련
-model.compile(loss='mae', optimizer='adam', metrics=['mse'])                                                 
+model.compile(loss='mse', optimizer='adam', metrics=['mse'])                                                 
 from tensorflow.python.keras.callbacks import EarlyStopping      
 earlyStopping = EarlyStopping(monitor='val_loss', patience=50, mode='min', verbose=1, restore_best_weights=True)          
 hist = model.fit(x_train, y_train, epochs=300, batch_size=10, validation_split=0.2, callbacks=[earlyStopping], verbose=1)   # callbacks=[earlyStopping] 이것도 리스트 형태 2가지 이상
@@ -188,10 +188,10 @@ print(y_summit.shape) # (715, 1)
 
 
 
-# sampleSubmission = pd.read_csv('./_data/dacon_shopping/sample_submission.csv')
-# sampleSubmission['Weekly_Sales'] = y_summit
-# print(sampleSubmission)
-# sampleSubmission.to_csv('./_data/dacon_shopping/sample_submission_m.csv', index = False)
+sampleSubmission = pd.read_csv('./_data/dacon_shopping/sample_submission.csv')
+sampleSubmission['Weekly_Sales'] = y_summit
+print(sampleSubmission)
+sampleSubmission.to_csv('./_data/dacon_shopping/sample_submission_m.csv', index = False)
 
 
  
