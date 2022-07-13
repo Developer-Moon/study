@@ -60,32 +60,35 @@ print(test_set.shape)
 # date를 month로 문자를 숫자로 변환  "월"은 "31/08/2012" 형태의 값 중 4번째~5번째 글자
 # Date에서 월을 Month 컬럼으로 분리시킨다 그리고 Date컬럼을 없앤다
 
-def get_month(date):
-    month = date[3:5]
-    month = int(month)
-    return month
+# def get_month(date):
+#     month = date[3:5]
+#     month = int(month)
+#     return month
 
-train_set['Month'] = train_set['Date'].apply(get_month)
-test_set['Month'] = test_set['Date'].apply(get_month)
+# train_set['Month'] = train_set['Date'].apply(get_month)
+# test_set['Month'] = test_set['Date'].apply(get_month)
 
 train_set = train_set.drop(['Date'], axis=1)
 test_set = test_set.drop(['Date'], axis=1)
+# , 'Promotion1', 'Promotion2', 'Promotion3', 'Promotion4', 'Promotion5'
+print(train_set.columns)
+
 
 # boolean값이 단일 열 일때 0 or 1로 변환
 train_set["IsHoliday"] = train_set["IsHoliday"].astype(int)
 test_set["IsHoliday"] = test_set["IsHoliday"].astype(int)
 
 
-train_set['Promotion1'] = train_set['Promotion1'].fillna(train_set.mean())  
-test_set['Promotion1'] = test_set['Promotion1'].fillna(test_set.mean())  
-train_set['Promotion2'] = train_set['Promotion2'].fillna(train_set.mean())  
-test_set['Promotion2'] = test_set['Promotion2'].fillna(test_set.mean())  
-train_set['Promotion3'] = train_set['Promotion3'].fillna(train_set.mean())  
-test_set['Promotion3'] = test_set['Promotion3'].fillna(test_set.mean())  
-train_set['Promotion4'] = train_set['Promotion4'].fillna(train_set.mean())  
-test_set['Promotion4'] = test_set['Promotion4'].fillna(test_set.mean())  
-train_set['Promotion5'] = train_set['Promotion5'].fillna(train_set.mean())  
-test_set['Promotion5'] = test_set['Promotion5'].fillna(test_set.mean())  
+# train_set['Promotion1'] = train_set['Promotion1'].fillna(train_set.mean())  
+# test_set['Promotion1'] = test_set['Promotion1'].fillna(test_set.mean())  
+# train_set['Promotion2'] = train_set['Promotion2'].fillna(train_set.mean())  
+# test_set['Promotion2'] = test_set['Promotion2'].fillna(test_set.mean())  
+# train_set['Promotion3'] = train_set['Promotion3'].fillna(train_set.mean())  
+# test_set['Promotion3'] = test_set['Promotion3'].fillna(test_set.mean())  
+# train_set['Promotion4'] = train_set['Promotion4'].fillna(train_set.mean())  
+# test_set['Promotion4'] = test_set['Promotion4'].fillna(test_set.mean())  
+# train_set['Promotion5'] = train_set['Promotion5'].fillna(train_set.mean())  
+# test_set['Promotion5'] = test_set['Promotion5'].fillna(test_set.mean())  
 
 
 
@@ -93,7 +96,7 @@ print(train_set)
 
 
 
-x = train_set.drop(['Weekly_Sales', 'Promotion1'], axis=1)
+x = train_set.drop(['Weekly_Sales', 'Promotion1', 'Promotion2', 'Promotion3', 'Promotion4', 'Promotion5'], axis=1)
 print(x.columns)
 # ['Store', 'Date', 'Temperature', 'Fuel_Price', 'Promotion1', 'Promotion2', 'Promotion3', 'Promotion4', 'Promotion5', 'Unemployment', 'IsHoliday']
 
@@ -119,7 +122,7 @@ scaler = StandardScaler()
 scaler.fit(x_train)                      # 스케일링을 했다.
 x_train = scaler.transform(x_train)      # 변환해준다  x_train이 0과 1사이가 된다.
 x_test = scaler.transform(x_test)        # train이 변한 범위에 맞춰서 변환됨
-test_set = scaler.transform(test_set)  
+# test_set = scaler.transform(test_set)  
 # y_summit = model.predict(test_set) test셋은 스케일링이 상태가 아니니 summit전에 스케일링을 해서  y_summit = model.predict(test_set) 에 넣어줘야 한다 
 # summit하기 전에만 해주면 상관이 없다
 
@@ -131,7 +134,7 @@ print(np.max(x_test))   # 1.1478180091225068    0초과 범위
 
 
 #2. 모델구성
-input_01 = Input(shape=(10,))
+input_01 = Input(shape=(5,))
 dense_01 = Dense(100)(input_01)
 dropout_01 = Dropout(0.2)(dense_01)
 dense_02 = Dense(100, activation="relu")(dropout_01)
@@ -198,4 +201,9 @@ print(y_summit.shape) # (715, 1)
 # loss : [380935.21875, 238403829760.0]
 # r2스코어 : 0.28715714175105733
 # RMSE : 488266.1284461972
+
+
+# loss : [442583.78125, 320015433728.0]
+# r2스코어 : 0.04313304330155543
+# RMSE : 565699.0834767915
 
