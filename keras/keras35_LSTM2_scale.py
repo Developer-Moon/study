@@ -13,7 +13,7 @@ print(x_predict.shape) #(3,)
 print(x.shape, y.shape) # (13, 3) (13,)
 x = x.reshape(13, 3, 1)
 
-
+# 돈 날씨 같은 경우 LSTM을 사용
 
 #2. 모델구성
 model = Sequential()  

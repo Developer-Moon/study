@@ -55,8 +55,8 @@ model.fit(x, y, epochs=500, batch_size=1)
 #4. 평가, 예측
 loss = model.evaluate(x, y)
 print('loss :', loss)
-result = model.predict([[10, 1.4]])              # 원래 (2, )인데  [[-]] 괄호가 2개 들어가서 (1,2) 가 된다 ------------------ 열 우선인 이유 
-print('[10, 1.4]의 예측값 : ', result)            # ValueError : Data cardinality is ambiguous:   값에 대한 에러가있다 : x사이즈는 2개 y사이즈는 10개다 = x값의 모양과 y값의 모양이 다르다
+result = model.predict([[10, 1.4]])              # 원래 (2, )인데  [[-]] 괄호가 2개 들어가서 (1,2) 가 된다 ---
+print('[10, 1.4]의 예측값 : ', result)            # ValueError : Data cardinality is ambiguous: 값에 대한 에러가있다 : x사이즈는 2개 y사이즈는 10개다 = x값의 모양과 y값의 모양이 다르다
 #[10, 1.4]의 예측값 :  [[20.013554]]              # x sizes: 2 y sizes: 10
 
 # print(x)
