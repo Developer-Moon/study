@@ -63,7 +63,7 @@ model = Sequential()
 model.add(LSTM(units=10, activation='relu', input_shape=(32*32, 3)))
 model.add(Dense(10, activation='relu'))
 model.add(Dense(10, activation='relu'))
-model.add(Dense(10, activation='softmax'))
+model.add(Dense(100, activation='softmax'))
 
 import datetime
 date = datetime.datetime.now()
@@ -85,7 +85,7 @@ mcp = ModelCheckpoint(monitor='loss',mode='auto',verbose=1,
                     )
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=1000, batch_size=500, 
+model.fit(x_train, y_train, epochs=1, batch_size=5000, 
                 callbacks = [earlyStopping,mcp],
                 validation_split=0.2,
                 verbose=2
@@ -108,3 +108,6 @@ print(y_predict)
 
 acc = accuracy_score(y_test, y_predict)
 print('acc 스코어 :', acc)
+
+LSTM
+# loss : [4.6050496101379395, 0.011500000022351742]
