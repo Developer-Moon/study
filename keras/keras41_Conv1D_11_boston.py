@@ -1,5 +1,5 @@
 from tensorflow.python.keras.models import Sequential, Model, load_model
-from tensorflow.python.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout, Input, LSTM, GRU
+from tensorflow.python.keras.layers import Dense, SimpleRNN, Dropout, LSTM, Flatten, Conv1D, Conv2D, MaxPooling1D, MaxPooling2D 
 from sklearn.model_selection import train_test_split  
 from sklearn.datasets import load_boston   
 from sklearn.metrics import r2_score 
@@ -14,25 +14,27 @@ x, y = datasets.data, datasets.target
 print(x.shape, y.shape) # (506, 13) (506,)
 
 
-x = x.reshape(506, 13, 1)
-print(x.shape)          # (506, 13, 1)
+
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=66)
 
+print(x_train.shape) # (404, 13)
+print(x_test.shape)  # (102, 13)
 
+x_train = x_train.reshape(404, 13, 1)
+x_test = x_test.reshape(102, 13, 1)
 
 
 #2. 모델구성
-model = Sequential()                                                                             
-model.add(LSTM(units=200, activation='relu', input_shape=(13, 1))) # 최대넓이가 가로13 세로 1이라 커널 사이즈 최대가 (1, 1)이 된다
-model.add(Dense(32, activation='relu'))    
-model.add(Dense(32, activation='relu'))  
-model.add(Dropout(0.5))
-model.add(Dense(32, activation='relu'))    
-model.add(Dropout(0.2))                                                                                                     
-model.add(Dense(32, activation='relu'))
+model = Sequential()
+model.add(Conv1D(200,2,activation='relu', input_shape=(13,1))) 
+model.add(Flatten())
+model.add(Dense(100,activation= 'relu'))
+model.add(Dense(100,activation= 'relu'))
+model.add(Dense(100,activation= 'relu'))
+model.add(Dense(100,activation= 'relu'))
 model.add(Dense(1))
-model.summary()
+
 
 
 
@@ -63,10 +65,6 @@ print('r2스코어 : ', r2)
 # r2스코어 :  0.8416900670657803
 
 
-# CNN모델
-# loss :  25.453134536743164
-# r2스코어 :  0.6954745082749104
-
-# LSTM사용 
-# loss :  83.33108520507812
-# r2스코어 :  0.003013269295097043
+# Conv1D
+# loss :  10.78105354309082
+# r2스코어 :  0.8710136998567093

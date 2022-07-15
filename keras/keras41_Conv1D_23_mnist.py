@@ -1,68 +1,95 @@
-import numpy as np   
+from tensorflow.python.keras.models import Sequential, Model, load_model
+from tensorflow.python.keras.layers import Dense, SimpleRNN, Dropout, LSTM, Flatten, Conv1D, Conv2D, MaxPooling1D, MaxPooling2D 
 from sklearn.model_selection import train_test_split  
+from sklearn.metrics import r2_score 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler
-from tensorflow.keras.models import Sequential 
-from tensorflow.keras.layers import Dense, SimpleRNN, Dropout, LSTM, GRU
-from tensorflow.keras.layers import Bidirectional
+import numpy as np                            
+import pandas as pd 
+from keras.datasets import mnist
+
+import tensorflow as tf            
+tf.random.set_seed(66)
+
+# acc 0.98이상
+
+#1. 데이터
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+print(x_train.shape, y_train.shape)           # (60000, 28, 28) (60000,)
+print(x_test.shape, y_test.shape)             # (10000, 28, 28) (10000,) 
+                                              # reshape할때 모든 객체의 곱은 같아야 한다, 순서는 바뀌면 안되지만 모양만 바꾸면 된다
 
 
-#1. 데이터 
-x = np.array([[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9], [8, 9, 10], [9, 10, 11], [10, 11, 12], [20, 30, 40], [30, 40, 50], [40, 50, 60]])
-y = np.array([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 50, 60, 70])
 
-x_predict = np.array([50, 60, 70])
 
-print(x_predict.shape) #(3,)
 
-print(x.shape, y.shape) # (13, 3) (13,)
-x = x.reshape(13, 3, 1)
+x_train = x_train.reshape(60000, 784, 1)
+x_test = x_test.reshape(10000, 784, 1)
+print(x_train.shape) # (60000, 28, 28, 1)
+print(np.unique(y_train, return_counts=True)) #  y값의 라벨이 먼지 확인해야한다
+                                              # (array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=uint8),
+                                              # array([5923, 6742, 5958, 6131, 5842, 5421, 5918, 6265, 5851, 5949], dtype=int64))
 
-# 돈 날씨 같은 경우 LSTM을 사용
 
-#2. 모델구성
-model = Sequential()  
-model.add(Bidirectional(SimpleRNN(64, return_sequences=True), input_shape=(3,1)))
-model.add(LSTM(10))
-model.add(Dense(100, activation='relu'))
-model.add(Dense(100, activation='relu'))
-model.add(Dense(1))
-model.summary()
+from tensorflow.python.keras.utils.np_utils import to_categorical # 범주
+y_train = to_categorical(y_train)
+y_test = to_categorical(y_test)
+
+print(x_train.shape,x_test.shape)
+x_train = x_train.reshape(60000,28*28,1)
+x_test = x_test.reshape(10000,28*28,1)
+
+#2.모델구성
+model = Sequential()
+model.add(Conv1D(8,2,activation='relu', input_shape=(28*28,1))) 
+model.add(Flatten())
+model.add(Dense(6,activation= 'relu'))
+model.add(Dense(4,activation= 'relu'))
+model.add(Dense(2,activation= 'relu'))
+model.add(Dense(10,activation='softmax'))
+
+
+
+
 
 
 
 #3. 컴파일, 훈련
-from tensorflow.python.keras.callbacks import EarlyStopping  
-model.compile(loss='mse', optimizer='adam') 
-earlyStopping = EarlyStopping(monitor='loss', patience=100, mode='min', verbose=1, restore_best_weights=True)     
-model.fit(x, y, epochs=300, batch_size=2, callbacks=[earlyStopping]) 
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy']) 
+from tensorflow.python.keras.callbacks import EarlyStopping, ModelCheckpoint      
+earlyStopping = EarlyStopping(monitor='val_loss', patience=15, mode='min', verbose=1, restore_best_weights=True)        
 
+  
+hist = model.fit(x_train, y_train, epochs=100, batch_size=500, validation_split=0.2, callbacks=[earlyStopping], verbose=1)  
+                                            # batch_size:32 디폴트값 3번정도 말 한듯
 
 
 #4. 결과, 예측
-loss = model.evaluate(x, y)
-y_pred = x_predict.reshape(1, 3, 1) # [[[8], [9], [10]]]
-result = model.predict(y_pred)
+results = model.evaluate(x_test, y_test)
+print('loss : ', results[0]) 
+print('accuracy : ', results[1]) 
 
 
-print("loss :", loss)
-print("x_predict의 예측 결과", result)
+from sklearn.metrics import r2_score, accuracy_score 
+y_predict = model.predict(x_test)
+y_predict = tf.argmax(y_predict, axis=1)
+print(y_predict)
+
+y_test = tf.argmax(y_test, axis=1)
+print(y_test)
 
 
-# 유워너 80? ㅇㅋ
+acc = accuracy_score(y_test, y_predict)  
+print('acc스코어 :', acc)
 
-# loss : 0.007141932379454374
-# x_predict의 예측 결과 [[80.63769]]
-
-
-# GRU
-# loss : 0.013739822432398796
-# x_predict의 예측 결과 [[74.695984]]
-
+# loss :  0.05932530015707016
+# accuracy :  0.9850999712944031
 
 # LSTM
-# loss : 0.06442474573850632
-# x_predict의 예측 결과 [[74.10001]]
+# loss :  nan
+# accuracy :  0.09799999743700027
 
-# SimpleRNN
-# loss : 0.00036197842564433813
-# x_predict의 예측 결과 [[74.10104]]
+# Conv1D
+# loss :  1.524610996246338
+# accuracy :  0.3853999972343445
+

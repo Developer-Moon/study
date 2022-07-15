@@ -20,7 +20,7 @@ x = x.reshape(13, 3, 1)
 #2. 모델구성
 model = Sequential()  
 model.add(LSTM(units=10, return_sequences=True, activation='relu', input_shape=(3,1))) # (N, 3, 1) -> (N, 3, 10)
-model.add(LSTM(5))   # return_sequences=True, 이 코드는 넘겨줄때 3차원으로 넘겨준다
+model.add(LSTM(5))   # return_sequences=True, 이 코드는 넘겨줄때 3차원으로 넘겨준다        RNN에서만 쓸 수 있다
 # ValueError: Input 0 of layer lstm_1 is incompatible with the layer: expected ndim=3, found ndim=2. Full shape received: (None, 200)
 model.add(Dense(100, activation='relu'))
 model.add(Dense(100, activation='relu'))
