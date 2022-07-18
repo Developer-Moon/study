@@ -21,19 +21,19 @@ import os
 train_set = pd.read_csv('./_data/kaggle_jena/jena_climate_2009_2016.csv')
 
 
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt 
-import os
-
 path = './_data/kaggle_jena/'
 data = pd.read_csv(path + 'jena_climate_2009_2016.csv' )
 
+print(data.columns)
+# ['Date Time', 'p (mbar)', 'T (degC)', 'Tpot (K)', 'Tdew (degC)', 'rh (%)', 'VPmax (mbar)', 'VPact (mbar)', 'VPdef (mbar)', 'sh (g/kg)',
+# 'H2OC (mmol/mol)', 'rho (g/m**3)', 'wv (m/s)', 'max. wv (m/s)', 'wd (deg)']
+print(data.info())
+print(data.describe())
+
+
 
 data['T (degC)'].plot(figsize=(12,6)) 
-# plt.show() # 'T (degC)'열의 전체 데이터 시각화
-
+plt.show() # 'T (degC)'열의 전체 데이터 시각화
 plt.figure(figsize=(20,10),dpi=120)
 plt.plot(data['T (degC)'][0:6*24*365],color="black",linewidth=0.2)
 
