@@ -72,7 +72,6 @@ model.fit([x1_train, x2_train, x3_train], y_train, epochs=200, batch_size=10, va
 
 #4. 평가, 예측
 loss = model.evaluate([x1_test, x2_test, x3_test], y_test)
-
 print('loss : ', loss) 
 
 y_predict = model.predict([x1_test, x2_test, x3_test])
