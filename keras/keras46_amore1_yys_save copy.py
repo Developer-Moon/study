@@ -99,13 +99,17 @@ model = Model(inputs=[input1, input2], outputs=[last_output])
 model.compile(loss='mse', optimizer='adam')
 start_time = time.time()
 Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=100, restore_best_weights=True)
-fit_log = model.fit([x1_train, x2_train], y_train, epochs=500, batch_size=64, callbacks=[Es], validation_split=0.1)
+fit_log = model.fit([x1_train, x2_train], y_train, epochs=100, batch_size=64, callbacks=[Es], validation_split=0.1)
 end_time = time.time()
-model.save('./_save/keras46_siga3.h5')
+# model.save('./_save/keras46_siga3.h5')
 
 # 4. 평가, 예측
 loss = model.evaluate([x1_test, x2_test], y_test)
 predict = model.predict([x1_test, x2_test])
 print('loss: ', loss)
-print('prdict: ', predict[-1:]) # 제일 마지막에 나온거 하나 슬라이싱
+print('prdict: ', predict[-1]) # 제일 마지막에 나온거 하나 슬라이싱
 print('걸린 시간: ', end_time-start_time)
+
+# loss:  179939504.0
+# 133839.45
+# 걸린 시간:  464.8620798587799
