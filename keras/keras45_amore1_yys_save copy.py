@@ -10,13 +10,57 @@ from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+
+
+dataset_amo = dataset_amo.rename(columns={'Unnamed: 6':'증감량'})
+dataset_sam = dataset_sam.rename(columns={'Unnamed: 6':'증감량'})
+
+dataset_sam = dataset_sam.fillna(0)
+dataset_amo = dataset_amo.fillna(0)
+
+dataset_sam = dataset_sam.loc[dataset_sam['일자']>="2018/05/04"] # 액면분할 이후 데이터만 사용
+dataset_amo = dataset_amo.loc[dataset_amo['일자']>="2018/05/04"] # 삼성의 액면분할 날짜 이후의 행개수에 맞춰줌
+print(dataset_amo.shape, dataset_sam.shape) # (1035, 11) (1035, 11)
+
+dataset_sam = dataset_sam.sort_values(by=['일자'], axis=0, ascending=True) # 오름차순 정렬
+dataset_amo = dataset_amo.sort_values(by=['일자'], axis=0, ascending=True)
+#print(dataset_amo.head) # 앞 다섯개만 보기
+
+
+dataset_sam = dataset_sam.drop(['일자'], axis=1)
+dataset_amo = dataset_amo.drop(['일자'], axis=1)
+dataset_sam = dataset_sam[['시가', '고가', '저가', '증감량', '외인(수량)', '거래량', '기관', '외국계', '종가']]
+dataset_amo = dataset_amo[['시가', '고가', '저가', '증감량', '외인(수량)', '거래량', '기관', '외국계', '종가']]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 1. 데이터
 path = './_data/test_amore_0718/'
 dataset_sam = pd.read_csv(path + '삼성전자220718.csv', thousands=',', encoding='cp949')
 dataset_amo = pd.read_csv(path + '아모레220718.csv', thousands=',', encoding='cp949')
 
-dataset_sam = dataset_sam.drop(['전일비','금액(백만)','신용비','개인','외인(수량)','프로그램','외인비'], axis=1)
-dataset_amo = dataset_amo.drop(['전일비','금액(백만)','신용비','개인','외인(수량)','프로그램','외인비'], axis=1)
+dataset_sam = dataset_sam.drop(['전일비','금액(백만)','신용비','개인','프로그램','외인비', '등락률'], axis=1)
+dataset_amo = dataset_amo.drop(['전일비','금액(백만)','신용비','개인','프로그램','외인비', '등락률'], axis=1)
+
+dataset_amo = dataset_amo.rename(columns={'Unnamed: 6':'증감량'})
+dataset_sam = dataset_sam.rename(columns={'Unnamed: 6':'증감량'})
 
 # dataset_amo.info()
 # dataset_sam.info()

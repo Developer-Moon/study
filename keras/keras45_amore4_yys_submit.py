@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn import datasets
-from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.models import Sequential, Model, load_model
 from tensorflow.python.keras.layers import Input, Dense, LSTM, Conv1D
 from sklearn.model_selection import train_test_split
 from tensorflow.python.keras.callbacks import EarlyStopping
@@ -113,29 +113,31 @@ x1_test = x1_test.reshape(203, 20, 8)
 x2_train = x2_train.reshape(811, 20, 8)
 x2_test = x2_test.reshape(203, 20, 8)
 
-# 2. 모델구성
-# 2-1. 모델1
-input1 = Input(shape=(20, 8))
-dense1 = Conv1D(64, 2, activation='relu', name='d1')(input1)
-dense2 = LSTM(128, activation='relu', name='d2')(dense1)
-dense3 = Dense(64, activation='relu', name='d3')(dense2)
-output1 = Dense(32, activation='relu', name='out_d1')(dense3)
+# # 2. 모델구성
+# # 2-1. 모델1
+# input1 = Input(shape=(20, 8))
+# dense1 = Conv1D(64, 2, activation='relu', name='d1')(input1)
+# dense2 = LSTM(128, activation='relu', name='d2')(dense1)
+# dense3 = Dense(64, activation='relu', name='d3')(dense2)
+# output1 = Dense(32, activation='relu', name='out_d1')(dense3)
 
-# 2-2. 모델2
-input2 = Input(shape=(20, 8))
-dense11 = Conv1D(64, 2, activation='relu', name='d11')(input2)
-dense12 = LSTM(128, activation='swish', name='d12')(dense11)
-dense13 = Dense(64, activation='relu', name='d13')(dense12)
-dense14 = Dense(32, activation='relu', name='d14')(dense13)
-output2 = Dense(16, activation='relu', name='out_d2')(dense14)
+# # 2-2. 모델2
+# input2 = Input(shape=(20, 8))
+# dense11 = Conv1D(64, 2, activation='relu', name='d11')(input2)
+# dense12 = LSTM(128, activation='swish', name='d12')(dense11)
+# dense13 = Dense(64, activation='relu', name='d13')(dense12)
+# dense14 = Dense(32, activation='relu', name='d14')(dense13)
+# output2 = Dense(16, activation='relu', name='out_d2')(dense14)
 
-from tensorflow.python.keras.layers import concatenate
-merge1 = concatenate([output1, output2], name='m1')
-merge2 = Dense(100, activation='relu', name='mg2')(merge1)
-merge3 = Dense(100, name='mg3')(merge2)
-last_output = Dense(1, name='last')(merge3)
+# from tensorflow.python.keras.layers import concatenate
+# merge1 = concatenate([output1, output2], name='m1')
+# merge2 = Dense(100, activation='relu', name='mg2')(merge1)
+# merge3 = Dense(100, name='mg3')(merge2)
+# last_output = Dense(1, name='last')(merge3)
 
-model = Model(inputs=[input1, input2], outputs=[last_output])
+# model = Model(inputs=[input1, input2], outputs=[last_output])
+
+model = load_model('./_test/keras46_siga3.h5')
 
 # 3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
@@ -151,3 +153,8 @@ predict = model.predict([x1_test, x2_test])
 print('loss: ', loss)
 print('prdict: ', predict[-1]) # 제일 마지막에 나온거 하나 슬라이싱
 print('걸린 시간: ', end_time-start_time)
+
+
+
+# loss:  21554392.0
+# prdict:  [134802.34]

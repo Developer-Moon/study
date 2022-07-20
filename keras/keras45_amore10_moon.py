@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn import datasets
-from tensorflow.python.keras.models import Sequential, Model, load_model
+from tensorflow.python.keras.models import Sequential, Model
 from tensorflow.python.keras.layers import Input, Dense, LSTM, Conv1D
 from sklearn.model_selection import train_test_split
 from tensorflow.python.keras.callbacks import EarlyStopping
@@ -10,13 +10,27 @@ from sklearn.preprocessing import MinMaxScaler
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-# 1. 데이터
+# 시계열 데이터일때 좋은 모델 - 프롬펫 
+
+# 주식에서 제일 중요한건 외인비중요 (우리나라만 )
+# volume 시가총액
+
+
+# 뺄거 비 들어가는거 빼기
+# 넣을꺼  시가 고가 저가 종가 외인수량 
+
+
+# 1. 데이터    
 path = './_data/test_amore_0718/'
 dataset_sam = pd.read_csv(path + '삼성전자220718.csv', thousands=',', encoding='cp949')
 dataset_amo = pd.read_csv(path + '아모레220718.csv', thousands=',', encoding='cp949')
 
-dataset_sam = dataset_sam.drop(['전일비','금액(백만)','신용비','개인','외인(수량)','프로그램','외인비'], axis=1)
-dataset_amo = dataset_amo.drop(['전일비','금액(백만)','신용비','개인','외인(수량)','프로그램','외인비'], axis=1)
+print(dataset_amo)
+#  일자      시가      고가      저가      종가 전일비  증감량  등락률  거래량   금액(백만)   신용비     개인     기관  외인(수량)    외국계   프로그램    외인비 
+
+
+dataset_sam = dataset_sam.drop(['전일비','금액(백만)','신용비','개인','프로그램','외인비', '등락률'], axis=1)
+dataset_amo = dataset_amo.drop(['전일비','금액(백만)','신용비','개인','프로그램','외인비', '등락률'], axis=1)
 
 dataset_amo = dataset_amo.rename(columns={'Unnamed: 6':'증감량'})
 dataset_sam = dataset_sam.rename(columns={'Unnamed: 6':'증감량'})
@@ -35,33 +49,25 @@ dataset_amo = dataset_amo.sort_values(by=['일자'], axis=0, ascending=True)
 
 dataset_sam = dataset_sam.drop(['일자'], axis=1)
 dataset_amo = dataset_amo.drop(['일자'], axis=1)
-dataset_sam = dataset_sam[['시가', '고가', '저가', '증감량', '등락률', '거래량', '기관', '외국계', '종가']]
-dataset_amo = dataset_amo[['시가', '고가', '저가', '증감량', '등락률', '거래량', '기관', '외국계', '종가']]
+dataset_sam = dataset_sam[['시가', '고가', '저가', '증감량', '외인(수량)', '거래량', '기관', '외국계', '종가']]
+dataset_amo = dataset_amo[['시가', '고가', '저가', '증감량', '외인(수량)', '거래량', '기관', '외국계', '종가']]
 
 print(dataset_amo)
 print(dataset_sam)
 
-
-
-
-
-
-
-dataset_sam = np.array(dataset_sam)
+dataset_sam = np.array(dataset_sam) 
 dataset_amo = np.array(dataset_amo)
 
 
-
 print(dataset_amo)
-
 
 print(dataset_sam)
 
 
 # 시계열 데이터 만드는 함수
 
-time_steps = 3
-y_column = 5
+time_steps = 200
+y_column = 3
 
 def split_xy(dataset, time_steps, y_column):                 
     x = []
@@ -81,8 +87,8 @@ def split_xy(dataset, time_steps, y_column):
 x1, y1 = split_xy(dataset_amo, time_steps, y_column)
 x2, y2 = split_xy(dataset_sam, time_steps, y_column)
 
-print(x1.shape) # (1029, 3, 8)
-print(x2.shape) # (1029, 3, 8)
+print(x1.shape) # (1014, 20, 8)
+print(x2.shape) # (1014, 20, 8)
 print(y1.shape) # (1029, 5)
 print(y2.shape) # (1029, 5)
 
@@ -90,8 +96,8 @@ print(y2.shape) # (1029, 5)
 x1_train, x1_test, x2_train, x2_test, y1_train, y1_test, y2_train, y_2test = train_test_split(x1, x1, y1, y2, test_size=0.2, shuffle=False)
 
 
-print(x1_train.shape, x1_test.shape) # (823, 3, 8) (206, 3, 8)
-print(x2_train.shape, x2_test.shape) # (823, 3, 8) (206, 3, 8)
+print(x1_train.shape, x1_test.shape) # (811, 20, 8) (203, 20, 8)
+print(x2_train.shape, x2_test.shape) # (811, 20, 8) (203, 20, 8)
 
 
 
@@ -101,21 +107,21 @@ print(x2_train.shape, x2_test.shape) # (823, 3, 8) (206, 3, 8)
 # data 스케일링
 scaler = MinMaxScaler()
 
-x1_train = x1_train.reshape(823*3, 8)
+x1_train = x1_train.reshape(811*20, 8)
 x1_train = scaler.fit_transform(x1_train)
-x1_test = x1_test.reshape (206*3, 8)
+x1_test = x1_test.reshape(203*20, 8)
 x1_test = scaler.transform(x1_test)
 
-x2_train = x2_train.reshape(823*3, 8)
+x2_train = x2_train.reshape(811*20, 8)
 x2_train = scaler.fit_transform(x2_train)
-x2_test = x2_test.reshape (206*3, 8)
+x2_test = x2_test.reshape(203*20, 8)
 x2_test = scaler.transform(x2_test)
 
 # Conv1D에 넣기 위해 3차원화
-x1_train = x1_train.reshape(823, 3, 8)
-x1_test = x1_test.reshape(206, 3, 8)
-x2_train = x2_train.reshape(823, 3, 8)
-x2_test = x2_test.reshape(206, 3, 8)
+x1_train = x1_train.reshape(811, 20, 8)
+x1_test = x1_test.reshape(203, 20, 8)
+x2_train = x2_train.reshape(811, 20, 8)
+x2_test = x2_test.reshape(203, 20, 8)
 
 
 
@@ -123,15 +129,14 @@ x2_test = x2_test.reshape(206, 3, 8)
 
 # 2. 모델구성
 # 2-1. 모델1
-"""
-input1 = Input(shape=(3, 8))
+input1 = Input(shape=(20, 8))
 dense1 = Conv1D(64, 2, activation='relu', name='d1')(input1)
 dense2 = LSTM(128, activation='relu', name='d2')(dense1)
 dense3 = Dense(64, activation='relu', name='d3')(dense2)
 output1 = Dense(32, activation='relu', name='out_d1')(dense3)
 
 # 2-2. 모델2
-input2 = Input(shape=(3, 8))
+input2 = Input(shape=(20, 8))
 dense11 = Conv1D(64, 2, activation='relu', name='d11')(input2)
 dense12 = LSTM(128, activation='swish', name='d12')(dense11)
 dense13 = Dense(64, activation='relu', name='d13')(dense12)
@@ -145,19 +150,21 @@ merge3 = Dense(100, name='mg3')(merge2)
 last_output = Dense(1, name='last')(merge3)
 
 model = Model(inputs=[input1, input2], outputs=[last_output])
-"""
 
-model = load_model('./_save/amore.h5')
 # 3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
-# start_time = time.time()
-# # Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=100, restore_best_weights=True)
-# # fit_log = model.fit([x1_train, x2_train], y1_train, epochs=500, batch_size=32, callbacks=[Es], validation_split=0.1)
-# end_time = time.time()
-# model.save('./_save/keras46_siga3.h5')
+start_time = time.time()
+Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=100, restore_best_weights=True)
+fit_log = model.fit([x1_train, x2_train], y1_train, epochs=300, batch_size=16, callbacks=[Es], validation_split=0.1)
+end_time = time.time()
+model.save('./_save/keras46_siga3.h5')
 
 # 4. 평가, 예측
 loss = model.evaluate([x1_test, x2_test], y1_test)
 predict = model.predict([x1_test, x2_test])
 print('loss: ', loss)
 print('prdict: ', predict[-1]) # 제일 마지막에 나온거 하나 슬라이싱
+print('걸린 시간: ', end_time-start_time)
+
+# loss:  19442110.0
+# prdict:  [134325.78]
