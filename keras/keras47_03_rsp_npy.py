@@ -7,8 +7,8 @@ import numpy as np
 
 
 
-x = np.load('d:/study_data/_save/_npy/kears_47_01_x.npy')
-y = np.load('d:/study_data/_save/_npy/kears_47_02_y.npy')
+x = np.load('d:/study_data/_save/_npy/kears_47_03_01_x.npy')
+y = np.load('d:/study_data/_save/_npy/kears_47_03_02_y.npy')
 
 print(x.shape)   # (2520, 150, 150, 3) 3개의 데이터 확인
 print(y.shape)   # (2520, 3)       
@@ -27,7 +27,7 @@ model.add(Dense(3, activation='softmax'))
 
 
 #3. 컴파일,훈련
-model.compile(loss='categorical_crossentropy',optimizer='adam')
+model.compile(loss='categorical_crossentropy', optimizer='adam')
 earlyStopping= EarlyStopping(monitor='val_loss', patience=20, mode='auto', restore_best_weights=True)
 hist = model.fit(x_train, y_train,epochs=3, validation_split=0.2, verbose=1, batch_size=32, callbacks=[earlyStopping])
 

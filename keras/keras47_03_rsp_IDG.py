@@ -28,6 +28,6 @@ xy = datagen.flow_from_directory(
 print(xy)
 # Found 2520 images belonging to 3 classes.
 
-np.save('d:/study_data/_save/_npy/kears_47_01_x.npy', arr=xy[0][0])  # test_x
-np.save('d:/study_data/_save/_npy/kears_47_02_y.npy', arr=xy[0][1])  # test_y
+np.save('d:/study_data/_save/_npy/kears_47_03_01_x.npy', arr=xy[0][0])  # test_x
+np.save('d:/study_data/_save/_npy/kears_47_03_02_y.npy', arr=xy[0][1])  # test_y
 
