@@ -1,9 +1,9 @@
 # 증폭해서 npy에 저장
-from keras.datasets import fashion_mnist
+from keras.datasets import mnist
 from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 
-(x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 train_datagen = ImageDataGenerator(
     rescale=1./255,
@@ -17,16 +17,12 @@ train_datagen = ImageDataGenerator(
     fill_mode='nearest'
 )
 
-augument_size = 5000
+augument_size = 500
 randidx = np.random.randint(x_train.shape[0], size=augument_size)
 
 x_augument = x_train[randidx].copy()
 y_augument = y_train[randidx].copy()
 
-
-print(x_train.shape) # (60000, 28, 28)
-print(x_test.shape)  # (10000, 28, 28)
-print(x_augument.shape) # (5000, 28, 28)
 # x 시리즈 전부 리쉐입
 x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
 x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
@@ -40,7 +36,7 @@ y_augument = train_datagen.flow(x_augument, y_augument, batch_size=augument_size
 x_train = np.concatenate((x_train, x_augument))
 y_train = np.concatenate((y_train, y_augument))
 
-np.save('d:/study_data/_save/_npy/keras49_01_train_x.npy', arr =x_train)
-np.save('d:/study_data/_save/_npy/keras49_01_train_y.npy', arr =y_train)
-np.save('d:/study_data/_save/_npy/keras49_01_test_x.npy', arr =x_test)
-np.save('d:/study_data/_save/_npy/keras49_01_test_y.npy', arr =y_test)
+np.save('d:/study_data/_save/_npy/keras49_02_train_x.npy', arr =x_train)
+np.save('d:/study_data/_save/_npy/keras49_02_train_y.npy', arr =y_train)
+np.save('d:/study_data/_save/_npy/keras49_02_test_x.npy', arr =x_test)
+np.save('d:/study_data/_save/_npy/keras49_02_test_y.npy', arr =y_test)
