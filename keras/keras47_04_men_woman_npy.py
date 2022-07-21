@@ -17,9 +17,10 @@ moon = np.load('D:\study_data\_save\_npy/kears_47_04_moon.npy')
 #     shuffle=True,
 #     )
 
-print(moon[0][0].shape)
-print(moon[0][1].shape)
-moon = moon[0][0]
+print(x[0][0].shape)
+print(moon[0][0].shape) # (150, 3)
+print(moon[0][1].shape) # (150, 3)
+
 
 
 from sklearn.model_selection import train_test_split
@@ -63,8 +64,8 @@ print('val_accuracy : ', val_accuracy[-1])
 
 
 #4.평가,예측 
-loss = model.evaluate(x_test,y_test)
-
-
+loss = model.evaluate(x_test, y_test)
 y_predict = model.predict(moon)
+y_predict = y_predict.round()
 print(y_predict)
+

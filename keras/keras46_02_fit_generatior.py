@@ -32,7 +32,8 @@ xy_train = train_datagen.flow_from_directory(                # flow_from_directo
         batch_size=5,
         class_mode='binary',                                  # binary(이진법) - 분류하는게 0 or 1이라서  다중분류라면?
         shuffle=True,
-        color_mode='grayscale'  # 디폴트값은 컬러
+        color_mode='grayscale',  # 디폴트값은 컬러
+        # save_to_dir=
         # Found 160 images belonging to 2 classes.
     )
 
