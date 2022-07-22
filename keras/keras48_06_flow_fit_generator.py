@@ -6,10 +6,15 @@ from tensorflow.python.keras.models import Sequential, Model
 from tensorflow.python.keras.layers import Dense, Dropout, Conv2D, Flatten
 from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.metrics import accuracy_score
-from keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 import tensorflow as tf
 
 (x_train, y_train), (x_test, y_test) = fashion_mnist.load_data()
+
+print(x_train.shape) # (60000, 28, 28)
+print(y_train.shape) # (60000,)
+print(x_test.shape)  # (10000, 28, 28)
+print(y_test.shape)  # (10000,)
 
 train_datagen = ImageDataGenerator(
     rescale=1./255,
@@ -31,15 +36,18 @@ randidx = np.random.randint(x_train.shape[0], size=augument_size)
 x_augument = x_train[randidx].copy()
 y_augument = y_train[randidx].copy()
 
-x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
-x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
-x_augument = x_augument.reshape(x_augument.shape[0], x_augument.shape[1], x_augument.shape[2], 1)
+print(x_augument.shape) # (64, 28, 28)
+print(y_augument.shape) # (64,)
 
-x_augumented = train_datagen.flow(x_augument, y_augument, batch_size=augument_size, shuffle=False).next()[0]
-x_data_all = np.concatenate((x_train, x_augumented))
-print(x_data_all.shape) # (60064, 28, 28, 1)
-y_data_all = np.concatenate((y_train, y_augument))
-print(y_data_all.shape) # (60064,)
+x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)     # (60000, 28, 28, 1)
+x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)          # (10000, 28, 28, 1)
+x_augument = x_augument.reshape(x_augument.shape[0], x_augument.shape[1], x_augument.shape[2], 1) # (64, 28, 28, 1)
+
+x_augumented = train_datagen.flow(x_augument, y_augument, batch_size=augument_size, shuffle=False).next()[0] # (64, 28, 28, 1)
+
+x_data_all = np.concatenate((x_train, x_augumented)) # (60064, 28, 28, 1)
+y_data_all = np.concatenate((y_train, y_augument))   # (60064,)
+
 xy_train = test_datagen.flow(x_data_all, y_data_all, batch_size=augument_size, shuffle=False)
 print(xy_train[0][0].shape) # (64, 28, 28, 1)
 xy_test = test_datagen.flow(x_test, y_test, batch_size=augument_size, shuffle=False)

@@ -17,6 +17,11 @@ train_datagen = ImageDataGenerator(
     fill_mode='nearest'
 )
 
+print(x_train.shape) # (60000, 28, 28)
+print(y_train.shape) # (60000,)
+print(x_test.shape)  # (10000, 28, 28)
+print(y_test.shape)  # (10000,)
+
 augument_size = 5000
 randidx = np.random.randint(x_train.shape[0], size=augument_size)
 
@@ -24,8 +29,8 @@ x_augument = x_train[randidx].copy()
 y_augument = y_train[randidx].copy()
 
 
-print(x_train.shape) # (60000, 28, 28)
-print(x_test.shape)  # (10000, 28, 28)
+print(x_train.shape)    # (60000, 28, 28)
+print(x_test.shape)     # (10000, 28, 28)
 print(x_augument.shape) # (5000, 28, 28)
 # x 시리즈 전부 리쉐입
 x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 1)
