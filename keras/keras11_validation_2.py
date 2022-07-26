@@ -35,7 +35,7 @@ model.fit(x_train, y_train, epochs=100, batch_size=1, validation_data=(x_val, y_
 
 
 #4. 평가, 예측
-loss = model.evaluate(x_test, y_test)                                                
+loss = model.evaluate(x_test, y_test)                                                 # 여기서 수능보고 
 print('loss : ', loss)
 
 result = model.predict([17])
