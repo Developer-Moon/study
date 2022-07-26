@@ -1,6 +1,6 @@
 import numpy as np 
 from tensorflow.python.keras.models import Sequential   
-from tensorflow.python.keras.layers import Dense      ``
+from tensorflow.python.keras.layers import Dense     
 
 #1. 데이터
 x = np.array([[1,2,3,4,5,6,7,8,9,10],                    
@@ -49,7 +49,7 @@ model.add(Dense (1))
 
 #3. 컴파일, 훈련
 model.compile(loss='mae', optimizer='adam')
-model.fit(x, y, epochs=500, batch_size=1)        
+model.fit(x, y, epochs=5, batch_size=1)        
 
 
 #4. 평가, 예측

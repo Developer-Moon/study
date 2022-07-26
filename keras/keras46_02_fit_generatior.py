@@ -80,7 +80,6 @@ print(type(xy_train[0][1]))   # <class 'numpy.ndarray'> 1번째에는 x, y가 �
 
 # 현재 5, 200, 200, 1 짜리 데이턱 32개다
 
-
 #2. 모델구성
 
 from tensorflow.python.keras.models import Sequential

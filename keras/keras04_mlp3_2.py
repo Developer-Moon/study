@@ -4,8 +4,8 @@ from tensorflow.python.keras.layers import Dense
 
 #1. 데이터
 x = np.array([range(10), range(21, 31), range(201, 211)])     
-#print(range(10))
-#for i in range(10):           
+# print(range(10))   반복문
+# for i in range(10):           
 #    print(i)
 print(x.shape) #(3, 10)
 

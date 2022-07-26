@@ -20,7 +20,7 @@ model.add(Dense(1))
 
 
 #3. 컴파일, 훈련
-model.compile(loss='mae', optimizer='adam') # loss = mse, mae 등등
+model.compile(loss='mse', optimizer='adam') # loss = mse, mae 등등
 model.fit(x, y, epochs=1000)                # 훈련량에 따라 성능은 알 수 없지만 가성비는 훈련량이 낮을수록 좋다  
 
 #4. 평가, 예측
