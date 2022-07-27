@@ -1,10 +1,7 @@
-from sympy import partition
 from tensorflow.python.keras.models import Sequential 
 from tensorflow.python.keras.layers import Dense  
 from sklearn.model_selection import train_test_split  
 from sklearn.datasets import load_boston   
-from sklearn.metrics import r2_score 
-import numpy as np 
 import time
 
 
@@ -13,9 +10,6 @@ from matplotlib import font_manager, rc
 font_path = "C:/Windows/Fonts/malgun.TTF"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
-
-
-
 #plt 폰트 깨짐 현상 #
 
 #1. 데이터
@@ -23,11 +17,8 @@ datasets = load_boston()
 x = datasets.data
 y = datasets.target      
 
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=66)
 
-x_train, x_test, y_train, y_test = train_test_split(x, y,
-    train_size=0.8,
-    random_state=66
-    )
 
 
 #2. 모델구성
@@ -45,9 +36,6 @@ model.add(Dense(1))
 start_time = time.time()
 #3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')       
-
-
-
 from tensorflow.python.keras.callbacks import EarlyStopping      #얼리 스타핑을 적용하기 위해          #  EarlyStopping  (대문자니까) 클래스 
 earlyStopping = EarlyStopping(monitor='val_loss', patience=10, mode='min', verbose=1, restore_best_weights=True)          
                 # monitor='val_loss',(발로스를 중심으로, 로스 중심으로 힐려면 loss로)   partition=10, 10번 참을꺼야       mode='min' 최소값   디폴트값은 auto  max는 에큐러시 할때 쓴다??                                                    

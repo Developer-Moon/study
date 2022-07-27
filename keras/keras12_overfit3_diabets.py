@@ -2,6 +2,8 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense  
 from sklearn.model_selection import train_test_split  
 from sklearn.datasets import load_diabetes     
+from sklearn.metrics import r2_score 
+import numpy as np 
 import time
 
 
