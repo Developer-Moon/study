@@ -6,12 +6,6 @@ from sklearn.metrics import r2_score, accuracy_score
 import numpy as np 
 
 
-#plt 폰트 깨짐 현상 #
-from matplotlib import font_manager, rc
-font_path = "C:/Windows/Fonts/malgun.TTF"
-font = font_manager.FontProperties(fname=font_path).get_name()
-rc('font', family=font)
-#plt 폰트 깨짐 현상 #
 
 #1. 데이터 
 datasets = load_breast_cancer()
