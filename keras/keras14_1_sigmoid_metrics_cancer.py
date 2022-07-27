@@ -2,10 +2,9 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense 
 from sklearn.model_selection import train_test_split                                     
 from sklearn.datasets import load_breast_cancer  
-from sklearn.metrics import r2_score
-from sklearn import metrics
+from sklearn.metrics import r2_score, accuracy_score
 import numpy as np 
-import time
+
 
 #plt 폰트 깨짐 현상 #
 from matplotlib import font_manager, rc
@@ -19,6 +18,7 @@ datasets = load_breast_cancer()
 x = datasets.data              # x = datasets['data'] 으로도 쓸 수 있다.
 y = datasets.target 
 print(x.shape, y.shape)        # (569, 30) (569,)
+print(np.unique(y, return_counts=True))
 
 x_train, x_test, y_train, y_test = train_test_split(x, y,
     train_size=0.8,
@@ -65,7 +65,7 @@ y_predict = np.where(y_predict > 0.5, 1 , 0) #0.5보다크면 1, 작으면 0
 
 print(y_predict)
 
-from sklearn.metrics import r2_score, accuracy_score # 두개 같이 쓸 수 있다 
+
 # r2 = r2_score(y_test, y_predict)
 acc = accuracy_score(y_test, y_predict)  
 print('acc스코어 :', acc)
