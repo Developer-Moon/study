@@ -1,7 +1,6 @@
 from tensorflow.python.keras.models import Sequential 
 from tensorflow.python.keras.layers import Dense 
-from sklearn.model_selection import train_test_split 
-import numpy as np  
+from sklearn.model_selection import train_test_split  
 import time
 from sklearn.datasets import load_boston   
 
@@ -34,7 +33,7 @@ model.add(Dense(1))
 start_time = time.time()
 #3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')                   
-hist = model.fit(x_train, y_train, epochs=300, batch_size=10, validation_split=0.2) # hist = history 
+hist = model.fit(x_train, y_train, epochs=30, batch_size=10, validation_split=0.2) # hist = history 
                                                         
 
 

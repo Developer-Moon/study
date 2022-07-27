@@ -9,15 +9,11 @@ from sklearn.datasets import load_boston
 datasets = load_boston()
 x = datasets.data
 y = datasets.target      
-
-print(x)                        
-print(y)                  
+                  
 print(x.shape, y.shape)         # (506, 13) (506,) - 데이터 : 506개,   컬럼 : 13 - input_dim (506개의 스칼라 1개의 벡터)
-print(datasets.feature_names)   # ['CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT'] 컬럼셋 b는 흑인이라 사용X
-print(datasets.DESCR)  
-
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=66)
+
 
 
 #2. 모델구성

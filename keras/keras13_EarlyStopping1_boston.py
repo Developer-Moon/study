@@ -13,6 +13,9 @@ from matplotlib import font_manager, rc
 font_path = "C:/Windows/Fonts/malgun.TTF"
 font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
+
+
+
 #plt 폰트 깨짐 현상 #
 
 #1. 데이터
