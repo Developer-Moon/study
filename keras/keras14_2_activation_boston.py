@@ -1,5 +1,3 @@
-import numpy as np
-from sklearn import metrics         
 from sklearn.datasets import load_boston   
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense 

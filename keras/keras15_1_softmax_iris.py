@@ -1,9 +1,11 @@
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense 
-from sklearn.model_selection import train_test_split        
-from sklearn.datasets import load_iris                              
-from sklearn.metrics import r2_score
-import numpy as np 
+from sklearn.model_selection import train_test_split                                 
+from sklearn.metrics import r2_score, accuracy_score
+import numpy as np
+from sklearn.datasets import load_iris     
+
+
 
 #plt 폰트 깨짐 현상 #
 from matplotlib import font_manager, rc
@@ -23,6 +25,9 @@ print(datasets.DESCR)
 # Number of Attributes: 4 numeric 컬럼이 4개 (피처, 열)
 # class: - Iris-Setosa - Iris-Versicolour - Iris-Virginica    ->    y값은 3개
 
+print(datasets.DESCR) # 상관관계가 -라면 뺄 수 있다 근데 진짜 상관관계가 -0.4인지는 확인 해봐야함 Class Correlation
+
+
 print(datasets.feature_names)
 x = datasets['data']
 y = datasets['target']
@@ -32,7 +37,7 @@ print(y)
 print(x.shape, y.shape)        # (150, 4) (150,)   
 print('y의 라벨값 :', np.unique(y))   # y의 라벨값 : [0 1 2] - 판다스에서 있다 : y값을 (150, 3) 으로 바꿔준다
 
-from tensorflow.keras.utils import to_categorical # 범주
+from keras.utils.np_utils import to_categorical # 범주
 y = to_categorical(y)
 print(y)
 print(y.shape) # (150, 3)
