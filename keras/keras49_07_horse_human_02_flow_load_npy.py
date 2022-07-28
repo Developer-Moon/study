@@ -24,6 +24,7 @@ model.add(Flatten())
 model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
+model.summary()
 
 # 3. 컴파일, 훈련
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']) # 메트릭스에 'acc'해도 됨
