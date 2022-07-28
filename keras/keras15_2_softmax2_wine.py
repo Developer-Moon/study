@@ -25,10 +25,16 @@ print(y.shape) # (178,)
 # print(np.unique(x))
 print(np.unique(y, return_counts=True))     # [0 1 2] - (array([0, 1, 2]), array([59, 71, 48], dtype=int64)) 0이 59개  1이 71개  2가 48개
 
-from tensorflow.keras.utils import to_categorical 
-y = to_categorical(y)
+from sklearn.preprocessing import OneHotEncoder
+oh = OneHotEncoder()
+print(y.shape) # (581012,)
+y = datasets.target.reshape(-1,1) # reshape 전은 벡터로, reshape 후에 행렬로
+print(y.shape) # (581012, 1)
+oh.fit(y) # (178, 1)
+y = oh.transform(y).toarray()
 print(y)
-print(y.shape) # (150, 3)
+print(y.shape)
+
 
 x_train, x_test, y_train, y_test = train_test_split(x, y,
     test_size=0.33,

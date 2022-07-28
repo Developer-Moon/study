@@ -93,7 +93,7 @@ model.compile(loss='categorical_crossentropy',            # 다중분류의 loss
                                             
 from tensorflow.python.keras.callbacks import EarlyStopping      
 earlyStopping = EarlyStopping(monitor='val_loss', patience=100, mode='min', verbose=1, restore_best_weights=True)          
-hist = model.fit(x_train, y_train, epochs=1000, batch_size=1, validation_split=0.2, callbacks=[earlyStopping], verbose=1) 
+hist = model.fit(x_train, y_train, epochs=10, batch_size=1, validation_split=0.2, callbacks=[earlyStopping], verbose=1) 
 
 #4. 평가, 예측
 # loss, acc = model.evaluate(x_test, y_test)
@@ -119,6 +119,7 @@ print(y_test)                               # [0 1 2 2 2 1 1 2 0 0 0 0 1 0 0 1 2
 
 from sklearn.metrics import r2_score, accuracy_score 
 y_predict = model.predict(x_test)
+print(y_predict)
 y_predict = np.argmax(y_predict, axis=1)
 print(y_predict)
 
@@ -148,42 +149,3 @@ plt.ylabel('loss')
 # plt.legend(loc='upper right') #   label값이 레전드에 명시가 되며 이걸 우측상단에 올린다 location = loc            위치값 upper right', 'lower left', 'center left', 'center 이런게 있다
 plt.legend()
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

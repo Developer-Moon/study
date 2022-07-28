@@ -3,18 +3,9 @@ from sklearn.model_selection import train_test_split
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense                    
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler            # 전처리 = preprocessing  # 이상치를 잘 고르는 애가 있다. 
-import numpy as np       
-from sklearn import metrics         
-from sklearn.metrics import r2_score 
-import time
-           
-
-#plt 폰트 깨짐 현상 #
-from matplotlib import font_manager, rc
-font_path = "C:/Windows/Fonts/malgun.TTF"
-font = font_manager.FontProperties(fname=font_path).get_name()
-rc('font', family=font)
-#plt 폰트 깨짐 현상 #
+import numpy as np            
+from tensorflow.python.keras.callbacks import EarlyStopping 
+from sklearn.metrics import r2_score, accuracy_score 
 
 
 #1. 데이터
@@ -70,9 +61,9 @@ model.compile(loss='mse',           # 분류 모델중 이진 분류는 무조�
               optimizer='adam',
               metrics=['mae'])      # metrics=평가지표를 판단   받아들이는게 리스트 형태 ['accuracy', 'mse']        
                                     # True 또는 False, 양성 또는 음성 등 2개의 클래스를 분류할 수 있는 분류기를 의미                                                                                                                                                                                                                                                                           
-from tensorflow.python.keras.callbacks import EarlyStopping      
+      
 earlyStopping = EarlyStopping(monitor='val_loss', patience=500, mode='min', verbose=1, restore_best_weights=True)          
-hist = model.fit(x_train, y_train, epochs=1000, batch_size=5, validation_split=0.2, callbacks=[earlyStopping], verbose=1)  
+hist = model.fit(x_train, y_train, epochs=10, batch_size=5, validation_split=0.2, callbacks=[earlyStopping], verbose=1)  
 # callbacks=[earlyStopping] 이것도 리스트 형태 2가지 이상
 
 
@@ -84,23 +75,11 @@ print('loss : ', loss)
 print(hist.history['val_loss'])
 
 y_predict = model.predict(x_test)
-from sklearn.metrics import r2_score, accuracy_score # 두개 같이 쓸 수 있다 
+
 r2 = r2_score(y_test, y_predict)
 print('r2스코어 :', r2)
 
 
-import matplotlib.pyplot as plt    
-plt.figure(figsize=(9,6))                                                   
-plt.plot(hist.history['loss'], marker='.', c='red', label='loss')           
-plt.plot(hist.history['val_loss'], marker='.', c='blue', label='val_loss') 
-
-
-plt.grid()            
-plt.title('안결바보') 
-plt.xlabel('epochs')
-plt.ylabel('loss')
-plt.legend() 
-plt.show()
 
 
 """
