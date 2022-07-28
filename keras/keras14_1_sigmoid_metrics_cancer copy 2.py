@@ -7,17 +7,10 @@ from sklearn.datasets import load_breast_cancer
 
 # 1. 데이터
 datasets = load_breast_cancer()
-# print(datasets)
-# print(datasets.DESCR) // Instances: 569, Attributes: 30
-# print(datasets.feature_names)
-
 x = datasets.data # datasets['data']
 y = datasets.target # datasets['target'] // key value니까 이렇게도 가능
 print(x.shape, y.shape) # (569, 30) (569,)
-
-# print(x)
-# print(y)
-
+print(np.unique(y, return_counts=True))
 x_train, x_test, y_train, y_test =  train_test_split(x, y, train_size=0.8, shuffle=True, random_state=66)
 
 
@@ -54,6 +47,7 @@ from sklearn.metrics import r2_score, accuracy_score
 # r2 = r2_score(y_test, y_predict)
 print(y_predict)
 y_predict = np.round(y_predict,0)
+print(y_predict)
 acc = accuracy_score(y_test, y_predict)
 print('acc스코어 : ', acc)
 
