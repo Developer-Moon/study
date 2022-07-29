@@ -106,7 +106,7 @@ earlyStopping = EarlyStopping(monitor='val_loss', patience=200, mode='min', verb
 hist = model.fit(x_train, y_train, epochs=500, batch_size=5, validation_split=0.2, callbacks=[earlyStopping], verbose=1)   # callbacks=[earlyStopping] 이것도 리스트 형태 2가지 이상
 
 
-
+sads
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
 
