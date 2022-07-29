@@ -7,6 +7,7 @@ import numpy as np
 
 
 
+
 #1. 데이터 
 datasets = load_breast_cancer()
 x = datasets.data              # x = datasets['data'] 으로도 쓸 수 있다.
@@ -50,8 +51,7 @@ print('loss : ', loss)
 print(hist.history['val_loss'])
 
 y_predict = model.predict(x_test)
-
-y_predict = y_predict.flatten()            
+           
 y_predict = np.where(y_predict > 0.5, 1 , 0) #0.5보다크면 1, 작으면 0
 
 # y_predict[(y_predict<0.5)] = 0  

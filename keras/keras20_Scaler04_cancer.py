@@ -27,11 +27,6 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
     )
 
 
-
-
-               
-
-
 # scaler = MinMaxScaler() 
 # scaler = StandardScaler()
 scaler = MaxAbsScaler()
@@ -79,8 +74,8 @@ print(hist.history['val_loss'])
 
 y_predict = model.predict(x_test)
 
-y_predict = y_predict.flatten()            
-y_predict = np.where(y_predict > 0.5, 1 , 0) #0.5보다크면 1, 작으면 0
+y_predict = np.round(y_predict, 0)
+# y_predict = np.where(y_predict > 0.5, 1 , 0) #0.5보다크면 1, 작으면 0
 
 # y_predict[(y_predict<0.5)] = 0  
 # y_predict[(y_predict>=0.5)] = 1 

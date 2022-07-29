@@ -6,12 +6,6 @@ from sklearn.metrics import r2_score
 import numpy as np 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler  
 
-#plt 폰트 깨짐 현상 #
-from matplotlib import font_manager, rc
-font_path = "C:/Windows/Fonts/malgun.TTF"
-font = font_manager.FontProperties(fname=font_path).get_name()
-rc('font', family=font)
-#plt 폰트 깨짐 현상 #
 
 import tensorflow as tf            
 tf.random.set_seed(66)         #텐서플로의 난수표 66번 사용 이 난수는 w = 웨이트
@@ -33,7 +27,7 @@ print(y)
 print(x.shape, y.shape)        # (150, 4) (150,)   
 print('y의 라벨값 :', np.unique(y))   # y의 라벨값 : [0 1 2] - 판다스에서 있다 : y값을 (150, 3) 으로 바꿔준다
 
-from tensorflow.keras.utils import to_categorical # 범주
+from keras.utils.np_utils import to_categorical # 범주
 y = to_categorical(y)
 print(y)
 print(y.shape) # (150, 3)
@@ -128,24 +122,6 @@ print(y_test)
 # r2 = r2_score(y_test, y_predict)
 acc = accuracy_score(y_test, y_predict)  
 print('acc스코어 :', acc)
-
-
-
-
-import matplotlib.pyplot as plt    
-plt.figure(figsize=(9,6))                                                   
-plt.plot(hist.history['loss'], marker='.', c='red', label='loss')           
-plt.plot(hist.history['val_loss'], marker='.', c='blue', label='val_loss') 
-
-
-
-plt.grid()      
-plt.title('안결바보')
-plt.xlabel('epochs')
-plt.ylabel('loss')
-# plt.legend(loc='upper right') #   label값이 레전드에 명시가 되며 이걸 우측상단에 올린다 location = loc            위치값 upper right', 'lower left', 'center left', 'center 이런게 있다
-plt.legend()
-plt.show()
 
 
 
