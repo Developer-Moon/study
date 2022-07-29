@@ -1,15 +1,16 @@
 from tensorflow.python.keras.models import Sequential 
 from tensorflow.python.keras.layers import Dense 
 from sklearn.model_selection import train_test_split 
-from sklearn.datasets import load_boston   
-
+from sklearn.metrics import r2_score 
+from sklearn.datasets import load_boston  
+import time
 
 
 #1. 데이터
 datasets = load_boston()
 x = datasets.data
 y = datasets.target      
-       
+                  
 print(x.shape, y.shape)   # (506, 13) (506,)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=66)
@@ -21,13 +22,16 @@ model = Sequential()
 model.add(Dense(30, input_dim=13))
 model.add(Dense(20))
 model.add(Dense(10))
+model.add(Dense(10))
+model.add(Dense(10))
 model.add(Dense(1))
 
 
 
 #3. 컴파일, 훈련
+start_time = time.time()
 model.compile(loss='mse', optimizer='adam')                   
-hist = model.fit(x_train, y_train, epochs=50, batch_size=10, validation_split=0.2) 
+hist = model.fit(x_train, y_train, epochs=300, batch_size=10, validation_split=0.2)
 
 
 
@@ -52,7 +56,7 @@ print("=========================================================================
 
 
 end_time = time.time() - start_time
-print('걸린시간 :', end_time)
+print('time : ', end_time)
 
 import matplotlib.pyplot as plt    
 plt.figure(figsize=(6,6))                                                   # 팝업창이 뜰 때의 사이즈
