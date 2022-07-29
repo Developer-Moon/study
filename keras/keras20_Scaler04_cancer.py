@@ -74,6 +74,8 @@ print(hist.history['val_loss'])
 
 y_predict = model.predict(x_test)
 
+
+
 y_predict = np.round(y_predict, 0)
 # y_predict = np.where(y_predict > 0.5, 1 , 0) #0.5보다크면 1, 작으면 0
 
