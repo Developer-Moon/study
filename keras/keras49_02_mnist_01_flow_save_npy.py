@@ -17,6 +17,9 @@ train_datagen = ImageDataGenerator(
     fill_mode='nearest'
 )
 
+print(x_train.shape, y_train.shape)
+print(x_test.shape, y_test.shape)
+
 augument_size = 500
 randidx = np.random.randint(x_train.shape[0], size=augument_size)
 
