@@ -109,8 +109,8 @@ print(img_test_predict)
 print('loss : ', result[0])
 print('acc  : ', result[1])
 
-# loss :  0.7908207178115845
-# acc :  0.7748509049415588
+# loss :  0.557797372341156
+# acc  :  0.8339959979057312
 
 
 
