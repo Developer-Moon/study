@@ -36,6 +36,7 @@ randidx = np.random.randint(x_train.shape[0], size=augument_size)   # np.random 
 # print(x_train.shape)                   # (60000, 28, 28)
 print(x_train.shape[0])                  # 60000
 print(randidx)                           # [57655 21229 32293 ... 38962 49663 49072]
+print(randidx.shape) 
 print(np.min(randidx), np.max(randidx))  # randidx가 랜덤으로 뽑는거라 매번 min, max의 값이 다르다
 print(type(randidx))                     # <class 'numpy.ndarray'>
 
