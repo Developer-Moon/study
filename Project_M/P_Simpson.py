@@ -68,9 +68,8 @@ model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
 log = model.fit(x_train, y_train, epochs=200, batch_size=32, callbacks=[Es], validation_split=0.2)
-# model.save('D:/study_data/_save/_h5/project.h5')
+model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
 
-# model = load_model('D:/study_data/_save/_h5/project.h5')
 
 #4. 평가, 예측
 result = model.evaluate(x_test, y_test)
