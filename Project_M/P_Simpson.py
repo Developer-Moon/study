@@ -37,7 +37,7 @@ y_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_y.n
 x_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_x.npy')
 y_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_y.npy')
 
-np.save('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img.npy', arr =test_img[0][0])
+np.save('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img.npy', arr = test_img[0][0])
 img_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img.npy')
 
 print(img_test.shape)

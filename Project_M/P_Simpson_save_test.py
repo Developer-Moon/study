@@ -29,9 +29,7 @@ xy = scale_datagen.flow_from_directory(
     shuffle=True
 ) # print(xy) - Found 10478 images belonging to 10 classes.
 
-print(np.array(xy).shape)
-
-
+print(xy.class_indices)
 
 # 파일 불러온 변수에서 xy 분리
 x_train = xy[0][0]

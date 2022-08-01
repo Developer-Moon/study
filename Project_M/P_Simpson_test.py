@@ -13,7 +13,7 @@ tf.random.set_seed(9)
 scale_datagen = ImageDataGenerator(rescale=1./255)
 
 test_img = scale_datagen.flow_from_directory(
-    'd:/study_data/_data/Project_M/20220725_Simpson/test_image/',
+    'd:/study_data/_data/Project_M/test/test_image/',
     target_size=(150, 150),
     batch_size=10100,
     class_mode='categorical',
@@ -32,14 +32,14 @@ character = {0 :'abraham_grampa_simpson',
              9 : 'sideshow_bob'}
 
 
-x_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_x.npy')
-y_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_y.npy')
+x_train = np.load('d:/study_data/_data/Project_M/test/_npy/train_x.npy')
+y_train = np.load('d:/study_data/_data/Project_M/test/_npy/train_y.npy')
 
-x_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_x.npy')
-y_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_y.npy')
+x_test = np.load('d:/study_data/_data/Project_M/test/_npy/test_x.npy')
+y_test = np.load('d:/study_data/_data/Project_M/test/_npy/test_y.npy')
 
-np.save('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img.npy', arr =test_img[0][0])
-img_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img.npy')
+np.save('d:/study_data/_data/Project_M/test/_npy/test_img.npy', arr = test_img[0][0])
+img_test = np.load('d:/study_data/_data/Project_M/test/_npy/test_img.npy')
 
 print(img_test.shape)
 print(img_test[0][0].shape)
