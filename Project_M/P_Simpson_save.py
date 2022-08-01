@@ -22,12 +22,14 @@ train_datagen = ImageDataGenerator(
 scale_datagen = ImageDataGenerator(rescale=1./255)
 
 xy = scale_datagen.flow_from_directory(
-    'd:/study_data/_data/Project_M/20220725_Simpson/_images',
+    'd:/study_data/_data/Project_M/20220725_Simpson/_images/',
     target_size=(150, 150),
     batch_size=10100,
     class_mode='categorical',
     shuffle=True
 ) # print(xy) - Found 10478 images belonging to 10 classes.
+
+print(xy.class_indices)
 
 # 파일 불러온 변수에서 xy 분리
 x_train = xy[0][0]
@@ -35,7 +37,6 @@ y_train = xy[0][1]
 print(x_train.shape, y_train.shape) # (10060, 150, 150, 3) (10060, 10)
 
 x_train, x_test, y_train, y_test = train_test_split(x_train, y_train , train_size=0.8, shuffle=True, random_state=9)
-
 
 np.save('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_x.npy', arr =x_train)
 np.save('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_y.npy', arr =y_train)
