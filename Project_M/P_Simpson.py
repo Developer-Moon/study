@@ -1,4 +1,4 @@
-from tensorflow.python.keras.models import Model, load_model
+from tensorflow.python.keras.models import Model, load_model, Sequential
 from tensorflow.python.keras.layers import Input, Dense, Conv2D, Flatten, Dropout, MaxPool2D 
 from tensorflow.python.keras.callbacks import EarlyStopping
 from keras.preprocessing.image import ImageDataGenerator
@@ -49,7 +49,7 @@ print(x_test.shape, y_test.shape)   # (2012, 150, 150, 3) (2012, 10)
 
 
 # 2. 모델구성
-
+"""
 input_01 = Input(shape=(150, 150, 3))
 conv_01 = Conv2D(64,(3,3), activation='relu')(input_01) # , padding='same'
 maxpool_01 = MaxPool2D()(conv_01)
@@ -61,15 +61,38 @@ flattin = Flatten()(maxpool_03)
 output = Dense(10, activation='softmax')(flattin)
 model = Model(inputs=input_01, outputs=output)
 model.summary()
+"""
+model = Sequential()
+model.add(Conv2D(32, (3, 3), padding='same', input_shape=(150, 150, 3), activation="relu"))
+model.add(Conv2D(32, (3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(0.2))
 
-model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
+model.add(Conv2D(64, (3, 3), padding='same', activation="relu"))
+model.add(Conv2D(64, (3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(0.2))
+
+model.add(Conv2D(256, (3, 3), padding='same', activation="relu")) 
+model.add(Conv2D(256, (3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(0.2))
+
+model.add(Flatten())
+model.add(Dense(1024, activation="relu"))
+model.add(Dropout(0.5))
+model.add(Dense(10, activation='softmax'))
+model.summary()
+
+
+# model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
 
 # 3. 컴파일, 훈련
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
-# log = model.fit(x_train, y_train, epochs=200, batch_size=32, callbacks=[Es], validation_split=0.2)
+Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
+log = model.fit(x_train, y_train, epochs=200, batch_size=32, callbacks=[Es], validation_split=0.2)
 
-#model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
+model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
 
 
 #4. 평가, 예측

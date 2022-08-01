@@ -22,11 +22,11 @@ train_datagen = ImageDataGenerator(
 scale_datagen = ImageDataGenerator(rescale=1./255)
 
 xy = scale_datagen.flow_from_directory(
-    'd:/study_data/_data/Project_M/20220725_Simpson/_images/',
+    'd:/study_data/_data/Project_M/test/_images/',
     target_size=(150, 150),
     batch_size=10100,
     class_mode='categorical',
-    shuffle=True
+    shuffle=False
 ) # print(xy) - Found 10478 images belonging to 10 classes.
 
 print(xy.class_indices)
@@ -34,22 +34,28 @@ print(xy.class_indices)
 # 파일 불러온 변수에서 xy 분리
 x_train = xy[0][0]
 y_train = xy[0][1]
-print(x_train.shape, y_train.shape) # (10060, 150, 150, 3) (10060, 10)
+print(x_train.shape, y_train.shape) # (1760, 150, 150, 3) (1760, 10)
 
+randidx_01 = x_train[1600:1640]
+augument_size_01 = 160
+randidx_01 = np.random.randint(randidx_01.shape[0], size=augument_size_01)
+x_augument_01 = x_train[randidx_01].copy()
+y_augument_01 = y_train[randidx_01].copy()
+x_augument_01 = train_datagen.flow(x_augument_01, y_augument_01, batch_size=augument_size_01, shuffle=False).next()[0]
 
-# 이미지 증폭
-augument_size = 2000
-randidx = np.random.randint(x_train.shape[0], size=augument_size)
-
-x_augument = x_train[randidx].copy()
-y_augument = y_train[randidx].copy()
-
-# x 증폭 데이터 변형해서 담기
-x_augument = train_datagen.flow(x_augument, y_augument, batch_size=augument_size, shuffle=False).next()[0]
+randidx_02 = x_train[1640:1760]
+augument_size_02 = 80 
+randidx_02 = np.random.randint(randidx_02.shape[0], size=augument_size_02)
+x_augument_02 = x_train[randidx_02].copy()
+y_augument_02 = y_train[randidx_02].copy()
+x_augument_02 = train_datagen.flow(x_augument_02, y_augument_02, batch_size=augument_size_01, shuffle=False).next()[0]
 
 # 원본train과 증폭train 합치기
-x_train = np.concatenate((x_train, x_augument))
-y_train = np.concatenate((y_train, y_augument))
+x_train = np.concatenate((x_train, x_augument_01, x_augument_02))
+y_train = np.concatenate((y_train, y_augument_01, y_augument_02))
+
+print(x_train.shape)
+print(y_train.shape)
 
 x_train, x_test, y_train, y_test = train_test_split(x_train, y_train , train_size=0.8, shuffle=True, random_state=9)
 
