@@ -29,6 +29,9 @@ x = xy_train[0][0]
 y = xy_train[0][1]
 
 # 트레인 테스트 스플릿
+
+print(x.shape)
+print(y.shape)
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8)
 
 print(x_train.shape)
