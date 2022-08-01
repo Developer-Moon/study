@@ -37,8 +37,8 @@ y_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_y.n
 x_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_x.npy')
 y_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_y.npy')
 
-np.save('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img_01.npy', arr =test_img[0][0])
-img_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img_01.npy')
+np.save('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img.npy', arr =test_img[0][0])
+img_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img.npy')
 
 print(img_test.shape)
 print(img_test[0][0].shape)
@@ -62,13 +62,14 @@ output = Dense(10, activation='softmax')(flattin)
 model = Model(inputs=input_01, outputs=output)
 model.summary()
 
-
+model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
 
 # 3. 컴파일, 훈련
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
-log = model.fit(x_train, y_train, epochs=200, batch_size=32, callbacks=[Es], validation_split=0.2)
-model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
+# Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
+# log = model.fit(x_train, y_train, epochs=200, batch_size=32, callbacks=[Es], validation_split=0.2)
+
+#model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
 
 
 #4. 평가, 예측
@@ -83,7 +84,10 @@ img_test_predict = tf.argmax(img_test_predict, axis=1)
 
 print(img_test_predict)
 print('loss : ', result[0])
-print('acc : ', result[1])
+print('acc  : ', result[1])
+
+# loss :  0.7908207178115845
+# acc :  0.7748509049415588
 
 
 

@@ -1,5 +1,6 @@
-from tensorflow.python.keras.models import Model, load_model
-from tensorflow.python.keras.layers import Input, Dense, Conv2D, Flatten, Dropout, MaxPool2D 
+# https://www.kaggle.com/code/everydaycodings/simpsons-image-classification-cnn-val-acc-93
+from tensorflow.python.keras.models import Model, load_model, Sequential
+from tensorflow.python.keras.layers import Input, Dense, Conv2D, Flatten, Dropout, MaxPool2D
 from tensorflow.python.keras.callbacks import EarlyStopping
 from keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import accuracy_score
@@ -37,8 +38,8 @@ y_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_y.n
 x_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_x.npy')
 y_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_y.npy')
 
-np.save('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img_01.npy', arr =test_img[0][0])
-img_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img_01.npy')
+np.save('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img.npy', arr =test_img[0][0])
+img_test = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/test_img.npy')
 
 print(img_test.shape)
 print(img_test[0][0].shape)
@@ -49,28 +50,37 @@ print(x_test.shape, y_test.shape)   # (2012, 150, 150, 3) (2012, 10)
 
 
 # 2. 모델구성
+model = Sequential()
+model.add(Conv2D(32, (3, 3), padding='same', input_shape=(150, 150, 3), activation="relu"))
+model.add(Conv2D(32, (3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(0.2))
 
-input_01 = Input(shape=(150, 150, 3))
-conv_01 = Conv2D(64,(3,3), activation='relu')(input_01) # , padding='same'
-maxpool_01 = MaxPool2D()(conv_01)
-conv_02 = Conv2D(64,(3,3), activation='relu')(maxpool_01)
-maxpool_02 = MaxPool2D()(conv_02)
-conv_03 = Conv2D(64,(3,3), activation='relu')(maxpool_02)
-maxpool_03 = MaxPool2D()(conv_03)
-flattin = Flatten()(maxpool_03)
-output = Dense(10, activation='softmax')(flattin)
-model = Model(inputs=input_01, outputs=output)
+model.add(Conv2D(64, (3, 3), padding='same', activation="relu"))
+model.add(Conv2D(64, (3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(0.2))
+
+model.add(Conv2D(256, (3, 3), padding='same', activation="relu")) 
+model.add(Conv2D(256, (3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+model.add(Dropout(0.2))
+
+model.add(Flatten())
+model.add(Dense(1024, activation="relu"))
+model.add(Dropout(0.5))
+model.add(Dense(10, activation='softmax'))
 model.summary()
 
-
+# model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
 
 # 3. 컴파일, 훈련
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
 log = model.fit(x_train, y_train, epochs=200, batch_size=32, callbacks=[Es], validation_split=0.2)
-# model.save('D:/study_data/_save/_h5/project.h5')
 
-# model = load_model('D:/study_data/_save/_h5/project.h5')
+# model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
+
 
 #4. 평가, 예측
 result = model.evaluate(x_test, y_test)
@@ -84,7 +94,10 @@ img_test_predict = tf.argmax(img_test_predict, axis=1)
 
 print(img_test_predict)
 print('loss : ', result[0])
-print('acc : ', result[1])
+print('acc  : ', result[1])
+
+# loss :  0.6125920414924622
+# acc  :  0.8235586285591125
 
 
 
