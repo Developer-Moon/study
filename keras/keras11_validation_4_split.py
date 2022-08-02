@@ -26,7 +26,7 @@ model.add(Dense(1))
 
 #3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
-model.fit(x_train, y_train, epochs=100, batch_size=1, validation_split=0.2)   # validation_split=0.25 트레인셋에서 25프로가 validation 개수
+model.fit(x_train, y_train, epochs=100, batch_size=1, validation_split=0.2)   # validation_split=0.2 트레인셋에서 20프로가 validation 개수
 
 
 

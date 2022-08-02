@@ -3,7 +3,6 @@ from tensorflow.python.keras.layers import Dense
 import numpy as np  
 
 
-
 #1. 데이터                        
 x_train = np.array(range(1,11))   
 y_train = np.array(range(1,11))
