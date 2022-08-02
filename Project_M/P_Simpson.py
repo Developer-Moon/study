@@ -30,7 +30,6 @@ character = {0 :'abraham_grampa_simpson',
              8 : 'milhouse_van_houten',
              9 : 'sideshow_bob'}
 
-
 x_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_x.npy')
 y_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_y.npy')
 

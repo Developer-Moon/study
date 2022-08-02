@@ -1,7 +1,6 @@
 from keras.preprocessing.image import ImageDataGenerator
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
-import pandas as pd
 import numpy as np
 tf.random.set_seed(9)
 
@@ -27,7 +26,7 @@ xy = scale_datagen.flow_from_directory(
     batch_size=10100,
     class_mode='categorical',
     shuffle=True
-) # print(xy) - Found 10478 images belonging to 10 classes.
+)   # print(xy) - Found 10478 images belonging to 10 classes.
 
 print(xy.class_indices)
 

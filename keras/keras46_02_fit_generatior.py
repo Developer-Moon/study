@@ -1,23 +1,18 @@
 import numpy as np          
 from keras.preprocessing.image import ImageDataGenerator
 
-# 파이펑크? 떳을때
-# import tensorflow as tf
-
-
-
 
 #1. 데이터
-train_datagen = ImageDataGenerator(  # ImageDataGenerator - 이미지를 숫자화 이 옵션들은 증폭작업에 사용 (임의로 이중 1개만 랜덤으로 적용된다)
+train_datagen = ImageDataGenerator(  
     rescale=1./225, 
-    horizontal_flip=True,   # 수평방향 뒤집기  뒤집으면 2개가 된다   
-    vertical_flip=True,     # 수직 방향 뒤집기 
-    width_shift_range=0.1,  # 좌우이동
-    height_shift_range=0.1, # 상하이동
-    rotation_range=5,       # 돌리기
-    zoom_range=1.2,         # 확대
-    shear_range=0.7,        # 이미지 기울기(확인 필요, 3차원 기울기??)
-    fill_mode='nearest'     # 이미지를 회전, 이동하거나 축소할 때 생기는 공간을 채우는 방식
+    horizontal_flip=True,   
+    vertical_flip=True,     
+    width_shift_range=0.1,  
+    height_shift_range=0.1, 
+    rotation_range=5,      
+    zoom_range=1.2,         
+    shear_range=0.7,       
+    fill_mode='nearest'     
 )
 
 # test는 이렇게 할거라는걸 셋팅만 한 상태
