@@ -22,13 +22,13 @@ test_img = scale_datagen.flow_from_directory(
 character = {0 :'abraham_grampa_simpson', # 남 - 900
              1 : 'agnes_skinner',         # 여 - 40
              2 : 'bart_simpson',          # 남 - 1300
-             3 : 'edna_krabappel',         # 남 - 2200
-             4 : 'homer_simpson',      # 남 - 1200
-             5 : 'krusty_the_clown',          # 여 - 1300
-             6 : 'lisa_simpson',        # 여 - 120
-             7 : 'maggie_simpson',         # 여 - 1200
-             8 : 'marge_simpson',   # 남 - 1000
-             9 : 'milhouse_van_houten'}          # 남 - 800
+             3 : 'edna_krabappel',        # 여 - 457
+             4 : 'homer_simpson',         # 남 - 2200
+             5 : 'krusty_the_clown',      # 남 - 1200
+             6 : 'lisa_simpson',          # 여 - 1300
+             7 : 'maggie_simpson',        # 여 - 120
+             8 : 'marge_simpson',         # 여 - 1200
+             9 : 'milhouse_van_houten'}   # 남 - 1000
 
 x_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_x.npy')
 y_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_y.npy')
@@ -88,8 +88,8 @@ model.summary()
 
 # 3. 컴파일, 훈련
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
-log = model.fit(x_train, y_train, epochs=200, batch_size=32, callbacks=[Es], validation_split=0.2)
+Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=100, restore_best_weights=True)
+log = model.fit(x_train, y_train, epochs=300, batch_size=32, callbacks=[Es], validation_split=0.2)
 
 model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
 
@@ -121,21 +121,42 @@ elif img_test_predict == 1 :
 elif img_test_predict == 2 :
      print(f, 'bart_simpson', b)
 elif img_test_predict == 3 :
-     print(f, 'homer_simpson', b)
+     print(f, 'edna_krabappel', b)
 elif img_test_predict == 4 :
-     print(f, 'krusty_the_clown', b)
+     print(f, 'homer_simpson', b)
 elif img_test_predict == 5 :
-     print(f, 'lisa_simpson', b)
+     print(f, 'krusty_the_clown', b)
 elif img_test_predict == 6 :
-     print(f, 'maggie_simpson', b)
+     print(f, 'lisa_simpson', b)
 elif img_test_predict == 7 :
-     print(f, 'marge_simpson', b)
+     print(f, 'maggie_simpson', b)
 elif img_test_predict == 8 :
-     print(f, 'milhouse_van_houten', b)
+     print(f, 'marge_simpson', b)
 elif img_test_predict == 9 :
-     print(f, 'sideshow_bob', b)     
+     print(f, 'milhouse_van_houten', b)     
+                           
+         
+          
+          
+          
+          
+          
                               
-     
+import matplotlib.pyplot as plt    
+plt.figure(figsize=(9,6))                                                   # 판 크기
+plt.plot(log.history['accuracy'], marker='.', c='red', label='accuracy')           # marker=로스부분 .으로 표시   c='red' 그래프를 붉은컬러로  label='loss' 이그래프의 이름(label)은 loss
+plt.plot(log.history['val_accuracy'], marker='.', c='blue', label='val_accuracy') 
+
+
+plt.grid()           
+plt.title('accuracy') 
+plt.xlabel('epochs')
+plt.ylabel('loss')
+# plt.legend(loc='upper right') #   label값이 레전드에 명시가 되며 이걸 우측상단에 올린다 location = loc            위치값 upper right', 'lower left', 'center left', 'center 이런게 있다
+plt.legend() # 자동으로 빈 공가넹 표시
+plt.show()                              
+
+     # marge_simpson 
 
 
 

@@ -58,6 +58,6 @@ model.fit(x_train, y_train, epochs=1, batch_size=1000)
 # 4. 평가, 예측
 acc = model.evaluate(x_test, y_test)[1]
 pred = model.predict(x_test)
-pred = np.argmax(pred)
+pred = np.argmax(pred, axis=1)
 print('acc: ', acc)
 print('결과: ', pred)
