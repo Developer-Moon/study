@@ -84,14 +84,14 @@ model.add(Dense(10, activation='softmax'))
 model.summary()
 
 
-# model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
+model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
 
 # 3. 컴파일, 훈련
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
-log = model.fit(x_train, y_train, epochs=200, batch_size=32, callbacks=[Es], validation_split=0.2)
+# Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
+# log = model.fit(x_train, y_train, epochs=10, batch_size=32, callbacks=[Es], validation_split=0.2)
 
-model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
+# model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
 
 
 #4. 평가, 예측
@@ -110,6 +110,33 @@ print('acc  : ', result[1])
 
 # loss :  0.557797372341156
 # acc  :  0.8339959979057312
+
+f = '저는'
+b = '입니당!'
+
+if img_test_predict == 0 :
+    print(f, 'abraham_grampa_simpson', b)
+elif img_test_predict == 1 :
+     print(f, 'agnes_skinner', b)
+elif img_test_predict == 2 :
+     print(f, 'bart_simpson', b)
+elif img_test_predict == 3 :
+     print(f, 'homer_simpson', b)
+elif img_test_predict == 4 :
+     print(f, 'krusty_the_clown', b)
+elif img_test_predict == 5 :
+     print(f, 'lisa_simpson', b)
+elif img_test_predict == 6 :
+     print(f, 'maggie_simpson', b)
+elif img_test_predict == 7 :
+     print(f, 'marge_simpson', b)
+elif img_test_predict == 8 :
+     print(f, 'milhouse_van_houten', b)
+elif img_test_predict == 9 :
+     print(f, 'sideshow_bob', b)     
+                              
+     
+
 
 
 
