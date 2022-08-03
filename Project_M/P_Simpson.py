@@ -19,16 +19,16 @@ test_img = scale_datagen.flow_from_directory(
     shuffle=True
 ) 
 
-character = {0 :'abraham_grampa_simpson',
-             1 : 'agnes_skinner',
-             2 : 'bart_simpson',
-             3 : 'homer_simpson',
-             4 : 'krusty_the_clown',
-             5 : 'lisa_simpson',
-             6 : 'maggie_simpson',
-             7 : 'marge_simpson',
-             8 : 'milhouse_van_houten',
-             9 : 'sideshow_bob'}
+character = {0 :'abraham_grampa_simpson', # 남 - 900
+             1 : 'agnes_skinner',         # 여 - 40
+             2 : 'bart_simpson',          # 남 - 1300
+             3 : 'edna_krabappel',         # 남 - 2200
+             4 : 'homer_simpson',      # 남 - 1200
+             5 : 'krusty_the_clown',          # 여 - 1300
+             6 : 'lisa_simpson',        # 여 - 120
+             7 : 'maggie_simpson',         # 여 - 1200
+             8 : 'marge_simpson',   # 남 - 1000
+             9 : 'milhouse_van_houten'}          # 남 - 800
 
 x_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_x.npy')
 y_train = np.load('d:/study_data/_data/Project_M/20220725_Simpson/_npy/train_y.npy')
@@ -84,14 +84,14 @@ model.add(Dense(10, activation='softmax'))
 model.summary()
 
 
-model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
+# model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
 
 # 3. 컴파일, 훈련
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
-# log = model.fit(x_train, y_train, epochs=10, batch_size=32, callbacks=[Es], validation_split=0.2)
+Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=70, restore_best_weights=True)
+log = model.fit(x_train, y_train, epochs=200, batch_size=32, callbacks=[Es], validation_split=0.2)
 
-# model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
+model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
 
 
 #4. 평가, 예측
