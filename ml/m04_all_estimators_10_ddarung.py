@@ -66,5 +66,59 @@ for (name, algorithms) in all_Algorithms:   # (key, value)
         
 
 """
-
+모델의 갯수 : 54
+ARDRegression 의 정답률 : 0.6374364209200268
+AdaBoostRegressor 의 정답률 : 0.6457083790437292
+BaggingRegressor 의 정답률 : 0.7505333350511276
+BayesianRidge 의 정답률 : 0.6307824338673642
+CCA 의 정답률 : 0.32468379754300125
+DecisionTreeRegressor 의 정답률 : 0.5494152369751477
+DummyRegressor 의 정답률 : -0.0004804249939593941
+ElasticNet 의 정답률 : 0.6191685189594502
+ElasticNetCV 의 정답률 : 0.5773992094209466
+ExtraTreeRegressor 의 정답률 : 0.5276428906900907
+ExtraTreesRegressor 의 정답률 : 0.7717167112968653
+GammaRegressor 의 정답률 : -0.0004804249939593941
+GaussianProcessRegressor 의 정답률 : -1.7271466992151794
+GradientBoostingRegressor 의 정답률 : 0.7475460441880073
+HistGradientBoostingRegressor 의 정답률 : 0.7777882621518821
+HuberRegressor 의 정답률 : 0.5975420220763303
+IsotonicRegression 은 안나온 놈!!!
+KNeighborsRegressor 의 정답률 : 0.4331631291715098
+KernelRidge 의 정답률 : 0.6366533638544749
+Lars 의 정답률 : 0.6366061065665973
+LarsCV 의 정답률 : 0.6338422364711889
+Lasso 의 정답률 : 0.6257613430341391
+LassoCV 의 정답률 : 0.6081680508355227
+LassoLars 의 정답률 : 0.3264303534189422
+LassoLarsCV 의 정답률 : 0.6338422364711889
+LassoLarsIC 의 정답률 : 0.6347293634149473
+LinearRegression 의 정답률 : 0.6366061065665973
+LinearSVR 의 정답률 : -0.26685846581107975
+MLPRegressor 의 정답률 : 0.626709604367613
+MultiOutputRegressor 은 안나온 놈!!!
+MultiTaskElasticNet 은 안나온 놈!!!
+MultiTaskElasticNetCV 은 안나온 놈!!!
+MultiTaskLasso 은 안나온 놈!!!
+MultiTaskLassoCV 은 안나온 놈!!!
+NuSVR 의 정답률 : 0.04922343294366793
+OrthogonalMatchingPursuit 의 정답률 : 0.4049590061417633
+OrthogonalMatchingPursuitCV 의 정답률 : 0.6147710470297965
+PLSCanonical 의 정답률 : -0.27046627963853487
+PLSRegression 의 정답률 : 0.6325324821340439
+PassiveAggressiveRegressor 의 정답률 : 0.32874026709663307
+PoissonRegressor 의 정답률 : -0.0004804249939593941
+RANSACRegressor 의 정답률 : 0.5543199200487142
+RadiusNeighborsRegressor 은 안나온 놈!!!
+RandomForestRegressor 의 정답률 : 0.7650808219302678
+RegressorChain 은 안나온 놈!!!
+Ridge 의 정답률 : 0.6329487433389992
+RidgeCV 의 정답률 : 0.6356719546684637
+SGDRegressor 의 정답률 : -5.366824727613083e+25
+SVR 의 정답률 : 0.050106415096281554
+StackingRegressor 은 안나온 놈!!!
+TheilSenRegressor 의 정답률 : 0.6215248148194797
+TransformedTargetRegressor 의 정답률 : 0.6366061065665973
+TweedieRegressor 의 정답률 : 0.6165412737497936
+VotingRegressor 은 안나온 놈!!!
 """        
