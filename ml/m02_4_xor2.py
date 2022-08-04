@@ -11,9 +11,8 @@ y_data = [0, 1, 1, 0]
 
 
 #2. 모델
-# model = LinearSVC()
-# model = Perceptron()
 model = SVC()
+
 
 #3. 훈련
 model.fit(x_data, y_data)

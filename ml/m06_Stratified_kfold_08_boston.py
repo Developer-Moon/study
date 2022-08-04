@@ -2,6 +2,7 @@ from sklearn.datasets import load_boston
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, StratifiedKFold, cross_val_predict  # Kfold - cross_val_score검증하기위해 이걸 쓴다
 from sklearn.metrics import r2_score, accuracy_score
 from sklearn.svm import LinearSVC, SVR
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler 
 import numpy as np
 
 
