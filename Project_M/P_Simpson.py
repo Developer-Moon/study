@@ -84,14 +84,14 @@ model.add(Dense(10, activation='softmax'))
 model.summary()
 
 
-# model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
+model.load_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5')
 
 # 3. 컴파일, 훈련
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=100, restore_best_weights=True)
-log = model.fit(x_train, y_train, epochs=300, batch_size=32, callbacks=[Es], validation_split=0.2)
+# Es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=100, restore_best_weights=True)
+# log = model.fit(x_train, y_train, epochs=300, batch_size=32, callbacks=[Es], validation_split=0.2)
 
-model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
+# model.save_weights('d:/study_data/_data/Project_M/20220725_Simpson/_save/save_weights_model.h5') # 저장된 가중치
 
 
 #4. 평가, 예측
@@ -138,26 +138,7 @@ elif img_test_predict == 9 :
          
           
           
-          
-          
-          
-                              
-import matplotlib.pyplot as plt    
-plt.figure(figsize=(9,6))                                                   # 판 크기
-plt.plot(log.history['accuracy'], marker='.', c='red', label='accuracy')           # marker=로스부분 .으로 표시   c='red' 그래프를 붉은컬러로  label='loss' 이그래프의 이름(label)은 loss
-plt.plot(log.history['val_accuracy'], marker='.', c='blue', label='val_accuracy') 
-
-
-plt.grid()           
-plt.title('accuracy') 
-plt.xlabel('epochs')
-plt.ylabel('loss')
-# plt.legend(loc='upper right') #   label값이 레전드에 명시가 되며 이걸 우측상단에 올린다 location = loc            위치값 upper right', 'lower left', 'center left', 'center 이런게 있다
-plt.legend() # 자동으로 빈 공가넹 표시
-plt.show()                              
-
-     # marge_simpson 
-
+     
 
 
 
