@@ -1,4 +1,4 @@
-from sklearn.datasets import load_boston
+from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_val_predict  # Kfold - cross_val_score검증하기위해 이걸 쓴다
 from sklearn.metrics import r2_score, accuracy_score
 from sklearn.svm import LinearSVC, SVR
@@ -6,7 +6,7 @@ import numpy as np
 
 
 # 1. 데이터
-datasets = load_boston()
+datasets = fetch_california_housing()
 x = datasets['data']
 y = datasets['target']
 

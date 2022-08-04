@@ -1,12 +1,12 @@
-from sklearn.datasets import load_boston
+from sklearn.datasets import fetch_covtype
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_val_predict  # Kfold - cross_val_score검증하기위해 이걸 쓴다
 from sklearn.metrics import r2_score, accuracy_score
-from sklearn.svm import LinearSVC, SVR
+from sklearn.svm import LinearSVC, SVC
 import numpy as np
 
 
 # 1. 데이터
-datasets = load_boston()
+datasets = fetch_covtype()
 x = datasets['data']
 y = datasets['target']
 
@@ -18,7 +18,7 @@ kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66 ) #
                     
                       
 #2. 모델구성
-model = SVR()
+model = SVC()
 
 
 
@@ -29,7 +29,7 @@ print('ACC :', scores, '\ncross_val_score :' , round(np.mean(scores), 4)) # 4번
 y_predict = cross_val_predict(model, x_test, y_test, cv=kfold)
 print(y_predict)
 
-r2 = r2_score(y_test, y_predict)
-print('cross_val_predict r2 : ', r2)
+acc = accuracy_score(y_test, y_predict)
+print('cross_val_predict acc : ', acc)
 
-# cross_val_predict r2 :  0.1666902224514255
+# cross_val_predict acc :  0.9666666666666667
