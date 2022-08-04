@@ -151,6 +151,7 @@ loss = model.evaluate(x_test, y_test)
 print('loss :', loss)     
 
 y_predict = model.predict(x_test)                          # 예측해서 나온 값
+r2 = r2_score(y_test, y_predict)
 
 def RMSE(y_test, y_predict):                               # 이 함수는 y_test, y_predict를 받아 들인다
     return np.sqrt(mean_squared_error(y_test, y_predict))  # 내가 받아들인 y_test, y_predict를 mean_squared_error에 넣는다 그리고 루트를 씌운다 그리고 리턴
@@ -158,8 +159,8 @@ def RMSE(y_test, y_predict):                               # 이 함수는 y_tes
 rmse = RMSE(y_test, y_predict)  
 print("RMSE :", rmse)           
 
-
-
+print('r2 :', r2)
+# r2 : 0.6209826631438036
 
 
 

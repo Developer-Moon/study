@@ -5,8 +5,6 @@ from sklearn.metrics import r2_score, accuracy_score
 #--------------------------------------------------------------------------------#
 from sklearn.utils import all_estimators
 import warnings
-import sklearn as sk
-print(sk.__version__)             # 0.24.2
 warnings.filterwarnings('ignore') # warning 출력X
 #--------------------------------------------------------------------------------#
 
