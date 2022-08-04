@@ -3,13 +3,14 @@ from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from sklearn.datasets import load_diabetes     
-
+import numpy as np
 
 #1. 데이터                        
 datasets = load_diabetes()                      
 x = datasets.data
 y = datasets.target 
- 
+print('y의 라벨값 :', np.unique(y, return_counts=True))
+print('y의 라벨값 :', np.unique(x, return_counts=True))
 print(x.shape, y.shape)         # (442, 10) (442,)     컬럼 = 10 스칼라 = 422
 print(datasets.feature_names)   # ['age', 'sex', 'bmi', 'bp', 's1', 's2', 's3', 's4', 's5', 's6']
 print(datasets.DESCR) 

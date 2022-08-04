@@ -1,11 +1,16 @@
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error          # mean_squared_error : RMSE
-import numpy as np                                               
+# Dacon 따릉이 문제풀이
 import pandas as pd
+from pandas import DataFrame 
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+from tensorflow.python.keras.callbacks import EarlyStopping
+import time
+from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+import numpy as np
 
-from sklearn.svm import LinearSVR
-
-#1. 데이타 
+# 1. 데이터
 path = './_data/ddarung/'                                         # path(변수)에 경로를 넣음
 train_set = pd.read_csv(path + 'train.csv', index_col=0)          # 판다스로 csv(엑셀시트)파일을 읽어라   path(경로) + train.csv                                                               
 test_set = pd.read_csv(path + 'test.csv', index_col=0)            # 이 값은 예측 부분에서 쓴다   
@@ -37,51 +42,32 @@ print(y.shape)                                # (1459,) 1459개의 스칼라  ou
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=16)
 
-
-
 #2. 모델구성
+from sklearn.svm import LinearSVR, SVR
+from sklearn.linear_model import Perceptron
+from sklearn.linear_model import LogisticRegression, LinearRegression
+from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+
 model = LinearSVR()
 
-
 #3. 컴파일, 훈련
-model.fit(x_train, y_train) 
-
-
+model.fit(x_train, y_train)
 
 #4. 평가, 예측
+score = model.score(x_test, y_test)
+ypred = model.predict(x_test)
+
+print('r2 score: ', score)
+print('y_pred: ', ypred)
+
+# 5. 제출 준비
+# submission = pd.read_csv(path + 'submission.csv', index_col=0)
+# y_submit = model.predict(test_set)
+# submission['count'] = y_submit
+# submission.to_csv(path + 'submission.csv', index=True)
+
+# r2 score:  0.5387055478544032
 
 
-
-
-results = model.score(x_test, y_test)
-print('r2 :', results)     
-y_predict = model.predict(x_test)                          # 예측해서 나온 값
-
-def RMSE(y_test, y_predict):                               # 이 함수는 y_test, y_predict를 받아 들인다
-    return np.sqrt(mean_squared_error(y_test, y_predict))  # 내가 받아들인 y_test, y_predict를 mean_squared_error에 넣는다 그리고 루트를 씌운다 그리고 리턴
-                                                           # mse가 제곱하여 숫자가 커져서 (sqrt)루트를 씌우겠다 
-rmse = RMSE(y_test, y_predict)  
-print("RMSE :", rmse)           
-
-
-
-
-
-
-# y_summit = model.predict(test_set)
-
-# print(y_summit)
-# print(y_summit.shape) # (715, 1)
-
-# submission = pd.read_csv('./_data/ddarung/submission.csv')
-# submission['count'] = y_summit
-# print(submission)
-# submission.to_csv('./_data/ddarung/submission2.csv', index = False)
-
-
-# loss : 3058.065673828125
-# RMSE : 55.299774499917866
-
-# 머신러닝 사용 
-# r2 : 0.4933842411244941
-# RMSE : 58.89354387868726

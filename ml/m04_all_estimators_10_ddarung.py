@@ -1,11 +1,18 @@
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error          # mean_squared_error : RMSE
-import numpy as np                                               
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.datasets import fetch_california_housing
+from sklearn.metrics import r2_score, accuracy_score
 import pandas as pd
+#--------------------------------------------------------------------------------#
+from sklearn.utils import all_estimators
+import warnings
+import sklearn as sk
+print(sk.__version__)             # 0.24.2
+warnings.filterwarnings('ignore') # warning 출력X
+#--------------------------------------------------------------------------------#
 
-from sklearn.svm import LinearSVR
 
-#1. 데이타 
+# 1. 데이터
 path = './_data/ddarung/'                                         # path(변수)에 경로를 넣음
 train_set = pd.read_csv(path + 'train.csv', index_col=0)          # 판다스로 csv(엑셀시트)파일을 읽어라   path(경로) + train.csv                                                               
 test_set = pd.read_csv(path + 'test.csv', index_col=0)            # 이 값은 예측 부분에서 쓴다   
@@ -40,48 +47,24 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuff
 
 
 #2. 모델구성
-model = LinearSVR()
+# all_Algorithms = all_estimators(type_filter='classifier') # 분류모델
+all_Algorithms = all_estimators(type_filter='regressor')  # 회귀모델
+# print(all_Algorithms) 전체 모델 보기
+print('모델의 갯수 :', len(all_Algorithms)) # 모델의 갯수 :  41
 
+for (name, algorithms) in all_Algorithms:   # (key, value)
+    try:                                    # try 예외처리
+        model = algorithms()
+        model.fit(x_train, y_train)
+        
+        y_predict = model.predict(x_test)
+        acc = r2_score(y_test, y_predict)
+        print(name, '의 정답률 :', acc)
+    except:
+        # continue
+        print(name, '은 안나온 놈!!!')
+        
 
-#3. 컴파일, 훈련
-model.fit(x_train, y_train) 
+"""
 
-
-
-#4. 평가, 예측
-
-
-
-
-results = model.score(x_test, y_test)
-print('r2 :', results)     
-y_predict = model.predict(x_test)                          # 예측해서 나온 값
-
-def RMSE(y_test, y_predict):                               # 이 함수는 y_test, y_predict를 받아 들인다
-    return np.sqrt(mean_squared_error(y_test, y_predict))  # 내가 받아들인 y_test, y_predict를 mean_squared_error에 넣는다 그리고 루트를 씌운다 그리고 리턴
-                                                           # mse가 제곱하여 숫자가 커져서 (sqrt)루트를 씌우겠다 
-rmse = RMSE(y_test, y_predict)  
-print("RMSE :", rmse)           
-
-
-
-
-
-
-# y_summit = model.predict(test_set)
-
-# print(y_summit)
-# print(y_summit.shape) # (715, 1)
-
-# submission = pd.read_csv('./_data/ddarung/submission.csv')
-# submission['count'] = y_summit
-# print(submission)
-# submission.to_csv('./_data/ddarung/submission2.csv', index = False)
-
-
-# loss : 3058.065673828125
-# RMSE : 55.299774499917866
-
-# 머신러닝 사용 
-# r2 : 0.4933842411244941
-# RMSE : 58.89354387868726
+"""        
