@@ -1,6 +1,5 @@
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error          # mean_squared_error : RMSE
-import numpy as np                                               
+from sklearn.metrics import r2_score, mean_squared_error                              
 import pandas as pd
 from sklearn.svm import LinearSVR
 
@@ -15,20 +14,19 @@ y = train_set['count']
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=5)  
     
 
-
 #2. 모델구성
 model = LinearSVR()
-
 
 
 #3. 컴파일, 훈련
 model.fit(x_train, y_train)
 
 
-
 #4. 평가, 예측
 results = model.score(x_test, y_test)             
 print('r2 : ', results)
+
+# r2 : 0.23773122662776558
 
 # 머신러닝 사용 - r2 :  0.5620467078361082
 

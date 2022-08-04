@@ -22,7 +22,6 @@ x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test)
 
 
-
 #2. 모델구성
 all_Algorithms = all_estimators(type_filter='classifier') # 분류모델
 # all_Algorithms = all_estimators(type_filter='regressor')  # 회귀모델
