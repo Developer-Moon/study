@@ -2,34 +2,18 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error          # mean_squared_error : RMSE
 import numpy as np                                               
 import pandas as pd
-
 from sklearn.svm import LinearSVR
 
 
-#1. 데이타 
-path = './_data/ddarung/'                                        
-train_set = pd.read_csv(path + 'train.csv', index_col=0)          
-test_set = pd.read_csv(path + 'test.csv', index_col=0)            
+path = './_data/kaggle_bike/'        
+train_set = pd.read_csv(path + 'train.csv', index_col=0)   
+test_set = pd.read_csv(path + 'test.csv', index_col=0)  
 
-train_set = train_set.fillna(train_set.mean())
-test_set = test_set.fillna(test_set.mean())   
-
-print(train_set.isnull().sum())                                            
-print(test_set.isnull().sum())                   
-             
-train_set = train_set.dropna()               
-
-x = train_set.drop(['count'], axis=1)        
-print(x)
-print(x.columns)                             
-print(x.shape)                              
-
-y = train_set['count']                        
-print(y)  
-print(y.shape)                                  
-
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=16)
-
+x = train_set.drop(['casual', 'registered', 'count'], axis=1)  
+y = train_set['count']   
+  
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=5)  
+    
 
 
 #2. 모델구성
