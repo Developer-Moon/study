@@ -1,5 +1,3 @@
-import numpy as np
-from sklearn.svm import LinearSVC  
 from sklearn.linear_model import Perceptron
 from sklearn.metrics import accuracy_score
 
@@ -9,7 +7,6 @@ x_data = [[0,0], [0,1], [1,0], [1,1]] # XOR gate 같으면 0 틀리면 1
 y_data = [0, 1, 1, 0]
 
 
-
 #2. 모델
 # model = LinearSVC()
 model = Perceptron()
@@ -17,7 +14,6 @@ model = Perceptron()
 
 #3. 훈련
 model.fit(x_data, y_data)
-
 
 
 #4. 평가, 예측
