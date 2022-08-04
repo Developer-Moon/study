@@ -1,4 +1,4 @@
-from sklearn.datasets import load_diabetes
+from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_val_predict  # Kfold - cross_val_score검증하기위해 이걸 쓴다
 from sklearn.metrics import r2_score, accuracy_score
 from sklearn.svm import LinearSVC, SVC
@@ -6,7 +6,7 @@ import numpy as np
 
 
 # 1. 데이터
-datasets = load_diabetes()
+datasets = load_digits()
 x = datasets['data']
 y = datasets['target']
 
@@ -30,6 +30,6 @@ y_predict = cross_val_predict(model, x_test, y_test, cv=kfold)
 print(y_predict)
 
 acc = accuracy_score(y_test, y_predict)
-print('cross_val_predict ACC : ', acc)
+print('cross_val_predict acc : ', acc)
 
-# cross_val_predict ACC : 0.8859649122807017
+# cross_val_predict acc :  0.9666666666666667
