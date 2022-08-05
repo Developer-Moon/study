@@ -59,7 +59,8 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
     random_state=5
     )
 
-#2. 모델구성
+
+
 #2. 모델구성
 model = Sequential()
 model.add(Dense(100,input_dim=8))      

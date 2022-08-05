@@ -2,6 +2,7 @@ from sklearn.model_selection import train_test_split, KFold, cross_val_score, cr
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.datasets import fetch_california_housing
 from sklearn.metrics import r2_score, accuracy_score
+import pandas as pd
 import numpy as np
 #--------------------------------------------------------------------------------#
 from sklearn.utils import all_estimators
@@ -48,3 +49,32 @@ for (name, algorithms) in all_Algorithms:   # (key, value)
 """
 
 """        
+
+
+
+
+
+
+#1. 데이타 
+path = './_data/kaggle_bike/'                                
+train_set = pd.read_csv(path + 'train.csv', index_col=0)                       
+test_set = pd.read_csv(path + 'test.csv', index_col=0)                                   
+
+test_set = test_set.fillna(test_set.mean()) 
+train_set = train_set.dropna()  
+
+x = train_set.drop(['casual', 'registered', 'count'], axis=1)  
+y = train_set['count'] 
+
+
+
+
+#4. 평가, 예측
+loss = model.evaluate(x_test, y_test)
+print('loss :', loss)     
+
+y_predict = model.predict(x_test) 
+
+
+
+# r2스코어 : 0.7946649335930135
