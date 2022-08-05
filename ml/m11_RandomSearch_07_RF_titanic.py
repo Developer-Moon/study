@@ -1,6 +1,8 @@
-from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold, StratifiedKFold, GridSearchCV # 격자탐색, Cross_Validation
+from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold, StratifiedKFold, GridSearchCV, RandomizedSearchCV # 격자탐색, Cross_Validation
 from sklearn.metrics import r2_score, accuracy_score
-from sklearn.datasets import load_iris
+from sklearn.datasets import fetch_covtype
+import pandas as pd
+import numpy as np
 import time
 #----------------------------------------------------------------------------------------------------------------#
 from sklearn.ensemble import RandomForestClassifier
@@ -8,9 +10,29 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 # 1. 데이터
-datasets = load_iris()
-x = datasets['data']
-y = datasets['target']
+path = './_data/kaggle_titanic/'
+train_set = pd.read_csv(path+'train.csv')
+test_set = pd.read_csv(path+'test.csv')
+
+
+train_set = train_set.drop(columns='Cabin', axis=1)
+train_set['Age'].fillna(train_set['Age'].mean(), inplace=True)
+train_set['Embarked'].fillna(train_set['Embarked'].mode()[0], inplace=True)
+train_set.replace({'Sex':{'male':0,'female':1}, 'Embarked':{'S':0,'C':1,'Q':2}}, inplace=True)
+
+# train_set 불러올 때와 마찬가지로 전처리시켜야 model.predict에 넣어서 y값 구하기가 가능함-----------
+test_set = test_set.drop(columns='Cabin', axis=1)
+test_set['Age'].fillna(test_set['Age'].mean(), inplace=True)
+test_set['Fare'].fillna(test_set['Fare'].mean(), inplace=True)
+
+test_set['Embarked'].fillna(test_set['Embarked'].mode()[0], inplace=True)
+test_set.replace({'Sex':{'male':0,'female':1}, 'Embarked':{'S':0,'C':1,'Q':2}}, inplace=True)
+test_set = test_set.drop(columns = ['PassengerId','Name','Ticket'],axis=1)
+#---------------------------------------------------------------------------------------------------
+
+y = train_set['Survived']
+x = train_set.drop(columns = ['PassengerId','Name','Ticket','Survived'],axis=1) 
+y = np.array(y).reshape(-1, 1) # 벡터로 표시되어 있는 y데이터를 행렬로 전환
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
         
@@ -38,7 +60,7 @@ parameters = [
                   
 #2. 모델구성
 # model = SVC(C=10, kernel='linear', degree=3)
-model = GridSearchCV(RandomForestClassifier(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1) # 42번 X 5(n_splits=5) = 210, n_jobs = cpu 개수 몇개 사용 -1은 전부 다,  4는 4개
+model = RandomizedSearchCV(RandomForestClassifier(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1) # 42번 X 5(n_splits=5) = 210, n_jobs = cpu 개수 몇개 사용 -1은 전부 다,  4는 4개
 # refit=True면 최적의 파라미터로 훈련, False면 해당 파라미터로 훈련하지 않고 마지막 파라미터로 훈련
 
 #3. 컴파일, 훈련
@@ -72,15 +94,11 @@ print('걸린시간 :', end - start)
 # Fitting 5 folds for each of 42 candidates, totalling 210 fits
 # acc : 1.0   
      
-
-# Fitting 5 folds for each of 216 candidates, totalling 1080 fits
-# 최적의 매개변수 : RandomForestClassifier(min_samples_leaf=3, min_samples_split=20)
-# 최적의 파라미터 : {'min_samples_leaf': 3, 'min_samples_split': 20}
-# best_score : 0.9583333333333334
-# model.score : 1.0
-# accuracy_score : 1.0
-# 최적 튠 ACC : 1.0
-# 걸린시간 : 34.58961462974548
      
-     
-     
+# 최적의 매개변수 : RandomForestClassifier(min_samples_leaf=3, n_jobs=2)
+# 최적의 파라미터 : {'n_jobs': 2, 'n_estimators': 100, 'min_samples_split': 2, 'min_samples_leaf': 3}
+# best_score : 0.8357037328868315
+# model.score : 0.7597765363128491
+# accuracy_score : 0.7597765363128491
+# 최적 튠 ACC : 0.7597765363128491
+# 걸린시간 : 4.296833753585815

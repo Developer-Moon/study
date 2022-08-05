@@ -1,6 +1,7 @@
 from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold, StratifiedKFold, GridSearchCV # 격자탐색, Cross_Validation
 from sklearn.metrics import r2_score, accuracy_score
 from sklearn.datasets import fetch_california_housing
+import pandas as pd
 import time
 #----------------------------------------------------------------------------------------------------------------#
 from sklearn.svm import LinearSVC, SVC
@@ -8,12 +9,19 @@ from sklearn.ensemble import RandomForestRegressor           # 결정트리를 �
 #----------------------------------------------------------------------------------------------------------------#
 
 
-# 1. 데이터
-datasets = fetch_california_housing()
-x = datasets['data']
-y = datasets['target']
+## 1. 데이터
+path = './_data/ddarung/'                                        
+train_set = pd.read_csv(path + 'train.csv', index_col=0)                                                               
+test_set = pd.read_csv(path + 'test.csv', index_col=0)     
+   
+train_set = train_set.fillna(train_set.mean())
+test_set = test_set.fillna(test_set.mean())   
+train_set = train_set.dropna()                
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
+x = train_set.drop(['count'], axis=1)       
+y = train_set['count']                      
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=16)
         
 n_splits=5
 kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66)
@@ -69,8 +77,12 @@ print("최적 튠 r2 :", r2_score(y_test, y_predict_best))
 print('걸린시간 :', end - start)     
 # score, acc_score, best_estimator_ 모두 같다, 확실하게 하기 위해 best_estimator_ 로 확인
      
-# 5개의 folds 42개의 파라미터 후보  총 210번 의 훈련을 한다
-# Fitting 5 folds for each of 42 candidates, totalling 210 fits
-# acc : 1.0   
-     
+# Fitting 5 folds for each of 216 candidates, totalling 1080 fits
+# 최적의 매개변수 : RandomForestRegressor(min_samples_split=3, n_jobs=2)
+# 최적의 파라미터 : {'min_samples_split': 3, 'n_jobs': 2}
+# best_score : 0.7762104324976806
+# model.score : 0.7571496359266935
+# r2_score : 0.7571496359266935
+# 최적 튠 r2 : 0.7571496359266935
+# 걸린시간 : 63.755744218826294
      

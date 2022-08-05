@@ -1,21 +1,30 @@
-from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold, StratifiedKFold, GridSearchCV # 격자탐색, Cross_Validation
+from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold, StratifiedKFold, GridSearchCV, RandomizedSearchCV # 격자탐색, Cross_Validation
 from sklearn.metrics import r2_score, accuracy_score
-from sklearn.datasets import load_iris
+from sklearn.datasets import fetch_california_housing
+import numpy as np
+import pandas as pd
 import time
 #----------------------------------------------------------------------------------------------------------------#
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestRegressor
 #----------------------------------------------------------------------------------------------------------------#
 
 
-# 1. 데이터
-datasets = load_iris()
-x = datasets['data']
-y = datasets['target']
+## 1. 데이터
+path = './_data/ddarung/'                                        
+train_set = pd.read_csv(path + 'train.csv', index_col=0)                                                               
+test_set = pd.read_csv(path + 'test.csv', index_col=0)     
+   
+train_set = train_set.fillna(train_set.mean())
+test_set = test_set.fillna(test_set.mean())   
+train_set = train_set.dropna()                
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
+x = train_set.drop(['count'], axis=1)       
+y = train_set['count']                      
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=16)
         
 n_splits=5
-kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=66)
+kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66)
 
 parameters = [
     {'n_estimators' : [100, 200], 'max_depth' : [6, 8, 10, 12, 14, 16]},       # 2 x 6 = 12번                                       
@@ -38,7 +47,7 @@ parameters = [
                   
 #2. 모델구성
 # model = SVC(C=10, kernel='linear', degree=3)
-model = GridSearchCV(RandomForestClassifier(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1) # 42번 X 5(n_splits=5) = 210, n_jobs = cpu 개수 몇개 사용 -1은 전부 다,  4는 4개
+model = RandomizedSearchCV(RandomForestRegressor(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1) # 42번 X 5(n_splits=5) = 210, n_jobs = cpu 개수 몇개 사용 -1은 전부 다,  4는 4개
 # refit=True면 최적의 파라미터로 훈련, False면 해당 파라미터로 훈련하지 않고 마지막 파라미터로 훈련
 
 #3. 컴파일, 훈련
@@ -58,11 +67,11 @@ print('model.score :', model.score(x_test, y_test))
     # model.score : 1.0
 
 y_predict = model.predict(x_test)
-print('accuracy_score :', accuracy_score(y_test, y_predict))  
+print('accuracy_score :', r2_score(y_test, y_predict))  
      # accuracy_score : 1.0                                               
      
 y_predict_best = model.best_estimator_.predict(x_test)       
-print("최적 튠 ACC :", accuracy_score(y_test, y_predict_best)) 
+print("최적 튠 ACC :", r2_score(y_test, y_predict_best)) 
      # 최적 튠 ACC : 1.0
  
 print('걸린시간 :', end - start)     
@@ -81,6 +90,14 @@ print('걸린시간 :', end - start)
 # accuracy_score : 1.0
 # 최적 튠 ACC : 1.0
 # 걸린시간 : 34.58961462974548
-     
-     
+
+# Fitting 5 folds for each of 10 candidates, totalling 50 fits
+# 최적의 매개변수 : RandomForestRegressor(max_depth=14)
+# 최적의 파라미터 : {'n_estimators': 100, 'max_depth': 14}
+# best_score : 0.7749457679252236
+# model.score : 0.7727740619654554
+# accuracy_score : 0.7727740619654554
+# 최적 튠 ACC : 0.7727740619654554
+# 걸린시간 : 5.742735385894775
+
      

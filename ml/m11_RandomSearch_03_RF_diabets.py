@@ -1,21 +1,21 @@
-from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold, StratifiedKFold, GridSearchCV # 격자탐색, Cross_Validation
+from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold, StratifiedKFold, GridSearchCV, RandomizedSearchCV # 격자탐색, Cross_Validation
 from sklearn.metrics import r2_score, accuracy_score
-from sklearn.datasets import load_iris
+from sklearn.datasets import load_diabetes
 import time
 #----------------------------------------------------------------------------------------------------------------#
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestRegressor
 #----------------------------------------------------------------------------------------------------------------#
 
 
 # 1. 데이터
-datasets = load_iris()
+datasets = load_diabetes()
 x = datasets['data']
 y = datasets['target']
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
         
 n_splits=5
-kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=66)
+kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66)
 
 parameters = [
     {'n_estimators' : [100, 200], 'max_depth' : [6, 8, 10, 12, 14, 16]},       # 2 x 6 = 12번                                       
@@ -38,7 +38,7 @@ parameters = [
                   
 #2. 모델구성
 # model = SVC(C=10, kernel='linear', degree=3)
-model = GridSearchCV(RandomForestClassifier(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1) # 42번 X 5(n_splits=5) = 210, n_jobs = cpu 개수 몇개 사용 -1은 전부 다,  4는 4개
+model = RandomizedSearchCV(RandomForestRegressor(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1) # 42번 X 5(n_splits=5) = 210, n_jobs = cpu 개수 몇개 사용 -1은 전부 다,  4는 4개
 # refit=True면 최적의 파라미터로 훈련, False면 해당 파라미터로 훈련하지 않고 마지막 파라미터로 훈련
 
 #3. 컴파일, 훈련
@@ -58,11 +58,11 @@ print('model.score :', model.score(x_test, y_test))
     # model.score : 1.0
 
 y_predict = model.predict(x_test)
-print('accuracy_score :', accuracy_score(y_test, y_predict))  
+print('accuracy_score :', r2_score(y_test, y_predict))  
      # accuracy_score : 1.0                                               
      
 y_predict_best = model.best_estimator_.predict(x_test)       
-print("최적 튠 ACC :", accuracy_score(y_test, y_predict_best)) 
+print("최적 튠 ACC :", r2_score(y_test, y_predict_best)) 
      # 최적 튠 ACC : 1.0
  
 print('걸린시간 :', end - start)     
@@ -81,6 +81,15 @@ print('걸린시간 :', end - start)
 # accuracy_score : 1.0
 # 최적 튠 ACC : 1.0
 # 걸린시간 : 34.58961462974548
-     
+
+
+# Fitting 5 folds for each of 10 candidates, totalling 50 fits
+# 최적의 매개변수 : RandomForestRegressor(min_samples_leaf=10, n_estimators=200, n_jobs=-1)
+# 최적의 파라미터 : {'n_jobs': -1, 'n_estimators': 200, 'min_samples_split': 2, 'min_samples_leaf': 10}
+# best_score : 0.41631095380564426
+# model.score : 0.5363993100606308
+# accuracy_score : 0.5363993100606308
+# 최적 튠 ACC : 0.5363993100606308
+# 걸린시간 : 3.2174594402313232
      
      

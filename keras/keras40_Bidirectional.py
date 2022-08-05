@@ -22,7 +22,7 @@ x = x.reshape(7, 3, 1)
 #2. 모델구성
 model = Sequential()    
 model.add(SimpleRNN(200, input_shape=(3,1), return_sequences=True))                                       
-model.add(Bidirectional(SimpleRNN(100)))
+model.add(Bidirectional(SimpleRNN(100))) #  양방향 
 model.add(Dense(100, activation='relu'))
 model.add(Dense(100, activation='relu'))
 model.add(Dense(1))

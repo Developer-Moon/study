@@ -24,5 +24,4 @@ results = model.score(x_test, y_test) # evaluate대신 score
 print('acc :', results)
 
 # acc : 1.0
-
-# 머신러닝 사용 - acc : 1.0
+# ML - acc : 1.0

@@ -1,6 +1,6 @@
-from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold, StratifiedKFold, GridSearchCV # 격자탐색, Cross_Validation
+from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold, StratifiedKFold, GridSearchCV, RandomizedSearchCV # 격자탐색, Cross_Validation
 from sklearn.metrics import r2_score, accuracy_score
-from sklearn.datasets import load_iris
+from sklearn.datasets import load_wine
 import time
 #----------------------------------------------------------------------------------------------------------------#
 from sklearn.ensemble import RandomForestClassifier
@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 
 
 # 1. 데이터
-datasets = load_iris()
+datasets = load_wine()
 x = datasets['data']
 y = datasets['target']
 
@@ -38,7 +38,7 @@ parameters = [
                   
 #2. 모델구성
 # model = SVC(C=10, kernel='linear', degree=3)
-model = GridSearchCV(RandomForestClassifier(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1) # 42번 X 5(n_splits=5) = 210, n_jobs = cpu 개수 몇개 사용 -1은 전부 다,  4는 4개
+model = RandomizedSearchCV(RandomForestClassifier(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1) # 42번 X 5(n_splits=5) = 210, n_jobs = cpu 개수 몇개 사용 -1은 전부 다,  4는 4개
 # refit=True면 최적의 파라미터로 훈련, False면 해당 파라미터로 훈련하지 않고 마지막 파라미터로 훈련
 
 #3. 컴파일, 훈련
@@ -81,6 +81,16 @@ print('걸린시간 :', end - start)
 # accuracy_score : 1.0
 # 최적 튠 ACC : 1.0
 # 걸린시간 : 34.58961462974548
+
+# Fitting 5 folds for each of 10 candidates, totalling 50 fits
+# 최적의 매개변수 : RandomForestClassifier(min_samples_leaf=3, min_samples_split=3, n_jobs=-1)
+# 최적의 파라미터 : {'n_jobs': -1, 'n_estimators': 100, 'min_samples_split': 3, 'min_samples_leaf': 3}
+# best_score : 0.9857142857142858
+# model.score : 1.0
+# accuracy_score : 1.0
+# 최적 튠 ACC : 1.0
+# 걸린시간 : 3.614886522293091
+
      
      
      

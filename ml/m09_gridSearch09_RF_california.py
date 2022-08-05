@@ -69,7 +69,11 @@ print("최적 튠 r2 :", r2_score(y_test, y_predict_best))
 print('걸린시간 :', end - start)     
 # score, acc_score, best_estimator_ 모두 같다, 확실하게 하기 위해 best_estimator_ 로 확인
      
-# 5개의 folds 42개의 파라미터 후보  총 210번 의 훈련을 한다
-# Fitting 5 folds for each of 42 candidates, totalling 210 fits
-# acc : 1.0   
-     
+# Fitting 5 folds for each of 216 candidates, totalling 1080 fits
+# 최적의 매개변수 : RandomForestRegressor(min_samples_split=3, n_jobs=-1)
+# 최적의 파라미터 : {'min_samples_split': 3, 'n_jobs': -1}
+# best_score : 0.8075889283491084
+# model.score : 0.8137714118490097
+# r2_score : 0.8137714118490097
+# 최적 튠 r2 : 0.8137714118490097
+# 걸린시간 : 1120.8777837753296 
