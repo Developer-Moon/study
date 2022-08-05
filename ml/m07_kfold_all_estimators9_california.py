@@ -1,5 +1,5 @@
-from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_val_predict, StratifiedKFold
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold, StratifiedKFold
+from sklearn.preprocessing import MinMaxScaler, AbsScaler 
 from sklearn.datasets import fetch_california_housing
 from sklearn.metrics import r2_score, accuracy_score
 import numpy as np
@@ -46,5 +46,59 @@ for (name, algorithms) in all_Algorithms:   # (key, value)
         print(name, '은 안나온 놈!!!')
          
 """
-
+모델의 갯수 :  54
+ARDRegression 의 정답률 : 0.61
+AdaBoostRegressor 의 정답률 : 0.4435
+BaggingRegressor 의 정답률 : 0.7835
+BayesianRidge 의 정답률 : 0.6099
+CCA 의 정답률 : 0.5653
+DecisionTreeRegressor 의 정답률 : 0.6179
+DummyRegressor 의 정답률 : -0.0006
+ElasticNet 의 정답률 : -0.0006
+ElasticNetCV 의 정답률 : 0.6013
+ExtraTreeRegressor 의 정답률 : 0.5516
+ExtraTreesRegressor 의 정답률 : 0.8094
+GammaRegressor 의 정답률 : 0.0187
+GaussianProcessRegressor 의 정답률 : -13068.1396
+GradientBoostingRegressor 의 정답률 : 0.7848
+HistGradientBoostingRegressor 의 정답률 : 0.8329
+HuberRegressor 의 정답률 : 0.5768
+IsotonicRegression 은 안나온 놈!!!
+KNeighborsRegressor 의 정답률 : 0.6994
+KernelRidge 의 정답률 : 0.5339
+Lars 의 정답률 : 0.6099
+LarsCV 의 정답률 : 0.6093
+Lasso 의 정답률 : -0.0006
+LassoCV 의 정답률 : 0.6088
+LassoLars 의 정답률 : -0.0006
+LassoLarsCV 의 정답률 : 0.6096
+LassoLarsIC 의 정답률 : 0.6099
+LinearRegression 의 정답률 : 0.6099
+LinearSVR 의 정답률 : 0.5867
+MLPRegressor 의 정답률 : 0.7252
+MultiOutputRegressor 은 안나온 놈!!!
+MultiTaskElasticNet 은 안나온 놈!!!
+MultiTaskElasticNetCV 은 안나온 놈!!!
+MultiTaskLasso 은 안나온 놈!!!
+MultiTaskLassoCV 은 안나온 놈!!!
+NuSVR 의 정답률 : 0.6648
+OrthogonalMatchingPursuit 의 정답률 : 0.4752
+OrthogonalMatchingPursuitCV 의 정답률 : 0.5989
+PLSCanonical 의 정답률 : 0.3707
+PLSRegression 의 정답률 : 0.523
+PassiveAggressiveRegressor 의 정답률 : 0.2258
+PoissonRegressor 의 정답률 : 0.0407
+RANSACRegressor 의 정답률 : -2.8665
+RadiusNeighborsRegressor 은 안나온 놈!!!
+RandomForestRegressor 의 정답률 : 0.8069
+RegressorChain 은 안나온 놈!!!
+Ridge 의 정답률 : 0.6033
+RidgeCV 의 정답률 : 0.6069
+SGDRegressor 의 정답률 : 0.5633
+SVR 의 정답률 : 0.6613
+StackingRegressor 은 안나온 놈!!!
+TheilSenRegressor 의 정답률 : -2.9958
+TransformedTargetRegressor 의 정답률 : 0.6099
+TweedieRegressor 의 정답률 : 0.0188
+VotingRegressor 은 안나온 놈!!!
 """        

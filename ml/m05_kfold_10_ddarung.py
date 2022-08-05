@@ -6,7 +6,6 @@ import pandas as pd
 
 
 # 1. 데이터
-# 1. 데이터
 path = './_data/ddarung/'                                         # path(변수)에 경로를 넣음
 train_set = pd.read_csv(path + 'train.csv', index_col=0)          # 판다스로 csv(엑셀시트)파일을 읽어라   path(경로) + train.csv                                                               
 test_set = pd.read_csv(path + 'test.csv', index_col=0)            # 이 값은 예측 부분에서 쓴다   
