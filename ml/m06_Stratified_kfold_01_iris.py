@@ -24,7 +24,7 @@ model = SVC()
 
 
 #3. 컴파일, 훈련, 평가, 예측
-scores = cross_val_score(model, x_train, y_train, cv=kfold) # cv=5 라면 kfold를 5로 쓴다
+scores = cross_val_score(model, x_train, y_train, cv=kfold) # cv=5 라면 kfold를 5로 쓴다, cross_val_score <- 여기에 straitify 분류 해준다 만약 다른 스코어를 쓰면 straitify해주면 좋다
 print('ACC :', scores, '\n cross_val_score :' , round(np.mean(scores), 4)) # 4번째까지 출력 (반올림을 5번째 자리에서)
 
 y_predict = cross_val_predict(model, x_test, y_test, cv=kfold)

@@ -1,12 +1,12 @@
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_val_predict, StratifiedKFold  # Kfold - cross_val_score검증하기위해 이걸 쓴다
-from sklearn.datasets import load_digits
+from sklearn.datasets import fetch_covtype
 from sklearn.metrics import r2_score, accuracy_score
 from sklearn.svm import LinearSVC, SVC
 import numpy as np
 
 
 # 1. 데이터
-datasets = load_digits()
+datasets = fetch_covtype()
 x = datasets['data']
 y = datasets['target']
 
