@@ -8,7 +8,7 @@ datasets = fetch_covtype()
 x = datasets.data
 y = datasets.target 
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=72)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=72)
 
 
 #2. 모델구성
@@ -24,5 +24,4 @@ results = model.score(x_test, y_test)
 print('acc :', results)
 
 # acc : 0.5815765591913797
-
-# 머신러닝 사용 - acc : 0.5494069909353584
+# ML - acc : 0.5494069909353584

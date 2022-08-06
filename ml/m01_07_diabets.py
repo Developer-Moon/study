@@ -8,7 +8,7 @@ datasets = load_diabetes()
 x = datasets.data
 y = datasets.target 
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=72)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=72)
 
 
 #2. 모델구성
@@ -24,5 +24,4 @@ results = model.score(x_test, y_test)
 print('r2 :', results)
 
 # r2 : 0.634477819866959
-
-# 머신러닝 사용 - r2 : -0.4805696667781383
+# ML - r2: -0.4805696667781383

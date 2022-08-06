@@ -8,7 +8,7 @@ datasets = load_iris()
 x = datasets['data']
 y = datasets['target']
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, shuffle=True, random_state=9)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=9)
 
 
 #2. 모델구성
