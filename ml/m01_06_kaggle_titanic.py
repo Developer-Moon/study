@@ -7,44 +7,21 @@ from sklearn.svm import LinearSVC
 
 # 1. 데이터
 path = './_data/kaggle_titanic/'
-train_set = pd.read_csv(path + 'train.csv', index_col=0)
-test_set = pd.read_csv(path + 'test.csv', index_col=0)
-submission = pd.read_csv(path + 'gender_submission.csv')
-print('train.shape, test.shape, submit.shape', 
-      train_set.shape, test_set.shape, submission.shape)    # (891, 11) (418, 10) (418, 2)
+train_set = pd.read_csv(path + 'train.csv')
+test_set = pd.read_csv(path + 'test.csv')
 
-# 데이터 전처리
+train_set = train_set.drop(columns='Cabin', axis=1)
+train_set['Age'].fillna(train_set['Age'].mean(), inplace=True)
+train_set['Embarked'].fillna(train_set['Embarked'].mode()[0], inplace=True)
+train_set.replace({'Sex':{'male':0,'female':1}, 'Embarked':{'S':0,'C':1,'Q':2}}, inplace=True)
 
-# Ticket, Cabin[선실], Name 삭제   
-train_set = train_set.drop(['Ticket', 'Cabin', 'Name'], axis=1)
-test_set = test_set.drop(['Ticket', 'Cabin', 'Name'], axis=1)
-
-
-# Age NaN값 변환
-train_set['Age'] = train_set['Age'].fillna(train_set.Age.dropna().mode()[0])
-test_set['Age'] = test_set['Age'].fillna(train_set.Age.dropna().mode()[0])
-
-
-# Embarked, Sex NaN값 및 Object => int 변환
-train_set['Embarked'] = train_set['Embarked'].fillna(train_set.Embarked.dropna().mode()[0]) 
-train_set['Embarked'] = train_set['Embarked'].map({'S':0, 'C':1, 'Q':2}).astype(int)  
-test_set['Embarked'] = test_set['Embarked'].fillna(test_set.Embarked.dropna().mode()[0])
-test_set['Embarked'] = test_set['Embarked'].map({'S':0, 'C':1, 'Q':2}).astype(int)
-
-train_set['Sex'] = train_set['Sex'].fillna(train_set.Sex.dropna().mode()[0])
-train_set['Sex'] = train_set['Sex'].map({'male':0, 'female':1}).astype(int)
-test_set['Sex'] = test_set['Sex'].fillna(test_set.Sex.dropna().mode()[0])
-test_set['Sex'] = test_set['Sex'].map({'male':0, 'female':1}).astype(int)
-
-
-# x, y 데이터
-x = train_set.drop(['Survived'], axis=1)
 y = train_set['Survived']
+x = train_set.drop(columns = ['PassengerId','Name','Ticket','Survived'], axis=1)
+y = np.array(y).reshape(-1, 1)
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.9, shuffle=True, random_state=3)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
 
 scaler = RobustScaler()
-
 scaler.fit(x_train)                     
 x_train = scaler.transform(x_train)    
 x_test = scaler.transform(x_test)      
@@ -64,5 +41,5 @@ model.fit(x_train, y_train)
 results = model.score(x_test, y_test)
 print('acc :', results)
 
-# acc  :  0.8666666666666667
+# acc : 0.8666666666666667
 # 머신러닝 사용 - acc : 0.7888888888888889

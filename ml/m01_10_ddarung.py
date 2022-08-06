@@ -1,11 +1,10 @@
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error
-import numpy as np                                               
+from sklearn.model_selection import train_test_split   
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler
+from sklearn.svm import LinearSVR
 import pandas as pd
 
-from sklearn.svm import LinearSVR
 
-#1. 데이타 
+#1. 데이터 
 path = './_data/ddarung/'                                       
 train_set = pd.read_csv(path + 'train.csv', index_col=0)                                                               
 test_set = pd.read_csv(path + 'test.csv', index_col=0) 
@@ -20,6 +19,12 @@ y = train_set['count']
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=16)
 
+scaler = RobustScaler()
+scaler.fit(x_train)
+scaler.fit(test_set)
+test_set = scaler.transform(test_set)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
 
 #2. 모델구성
 model = LinearSVR()
@@ -34,5 +39,4 @@ results = model.score(x_test, y_test)
 print('r2 :', results)            
 
 # r2 : 0.6209826631438036
-
-# 머신러닝 사용 - r2 : 0.6046214109286941
+# ML - r2 : 0.5356306305873728

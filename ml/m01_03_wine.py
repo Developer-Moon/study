@@ -8,7 +8,7 @@ datasets = load_wine()
 x = datasets.data
 y = datasets.target 
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=72)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=72)
 
 
 #2. 모델구성

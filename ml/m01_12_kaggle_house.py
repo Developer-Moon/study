@@ -1,178 +1,198 @@
-from tensorflow.python.keras.models import Sequential   
-from tensorflow.python.keras.layers import Dense 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error          # mean_squared_error : RMSE
-import numpy as np                                               
+from sklearn.svm import LinearSVR
+from collections import Counter
+import numpy as np
 import pandas as pd
 
 
+encording_columns = ['MSZoning','Street','Alley','LotShape','LandContour','Utilities','LotConfig',
+                    'LandSlope','Neighborhood','Condition1','Condition2','BldgType','HouseStyle',
+                    'RoofStyle','RoofMatl','Exterior1st','Exterior2nd','MasVnrType','ExterQual',
+                    'ExterCond','Foundation','BsmtQual','BsmtCond','BsmtExposure','BsmtFinType1',
+                    'BsmtFinType2','Heating','HeatingQC','CentralAir','Electrical','KitchenQual',
+                    'Functional','FireplaceQu','GarageType','GarageFinish','GarageQual','GarageCond',
+                    'PavedDrive','PoolQC','Fence','MiscFeature','SaleType','SaleCondition']
 
-#1. 데이타 
-path = './_data/ddarung/'                                         # path(변수)에 경로를 넣음
-
-train_set = pd.read_csv(path + 'train.csv', index_col=0)          # 판다스로 csv(엑셀시트)파일을 읽어라   path(경로) + train.csv
-                                                                  # index_col=0 - id가 첫번째로 와라
-print(train_set)
-print(train_set.columns)
-# ['hour', 'hour_bef_temperature', 'hour_bef_precipitation', 'hour_bef_windspeed', 'hour_bef_humidity', 'hour_bef_visibility', 'hour_bef_ozone', 'hour_bef_pm10',
-# 'hour_bef_pm2.5', 'count']
-print(train_set.shape) # (1459, 10) 컬럼 10개(인덱스 제외)
-
-
-test_set = pd.read_csv(path + 'test.csv', index_col=0)            # 이 값은 예측 부분에서 쓴다
-print(test_set.columns) 
-# ['hour', 'hour_bef_temperature', 'hour_bef_precipitation', 'hour_bef_windspeed', 'hour_bef_humidity', 'hour_bef_visibility', 'hour_bef_ozone', 'hour_bef_pm10',
-# 'hour_bef_pm2.5']       
-print(test_set.shape) # (715, 9)
+non_encording_columns = ['MSSubClass','LotFrontage','LotArea','OverallQual','OverallCond',
+                         'YearBuilt','YearRemodAdd','MasVnrArea','BsmtFinSF1','BsmtFinSF2',
+                         'BsmtUnfSF','TotalBsmtSF','1stFlrSF','2ndFlrSF','LowQualFinSF',
+                         'GrLivArea','BsmtFullBath','BsmtHalfBath','FullBath','HalfBath','BedroomAbvGr',
+                         'KitchenAbvGr','TotRmsAbvGrd','Fireplaces','GarageYrBlt','GarageCars','GarageArea',
+                         'WoodDeckSF','OpenPorchSF','EnclosedPorch','3SsnPorch','ScreenPorch','PoolArea',
+                         'MiscVal','MoSold','YrSold']
 
 
 
-print(train_set.info())  
-"""
- #   Column                  Non-Null Count  Dtype
----  ------                  --------------  -----
- 0   hour                    1459 non-null   int64
- 1   hour_bef_temperature    1457 non-null   float64
- 2   hour_bef_precipitation  1457 non-null   float64
- 3   hour_bef_windspeed      1450 non-null   float64
- 4   hour_bef_humidity       1457 non-null   float64
- 5   hour_bef_visibility     1457 non-null   float64
- 6   hour_bef_ozone          1383 non-null   float64
- 7   hour_bef_pm10           1369 non-null   float64
- 8   hour_bef_pm2.5          1342 non-null   float64
- 9   count                   1459 non-null   float64
-dtypes: float64(9), int64(1)
-"""
+#1. 데이터
+path = './_data/kaggle_house/'
+train_set = pd.read_csv(path + 'train.csv') 
+test_set = pd.read_csv(path + 'test.csv')
 
-print(train_set.describe())  # 평균치, 중간값, 최소값 등 출력
-"""
-             hour  hour_bef_temperature  hour_bef_precipitation  hour_bef_windspeed  ...  hour_bef_ozone  hour_bef_pm10  hour_bef_pm2.5        count
-count  1459.000000           1457.000000             1457.000000         1450.000000  ...     1383.000000    1369.000000     1342.000000  1459.000000
-mean     11.493489             16.717433                0.031572            2.479034  ...        0.039149      57.168736       30.327124   108.563400
-std       6.922790              5.239150                0.174917            1.378265  ...        0.019509      31.771019       14.713252    82.631733
-min       0.000000              3.100000                0.000000            0.000000  ...        0.003000       9.000000        8.000000     1.000000
-25%       5.500000             12.800000                0.000000            1.400000  ...        0.025500      36.000000       20.000000    37.000000
-50%      11.000000             16.600000                0.000000            2.300000  ...        0.039000      51.000000       26.000000    96.000000
-75%      17.500000             20.100000                0.000000            3.400000  ...        0.052000      69.000000       37.000000   150.000000
-max      23.000000             30.000000                1.000000            8.000000  ...        0.125000     269.000000       90.000000   431.000000
-"""
+def detect_outliers(df, n, features):
+    outlier_indices = []
+    for col in features:
+        Q1 = np.percentile(df[col], 25)
+        Q3 = np.percentile(df[col], 75)
+        IQR = Q3 - Q1
+        
+        outlier_step = 1.5 * IQR
+        
+        outlier_list_col = df[(df[col] < Q1 - outlier_step) | (df[col] > Q3 + outlier_step)].index
+        outlier_indices.extend(outlier_list_col)
+    outlier_indices = Counter(outlier_indices)
+    multiple_outliers = list(k for k, v in outlier_indices.items() if v > n)
+        
+    return multiple_outliers
+        
+Outliers_to_drop = detect_outliers(train_set, 2, ['MSSubClass', 'LotFrontage', 'LotArea', 'OverallQual',
+       'OverallCond', 'YearBuilt', 'YearRemodAdd', 'MasVnrArea', 'BsmtFinSF1',
+       'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', '1stFlrSF', '2ndFlrSF',
+       'LowQualFinSF', 'GrLivArea', 'BsmtFullBath', 'BsmtHalfBath', 'FullBath',
+       'HalfBath', 'BedroomAbvGr', 'KitchenAbvGr', 'TotRmsAbvGrd',
+       'Fireplaces', 'GarageYrBlt', 'GarageCars', 'GarageArea', 'WoodDeckSF',
+       'OpenPorchSF', 'EnclosedPorch', '3SsnPorch', 'ScreenPorch', 'PoolArea',
+       'MiscVal', 'MoSold', 'YrSold'])
 
+train_set.loc[Outliers_to_drop]
 
+train_set = train_set.drop(Outliers_to_drop, axis = 0).reset_index(drop=True)
+train_set.shape
 
-#### 결측치 처리 1. 제거 (이렇게 하는건 멍청한거다) ####
-# 데이터셋에 값이 없는(NaN) 애들이 있어서 그 애들을 빼서 훈련시켜야한다 - 그런데 위험하고 무식한 작업이라고 한다(데이터가 많아서)
+num_strong_corr = ['SalePrice','OverallQual','TotalBsmtSF','GrLivArea','GarageCars',
+                   'FullBath','YearBuilt','YearRemodAdd']
 
-print(train_set.isnull().sum()) # null 의 개수 확인, isnull()만 쓸경우 null값이라면 True 아니라면 False를 출력
-"""
-#                       컬럼당 널의 개수
-# hour                        0 
-# hour_bef_temperature        2
-# hour_bef_precipitation      2
-# hour_bef_windspeed          9
-# hour_bef_humidity           2
-# hour_bef_visibility         2
-# hour_bef_ozone             76
-# hour_bef_pm10              90
-# hour_bef_pm2.5            117
-# count                       0
-# dtype: int64
-"""
+num_weak_corr = ['MSSubClass', 'LotFrontage', 'LotArea', 'OverallCond', 'MasVnrArea', 'BsmtFinSF1',
+                 'BsmtFinSF2', 'BsmtUnfSF', '1stFlrSF', '2ndFlrSF','LowQualFinSF', 'BsmtFullBath',
+                 'BsmtHalfBath', 'HalfBath', 'BedroomAbvGr', 'KitchenAbvGr', 'TotRmsAbvGrd',
+                 'Fireplaces', 'GarageYrBlt', 'GarageArea', 'WoodDeckSF','OpenPorchSF',
+                 'EnclosedPorch', '3SsnPorch', 'ScreenPorch', 'PoolArea', 'MiscVal', 'MoSold', 'YrSold']
 
-print(test_set.isnull().sum())
-"""
-hour                       0
-hour_bef_temperature       1
-hour_bef_precipitation     1
-hour_bef_windspeed         1
-hour_bef_humidity          1
-hour_bef_visibility        1
-hour_bef_ozone            35
-hour_bef_pm10             37
-hour_bef_pm2.5            36
-dtype: int64
-"""
-print(train_set.shape)   # (1459, 10)            
-print(test_set.shape)    # (715, 9)
-train_set = train_set.fillna(train_set.mean())
-test_set = test_set.fillna(test_set.mean())   # fillna() - 결측값을 (특정값)로 채우겠다
-                                              # 결측값을 결측값의 앞 행의 값으로 채우기 : df.fillna(method='ffill') or df.fillna(method='pad')
-                                              # 결측값을 결측값의 뒷 행의 값으로 채우기 : df.fillna(method='bfill') or df.fillna(method='backfill')
-                                              # 결측값을 각 열의 평균 값으로 채우기     : df.fillna(df.mean())
-                                              
-print(train_set.shape)  # (1459, 10)            
-print(test_set.shape)   # (715, 9)
-print(train_set.isnull().sum())               # train 결측지 평균값으로 채움                                     
-print(test_set.isnull().sum())                # test 결측지 평균값으로 채움      
+catg_strong_corr = ['MSZoning', 'Neighborhood', 'Condition2', 'MasVnrType', 'ExterQual',
+                    'BsmtQual','CentralAir', 'Electrical', 'KitchenQual', 'SaleType']
+
+catg_weak_corr = ['Street', 'Alley', 'LotShape', 'LandContour', 'Utilities', 'LotConfig', 
+                  'LandSlope', 'Condition1',  'BldgType', 'HouseStyle', 'RoofStyle', 
+                  'RoofMatl', 'Exterior1st', 'Exterior2nd', 'ExterCond', 'Foundation', 
+                  'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2', 'Heating', 
+                  'HeatingQC', 'Functional', 'FireplaceQu', 'GarageType', 'GarageFinish', 
+                  'GarageQual', 'GarageCond', 'PavedDrive', 'PoolQC', 'Fence', 'MiscFeature', 
+                  'SaleCondition' ]
+
+cols_fillna = ['PoolQC','MiscFeature','Alley','Fence','MasVnrType','FireplaceQu',
+               'GarageQual','GarageCond','GarageFinish','GarageType', 'Electrical',
+               'KitchenQual', 'SaleType', 'Functional', 'Exterior2nd', 'Exterior1st',
+               'BsmtExposure','BsmtCond','BsmtQual','BsmtFinType1','BsmtFinType2',
+               'MSZoning', 'Utilities']
+
+for col in cols_fillna : 
+    train_set[col].fillna('None', inplace=True)
+    test_set[col].fillna('None', inplace=True)
+
+total = train_set.isnull().sum().sort_values(ascending=False)
+percent = (train_set.isnull().sum()/train_set.isnull().count()).sort_values(ascending=False)
+missing_data = pd.concat([total, percent], axis=1, keys=['Total','Percent'])
+
+train_set.fillna(train_set.mean(), inplace=True)
+test_set.fillna(test_set.mean(), inplace=True)
+
+total = train_set.isnull().sum().sort_values(ascending=False)
+percent = (train_set.isnull().sum()/train_set.isnull().count()).sort_values(ascending=False)
+missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
+
+print(train_set.isnull().sum().sum(), test_set.isnull().sum().sum()) # 0 0 출력시 결측치 확인 끝
+
+id_test = test_set['Id']
+
+to_drop_num = num_weak_corr
+to_drop_catg = catg_weak_corr
+
+cols_to_drop = ['Id'] + to_drop_num + to_drop_catg
+
+for df in [train_set, test_set] :
+    df.drop(cols_to_drop, inplace=True, axis = 1)
     
-                                             
-train_set = train_set.dropna()                # dropna() - 행별로 싹 날려뿌겠다 : 결측지를 제거 하는 법[위 에서 결측지를 채워서 지금은 의미 없다]
-                                              # 결측값 있는 행 제거 : df.dropna() or df.dropna(axis=0)
-                                              # 결측값 있는 열 제거 : df.dropna(axis=1)
+# 'MSZoning'
+msz_catg2 = ['RM', 'RH']
+msz_catg3 = ['RL', 'FV'] 
 
-print(train_set.shape)  # (1459, 10)         
-print(test_set.shape)   # (715, 9)                                 
+# Neighborhood
+nbhd_catg2 = ['Blmngtn', 'ClearCr', 'CollgCr', 'Crawfor', 'Gilbert', 'NWAmes', 'Somerst', 'Timber', 'Veenker']
+nbhd_catg3 = ['NoRidge', 'NridgHt', 'StoneBr']
+
+# Condition2
+cond2_catg2 = ['Norm', 'RRAe']
+cond2_catg3 = ['PosA', 'PosN'] 
+
+# SaleType
+SlTy_catg1 = ['Oth']
+SlTy_catg3 = ['CWD']
+SlTy_catg4 = ['New', 'Con']
+
+for df in [train_set, test_set]:
+    
+    df['MSZ_num'] = 1  
+    df.loc[(df['MSZoning'].isin(msz_catg2) ), 'MSZ_num'] = 2    
+    df.loc[(df['MSZoning'].isin(msz_catg3) ), 'MSZ_num'] = 3        
+    
+    df['NbHd_num'] = 1       
+    df.loc[(df['Neighborhood'].isin(nbhd_catg2) ), 'NbHd_num'] = 2    
+    df.loc[(df['Neighborhood'].isin(nbhd_catg3) ), 'NbHd_num'] = 3    
+
+    df['Cond2_num'] = 1       
+    df.loc[(df['Condition2'].isin(cond2_catg2) ), 'Cond2_num'] = 2    
+    df.loc[(df['Condition2'].isin(cond2_catg3) ), 'Cond2_num'] = 3    
+    
+    df['Mas_num'] = 1       
+    df.loc[(df['MasVnrType'] == 'Stone' ), 'Mas_num'] = 2 
+    
+    df['ExtQ_num'] = 1       
+    df.loc[(df['ExterQual'] == 'TA' ), 'ExtQ_num'] = 2     
+    df.loc[(df['ExterQual'] == 'Gd' ), 'ExtQ_num'] = 3     
+    df.loc[(df['ExterQual'] == 'Ex' ), 'ExtQ_num'] = 4     
+   
+    df['BsQ_num'] = 1          
+    df.loc[(df['BsmtQual'] == 'Gd' ), 'BsQ_num'] = 2     
+    df.loc[(df['BsmtQual'] == 'Ex' ), 'BsQ_num'] = 3     
+ 
+    df['CA_num'] = 0          
+    df.loc[(df['CentralAir'] == 'Y' ), 'CA_num'] = 1    
+
+    df['Elc_num'] = 1       
+    df.loc[(df['Electrical'] == 'SBrkr' ), 'Elc_num'] = 2 
 
 
+    df['KiQ_num'] = 1       
+    df.loc[(df['KitchenQual'] == 'TA' ), 'KiQ_num'] = 2     
+    df.loc[(df['KitchenQual'] == 'Gd' ), 'KiQ_num'] = 3     
+    df.loc[(df['KitchenQual'] == 'Ex' ), 'KiQ_num'] = 4      
+    
+    df['SlTy_num'] = 2       
+    df.loc[(df['SaleType'].isin(SlTy_catg1) ), 'SlTy_num'] = 1  
+    df.loc[(df['SaleType'].isin(SlTy_catg3) ), 'SlTy_num'] = 3  
+    df.loc[(df['SaleType'].isin(SlTy_catg4) ), 'SlTy_num'] = 4 
 
-x = train_set.drop(['count'], axis=1)         # train_set에서 count를 drop(뺀다) axis=1 열, axis=0 행 
-print(x)
-print(x.columns)                              # [1459 rows x 9 columns]
-print(x.shape)                                # (1459, 9) - input_dim=9
+train_set.drop(['MSZoning','Neighborhood' , 'Condition2', 'MasVnrType', 'ExterQual', 'BsmtQual','CentralAir', 'Electrical', 'KitchenQual', 'SaleType', 'Cond2_num', 'Mas_num', 'CA_num', 'Elc_num', 'SlTy_num'], axis = 1, inplace = True)
+test_set.drop(['MSZoning', 'Neighborhood' , 'Condition2', 'MasVnrType', 'ExterQual', 'BsmtQual','CentralAir', 'Electrical', 'KitchenQual', 'SaleType', 'Cond2_num', 'Mas_num', 'CA_num', 'Elc_num', 'SlTy_num'], axis = 1, inplace = True)
 
-y = train_set['count']                        # y는 train_set에서 count컬럼이다
-print(y)  
-print(y.shape)                                # (1459,) 1459개의 스칼라  output=1    
+x = train_set.drop(['SalePrice'], axis=1)
+y = train_set['SalePrice']
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=16)
-
-
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, random_state=99)
 
 #2. 모델구성
-model = Sequential()
-model.add(Dense(100, input_dim=9))   
-model.add(Dense(140))
-model.add(Dense(150))
-model.add(Dense(140))
-model.add(Dense(150))
-model.add(Dense(140))
-model.add(Dense(150))
-model.add(Dense(1))
-
+model = LinearSVR()
 
 
 #3. 컴파일, 훈련
-model.compile(loss='mse', optimizer='adam')                # loss에선 rmse를 제공하지 않는다
-model.fit(x_train, y_train, epochs=300, batch_size=100)   
-
+model.fit(x_train, y_train)
 
 
 #4. 평가, 예측
-loss = model.evaluate(x_test, y_test)
-print('loss :', loss)     
+score = model.score(x_test, y_test)
+ypred = model.predict(x_test)
 
-y_predict = model.predict(x_test)                          # 예측해서 나온 값
+print('y_pred :', ypred)
+print('r2 score :', score)
 
-def RMSE(y_test, y_predict):                               # 이 함수는 y_test, y_predict를 받아 들인다
-    return np.sqrt(mean_squared_error(y_test, y_predict))  # 내가 받아들인 y_test, y_predict를 mean_squared_error에 넣는다 그리고 루트를 씌운다 그리고 리턴
-                                                           # mse가 제곱하여 숫자가 커져서 (sqrt)루트를 씌우겠다 
-rmse = RMSE(y_test, y_predict)  
-print("RMSE :", rmse)           
-
-
-
-
-
-
-# y_summit = model.predict(test_set)
-
-# print(y_summit)
-# print(y_summit.shape) # (715, 1)
-
-# submission = pd.read_csv('./_data/ddarung/submission.csv')
-# submission['count'] = y_summit
-# print(submission)
-# submission.to_csv('./_data/ddarung/submission2.csv', index = False)
-
-
-# loss : 3058.065673828125
-# RMSE : 55.299774499917866
+# r2 : 0.6800720233286466
+# ML - r2 :  0.7193316852023472

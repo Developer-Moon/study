@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_iris
-from sklearn.svm import LinearSVC # Support Vector Classifier - 레거시안 사이킷런 모델 
+from sklearn.svm import LinearSVC # Support Vector Classifier - 레거시안 사이킷런 모델, 원핫 X, 컴파일 X, argmax X
 
 
 #1. 데이터
@@ -16,12 +16,13 @@ model = LinearSVC()
 
 
 #3. 컴파일, 훈련
-model.fit(x_train, y_train) # 원핫이 필요없다 훈련은 통상 100번, 컴파일이 포함
+model.fit(x_train, y_train)
 
 
 #4. 평가, 예측
-results = model.score(x_test, y_test) # evaluate대신 score
-print('acc :', results)
+results = model.score(x_test, y_test) # evaluate대신 score사용
+print('acc :', results)               # 분류모델에서는 accuracy // 회귀모델에서는 R2가 자동
 
 # acc : 1.0
-# ML - acc : 1.0
+# ML - acc : 1.0 
+# 아주 빠르다, 단층 레이어
