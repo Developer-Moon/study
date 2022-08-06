@@ -24,5 +24,4 @@ results = model.score(x_test, y_test)
 print('acc :', results)
 
 # acc : 0.7171717171717171
-
-# 머신러닝 사용 - acc : 0.9410774410774411
+# ML - acc : 0.9410774410774411
