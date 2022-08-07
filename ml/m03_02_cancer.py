@@ -14,11 +14,12 @@ datasets = load_breast_cancer()
 x = datasets.data
 y = datasets.target 
 
-x_train, x_test, y_train, y_test =  train_test_split(x, y, train_size=0.8, shuffle=True, random_state=66)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, shuffle=True, random_state=66)
 
 
 # 2. 모델구성
 models = [LinearSVC, SVC, Perceptron, LogisticRegression, KNeighborsClassifier, DecisionTreeClassifier, RandomForestClassifier]
+
 for x in models:
     model = x()
     model.fit(x_train, y_train)

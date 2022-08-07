@@ -4,10 +4,9 @@ from sklearn.svm import LinearSVR
 import pandas as pd
 
 
-#1. 데이터
-path = './_data/kaggle_bike/'        
-train_set = pd.read_csv(path + 'train.csv', index_col=0)   
-test_set = pd.read_csv(path + 'test.csv', index_col=0)  
+#1. 데이터      
+train_set = pd.read_csv('./_data/kaggle_bike/train.csv')   
+test_set = pd.read_csv('./_data/kaggle_bike/test.csv')  
 
 x = train_set.drop(['casual', 'registered', 'count'], axis=1)  
 y = train_set['count']   

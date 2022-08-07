@@ -1,12 +1,10 @@
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.datasets import load_iris
 from sklearn.metrics import r2_score, accuracy_score
+from sklearn.datasets import load_iris
 #--------------------------------------------------------------------------------#
 from sklearn.utils import all_estimators
 import warnings
-import sklearn as sk
-print(sk.__version__)             # 0.24.2
 warnings.filterwarnings('ignore') # warning 출력X
 #--------------------------------------------------------------------------------#
 
@@ -24,12 +22,11 @@ x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test)
 
 
-
 #2. 모델구성
-all_Algorithms = all_estimators(type_filter='classifier') # 분류모델 
+all_Algorithms = all_estimators(type_filter='classifier')   # 분류모델 
 # all_Algorithms = all_estimators(type_filter='regressor')  # 회귀모델 
 # print(all_Algorithms) 전체 모델 보기
-print('모델의 갯수 : ', len(all_Algorithms)) # 모델의 갯수 :  41
+print('모델의 갯수 :', len(all_Algorithms)) # 모델의 갯수 :  41
 
 for (name, algorithms) in all_Algorithms:   # (key, value)
     try:                                    # try 예외처리

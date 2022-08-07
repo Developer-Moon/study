@@ -1,8 +1,8 @@
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_val_predict  # Kfold - cross_val_score검증하기위해 이걸 쓴다
+from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold # Kfold - cross_val_score 검증하기위해 이걸 쓴다
 from sklearn.metrics import r2_score, accuracy_score
-from sklearn.svm import LinearSVC, SVC
+from sklearn.svm import  SVC
 import numpy as np
+from sklearn.datasets import load_iris
 
 
 # 1. 데이터
@@ -12,14 +12,12 @@ y = datasets['target']
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
                       
-n_splits =5                # n_splits=5 5등분
+n_splits =5             
 kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66 ) #         
                     
-                    
-                      
+                            
 #2. 모델구성
 model = SVC()
-
 
 
 #3. 컴파일, 훈련, 평가, 예측

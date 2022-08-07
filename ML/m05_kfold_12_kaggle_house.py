@@ -1,18 +1,13 @@
-from sklearn.model_selection import train_test_split   
+from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_val_predict  # Kfold - cross_val_score검증하기위해 이걸 쓴다
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler
+from sklearn.metrics import r2_score, accuracy_score
 from collections import Counter
-import pandas as pd
+from sklearn.svm import SVR
 import numpy as np
-#----------------------------------------------------------------------------------------------------------------#
-from sklearn.svm import LinearSVR, SVR
-from sklearn.linear_model import LinearRegression 
-from sklearn.neighbors import KNeighborsRegressor            
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor           
-#----------------------------------------------------------------------------------------------------------------#
+import pandas as pd
 
 
-
+#1. 데이터
 encording_columns = ['MSZoning','Street','Alley','LotShape','LandContour','Utilities','LotConfig',
                     'LandSlope','Neighborhood','Condition1','Condition2','BldgType','HouseStyle',
                     'RoofStyle','RoofMatl','Exterior1st','Exterior2nd','MasVnrType','ExterQual',
@@ -185,21 +180,26 @@ test_set.drop(['MSZoning', 'Neighborhood' , 'Condition2', 'MasVnrType', 'ExterQu
 x = train_set.drop(['SalePrice'], axis=1)
 y = train_set['SalePrice']
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, random_state=99)
-
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, random_state=99) 
+               
+n_splits =5  
+kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66 )     
+                    
+                                   
 #2. 모델구성
-model_list = [LinearSVR, SVR, LinearRegression, KNeighborsRegressor, DecisionTreeRegressor, RandomForestRegressor]
+model = SVR()
 
-for x in model_list:
-     model = x()
-     model.fit(x_train, y_train)
-     score = model.score(x_test, y_test)
-     model_name = str(model)
-     print(model_name, 'acc: ', score) 
 
-# LinearSVR() acc:  0.7134829718235701
-# SVR() acc:  -0.07586421857983505
-# LinearRegression() acc:  0.8648299743838634
-# KNeighborsRegressor() acc:  0.7636827308027394
-# DecisionTreeRegressor() acc:  0.7661164227671446
-# RandomForestRegressor() acc:  0.8674960209658595
+#3. 컴파일, 훈련, 평가, 예측
+scores = cross_val_score(model, x_train, y_train, cv=kfold) # cv=5 라면 kfold를 5로 쓴다
+print('ACC :', scores, '\ncross_val_score :' , round(np.mean(scores), 4)) # 4번째까지 출력 (반올림을 5번째 자리에서)
+
+y_predict = cross_val_predict(model, x_test, y_test, cv=kfold)
+# print(y_predict)
+
+r2 = r2_score(y_test, y_predict)
+print('cross_val_predict r2 : ', r2)
+
+# ACC : [-0.06876366 -0.0809986  -0.00500008 -0.09748211 -0.06178768] 
+# cross_val_score : -0.0628
+# cross_val_predict r2 :  -0.025025805938649892

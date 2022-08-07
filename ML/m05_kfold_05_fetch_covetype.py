@@ -1,25 +1,22 @@
-from sklearn.datasets import fetch_covtype
-from sklearn.model_selection import train_test_split, KFold, cross_val_score, cross_val_predict  # Kfold - cross_val_score검증하기위해 이걸 쓴다
+from sklearn.model_selection import train_test_split, cross_val_score, cross_val_predict, KFold # Kfold - cross_val_score검증하기위해 이걸 쓴다
 from sklearn.metrics import r2_score, accuracy_score
 from sklearn.svm import LinearSVC, SVC
 import numpy as np
-
+from sklearn.datasets import fetch_covtype
 
 # 1. 데이터
 datasets = fetch_covtype()
 x = datasets['data']
 y = datasets['target']
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=9)
                       
-n_splits =5                # n_splits=5 5등분
-kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66 ) #         
+n_splits = 5              
+kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66 )
                     
-                    
-                      
+                                      
 #2. 모델구성
 model = SVC()
-
 
 
 #3. 컴파일, 훈련, 평가, 예측
@@ -30,6 +27,9 @@ y_predict = cross_val_predict(model, x_test, y_test, cv=kfold)
 print(y_predict)
 
 acc = accuracy_score(y_test, y_predict)
-print('cross_val_predict acc : ', acc)
+print('cross_val_predict ACC : ', acc)
 
-# cross_val_predict acc :  0.9666666666666667
+# acc:  [0.9506465  0.95070029 0.95052817 0.95200189 0.95055991] 
+#  cross_val_score:  0.9509
+# [2 1 2 ... 1 2 2]
+# cross_val_predict acc:  0.9075239021367779
