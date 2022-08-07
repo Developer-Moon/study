@@ -1,5 +1,4 @@
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, accuracy_score
 from sklearn.datasets import load_iris
 #----------------------------------------------------------------------------------------------------------------#
 from sklearn.svm import LinearSVC, SVC
@@ -19,21 +18,18 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle
         
                       
 #2. 모델구성
-model = RandomForestClassifier()
+models = [LinearSVC, SVC, Perceptron, LogisticRegression, KNeighborsClassifier, DecisionTreeClassifier, RandomForestClassifier]
+for x in models:
+    model = x()
+    model_name = str(model)
+    model.fit(x_train, y_train)
+    score = model.score(x_test, y_test)
+    print(model_name,' - acc :', score)
 
-
-#3. 컴파일, 훈련
-model.fit(x_train, y_train)
-
-
-#4. 평가, 예측
-score = model.score(x_test, y_test)
-print('acc :', score)
-
-# LinearSVC - acc : 1.0
-# SVC - acc : 1.0
-# Perceptron - acc : 0.9666666666666667
-# LogisticRegression - acc : 1.0
-# KNeighborsClassifie r- acc : 1.0
-# DecisionTreeClassifier - acc : 1.0
-# RandomForestClassifier - acc : 1.0
+# LinearSVC()  - acc : 1.0
+# SVC()  - acc : 1.0
+# Perceptron()  - acc : 0.9666666666666667
+# LogisticRegression()  - acc : 1.0
+# KNeighborsClassifier()  - acc : 1.0
+# DecisionTreeClassifier()  - acc : 1.0
+# RandomForestClassifier()  - acc : 1.0
