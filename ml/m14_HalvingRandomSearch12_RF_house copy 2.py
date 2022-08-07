@@ -12,18 +12,14 @@ from sklearn.model_selection import HalvingRandomSearchCV
 
 
 #1. 데이터
-path = './_data/ddarung/'                                        
-train_set = pd.read_csv(path + 'train.csv', index_col=0)                                                               
-test_set = pd.read_csv(path + 'test.csv', index_col=0)     
-   
-train_set = train_set.fillna(train_set.mean())
-test_set = test_set.fillna(test_set.mean())   
-train_set = train_set.dropna()                
+path = './_data/kaggle_bike/'        
+train_set = pd.read_csv(path + 'train.csv', index_col=0)   
+test_set = pd.read_csv(path + 'test.csv', index_col=0)  
 
-x = train_set.drop(['count'], axis=1)       
-y = train_set['count']                      
-
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=16)
+x = train_set.drop(['casual', 'registered', 'count'], axis=1)  
+y = train_set['count']   
+  
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.75, shuffle=True, random_state=5)  
         
 n_splits=5
 kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66)
@@ -70,13 +66,13 @@ accuracy_score : 0.5557520318623039
 
 
 """ ------------------------------------------------------------------------------ random
-최적의 매개변수 : RandomForestRegressor(n_jobs=2)
-최적의 파라미터 : {'n_jobs': 2, 'min_samples_split': 2}
-best_score : 0.7472233187906554
-model.score : 0.7606172368704311
-accuracy_score : 0.7606172368704311
-최적 튠 ACC : 0.7606172368704311
-걸린시간 : 16.724079370498657
+최적의 매개변수 : RandomForestRegressor(min_samples_leaf=5)
+최적의 파라미터 : {'min_samples_split': 2, 'min_samples_leaf': 5}
+best_score : 0.2722377308573002
+model.score : 0.35293863547480586
+accuracy_score : 0.35293863547480586
+최적 튠 ACC : 0.35293863547480586
+걸린시간 : 17.056691884994507
 """
      
      
