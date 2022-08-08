@@ -26,17 +26,15 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, shuffl
 
 
 # 2. 모델구성
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from xgboost import XGBClassifier
-
 models = [DecisionTreeClassifier(), RandomForestClassifier(), GradientBoostingClassifier(), XGBClassifier()]
+
+print(str(GradientBoostingClassifier()).startswith('XGB'))
 
 # 3. 컴파일, 훈련, 평가, 예측
 for model in models:
     model.fit(x_train, y_train)
     score = model.score(x_test, y_test)
-    if str(model).startswith('XGB'):
+    if str(model).startswith('XGB'):            
         print('XGB 의 스코어: ', score)
     else:
         print(str(model).strip('()'), '의 스코어: ', score)
