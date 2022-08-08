@@ -28,4 +28,4 @@ model.fit(x_train, y_train) # 스케일이 제공된 상태, fit과 fit_transfor
 result = model.score(x_test, y_test)
 print('model.score :', result)
 
-# model.score : 0.9861111111111112
+# model.score : 0.9556896121442647

@@ -3,6 +3,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, Ro
 from sklearn.metrics import r2_score, accuracy_score
 from collections import Counter
 import pandas as pd
+import numpy as np
 #--------------------------------------------------------------------------------#
 from sklearn.utils import all_estimators
 import warnings

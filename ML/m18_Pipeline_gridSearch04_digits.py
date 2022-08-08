@@ -48,5 +48,5 @@ print('accuracy :', acc)
 # make_pipeline - model.score : 1.0
 
 # GridSearchCV
-# model.score : 0.9666666666666667
-# accuracy : 0.9666666666666667
+# - model.score : 0.9666666666666667
+# - accuracy : 0.9666666666666667

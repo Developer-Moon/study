@@ -1,7 +1,7 @@
 from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV, HalvingGridSearchCV, HalvingRandomSearchCV, KFold, StratifiedKFold
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.datasets import load_digits
 #----------------------------------------------------------------------------------------------------------------#
 from sklearn.pipeline import Pipeline, make_pipeline
@@ -23,11 +23,11 @@ parameters = [
 ]
 
 n_splits=5
-kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=66)
+kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66)
 
 
 #2. 모델구성
-pipe = Pipeline([('minmax', MinMaxScaler()), ('hi', PCA()), ('RF', RandomForestClassifier())]) # 변수들을 parameters에 명시해줘야 한다
+pipe = Pipeline([('minmax', MinMaxScaler()), ('hi', PCA()), ('RF', RandomForestRegressor())]) # 변수들을 parameters에 명시해줘야 한다
           
 
 #3. 훈련

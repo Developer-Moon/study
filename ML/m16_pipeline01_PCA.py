@@ -19,6 +19,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random
 
 #2. 모델구성
 model = make_pipeline(MinMaxScaler(), PCA(), RandomForestClassifier())
+# model = make_pipeline(MinMaxScaler(), StandardScaler(), PCA(), RandomForestClassifier()) Scaler를 여러번 쓸 수 있다
 # PCA() - 컬럼압축(속도가 빨라진다), 무조건 좋은게 아이다
 
 
@@ -31,7 +32,7 @@ result = model.score(x_test, y_test)
 print('model.score :', result)
 
 from sklearn.metrics import accuracy_score 
-y_predict = model.predict(x_test) # predict는 make_pipelinefmf 이용하여 scaler가 적용된 상태다
+y_predict = model.predict(x_test) # predict는 make_pipeline을 이용하여 scaler가 적용된 상태다
 acc = accuracy_score(y_test, y_predict)
 print('accuracy :', acc)
 
