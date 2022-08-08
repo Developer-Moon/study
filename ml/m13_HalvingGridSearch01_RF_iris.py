@@ -17,7 +17,7 @@ y = datasets['target']
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
         
 n_splits=5
-kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=66)
+kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=66) # 훈련과정에서의 과적합으로 인해 사용X
 
 parameters = [
     {'n_estimators' : [100, 200], 'max_depth' : [6, 8, 10, 12]},                                   
