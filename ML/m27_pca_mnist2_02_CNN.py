@@ -84,5 +84,6 @@ acc = accuracy_score(y_test, y_predict)
 print('acc스코어 :', acc)
 print('time :', end_time)
 
-# acc스코어 : 0.9686
+# acc스코어 : 0.8799
+# time : 41.760329723358154
 

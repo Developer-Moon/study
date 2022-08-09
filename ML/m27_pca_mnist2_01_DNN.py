@@ -19,12 +19,15 @@ from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 # time 체크 / fit에서 하고
 
 #1. 나의 최고의 DNN
-# time = 69.72170734405518
-# acc  = 0.9672
+# 기존 acc : 0.9664000272750854
 
-#2. 나의 최고의 CNN
-# time = ??
-# acc  = ??
+# time = 69.72170734405518
+# acc  = 0.9672-------0.966
+
+#2. 나의 최고의 CNN     
+# 기존 acc : 0.9850999712944031
+# time = 41.760329723358154
+# acc  = 0.8799-------0.966
 
 
 
