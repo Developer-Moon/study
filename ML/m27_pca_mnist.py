@@ -46,6 +46,7 @@ print(np.argmax(cumsum >= 1.0) + 1)   # 713
 
 
 
+
 '''
 x = x.reshape(70000, 28*28) # (70000, 784)
 

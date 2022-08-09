@@ -19,8 +19,8 @@ from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 # time 체크 / fit에서 하고
 
 #1. 나의 최고의 DNN
-# time = ??
-# acc  = ??
+# time = 69.72170734405518
+# acc  = 0.9672
 
 #2. 나의 최고의 CNN
 # time = ??
@@ -116,7 +116,7 @@ print(y_test)
 
 acc = accuracy_score(y_test, y_predict)  
 print('accuracy :', acc)
-
+print('time :', end_time)
 
 # acc스코어 : 0.9686
 
