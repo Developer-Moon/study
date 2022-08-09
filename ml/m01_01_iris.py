@@ -1,7 +1,7 @@
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_iris
 from sklearn.svm import LinearSVC # Support Vector Classifier - 레거시안 사이킷런 모델, 원핫 X, 컴파일 X, argmax X
-
+#1
 
 #1. 데이터
 datasets = load_iris()
