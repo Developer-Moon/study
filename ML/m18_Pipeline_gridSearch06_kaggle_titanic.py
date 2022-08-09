@@ -2,7 +2,8 @@ from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV, HalvingGridSearchCV, HalvingRandomSearchCV, KFold, StratifiedKFold
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.datasets import load_digits
+import pandas as pd
+import numpy as np
 #----------------------------------------------------------------------------------------------------------------#
 from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.decomposition import PCA # 컬럼을 압축한다
@@ -10,11 +11,25 @@ from sklearn.decomposition import PCA # 컬럼을 압축한다
 
 
 #1. 데이터
-datasets = load_digits()
-x = datasets.data 
-y = datasets.target
+path = './_data/kaggle_titanic/'
+train_set = pd.read_csv(path + 'train.csv')
+test_set = pd.read_csv(path + 'test.csv')
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=1234)
+train_set = train_set.drop(columns='Cabin', axis=1)
+train_set['Age'].fillna(train_set['Age'].mean(), inplace=True)
+train_set['Embarked'].fillna(train_set['Embarked'].mode()[0], inplace=True)
+train_set.replace({'Sex':{'male':0,'female':1}, 'Embarked':{'S':0,'C':1,'Q':2}}, inplace=True)
+
+y = train_set['Survived']
+x = train_set.drop(columns = ['PassengerId','Name','Ticket','Survived'], axis=1)
+y = np.array(y).reshape(-1, 1)
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
+
+scaler = MinMaxScaler()
+scaler.fit(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
 
 parameters = [
     {'RF__n_estimators' : [100, 200], 'RF__max_depth' : [6, 8, 10, 12, 14, 16]},                                  

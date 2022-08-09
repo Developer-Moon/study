@@ -14,7 +14,10 @@ datasets = load_breast_cancer()
 x = datasets.data
 y = datasets.target
 
+
+
 allfeature = round(x.shape[1]*0.2, 0)
+print(allfeature)
 print('자를 갯수: ', int(allfeature))
 
 # print(x.shape)
@@ -35,7 +38,7 @@ for model in models:
     model.fit(x_train, y_train)
     score = model.score(x_test, y_test)
     if str(model).startswith('XGB'):            
-        print('XGB 의 스코어: ', score)
+        print('XGBClassifier 의 스코어: ', score)
     else:
         print(str(model).strip('()'), '의 스코어: ', score)
         
@@ -48,6 +51,7 @@ for model in models:
     model.fit(x_train2, y_train2)
     score = model.score(x_test2, y_test2)
     if str(model).startswith('XGB'):
-        print('XGB 의 드랍후 스코어: ', score)
+        print('XGBClassifier 의 드랍후 스코어: ', score)
     else:
-        print(str(model).strip('()'), '의 드랍후 스코어: ', score)
+        print(str(model).strip('()'), '의 드랍후 스코어: ', score)       
+       
