@@ -25,4 +25,4 @@ print('이상치의 위치 :', outliers_loc2)
 
 import matplotlib.pyplot as plt
 plt.boxplot(aaa)
-plt.show()
+plt.show()1
