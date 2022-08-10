@@ -21,6 +21,6 @@ print(data)
 # imputer = KNNImputer() # 디폴트는 
 imputer = IterativeImputer() # 
 
-imputer.fit(data)
+imputer.fit(data)1
 data2 = imputer.transform(data)
 print(data2)
