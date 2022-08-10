@@ -18,7 +18,7 @@
 # 부스팅계열 - 이상치에 대해 자유롭다 믿거나 말거나 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 
 
 from datetime import datetime
-import pandas as pd
+import pandas as pd1
 import numpy as np
 
 dates = ['8/10/2022', '8/11/2022', '8/12/2022', '8/13/2022', '8/14/2022']
