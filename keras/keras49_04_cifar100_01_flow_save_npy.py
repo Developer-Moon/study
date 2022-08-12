@@ -33,9 +33,13 @@ x_train = scale_datagen.flow(x_train, y_train, batch_size=augument_size, shuffle
 # x 시리즈 전부 리쉐입
 x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], x_train.shape[2], 3)
 x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 3)
+print(x_augument.shape[0])
 x_augument = x_augument.reshape(x_augument.shape[0], x_augument.shape[1], x_augument.shape[2], 3)
 
 # 원본train과 증폭train 합치기
+print(x_train.shape)
+print(x_augument.shape)
+
 x_train = np.concatenate((x_train, x_augument))
 y_train = np.concatenate((y_train, y_augument))
 
