@@ -60,7 +60,7 @@ print('time : ', end_time)
 
 import matplotlib.pyplot as plt    
 plt.figure(figsize=(6,6))                                                   # 팝업창이 뜰 때의 사이즈
-plt.plot(hist.history['loss'], marker='.', c='red', label='loss')           # marker= 수치부분 .으로 표시 c='red' 그래프를 붉은컬러로  label='loss'
+plt.plot(hist.history['loss']c)           # marker= 수치부분 .으로 표시 c='red' 그래프를 붉은컬러로  label='loss'
 plt.plot(hist.history['val_loss'], marker='.', c='blue', label='val_loss') 
 
 
