@@ -52,10 +52,10 @@ for i in models:
     model_name = str(model) # str(model)을 model 가능
     print(model_name, '- r2 :', score)
 
-LinearSVR() - r2 : 0.7485106372510673
-SVR() - r2 : -0.03824031278667439
-Perceptron() - r2 : 0.0
-LinearRegression() - r2 : 0.8372976697328177
-KNeighborsRegressor() - r2 : 0.5677054433046803
-DecisionTreeRegressor() - r2 : 0.738247989553988
-RandomForestRegressor() - r2 : 0.8781255496799707
+# LinearSVR() - r2 : 0.7485106372510673
+# SVR() - r2 : -0.03824031278667439
+# Perceptron() - r2 : 0.0
+# LinearRegression() - r2 : 0.8372976697328177
+# KNeighborsRegressor() - r2 : 0.5677054433046803
+# DecisionTreeRegressor() - r2 : 0.738247989553988
+# RandomForestRegressor() - r2 : 0.8781255496799707
