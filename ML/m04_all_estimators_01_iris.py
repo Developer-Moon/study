@@ -1,7 +1,7 @@
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import r2_score, accuracy_score
-from sklearn.datasets import load_wine
+from sklearn.datasets import load_iris
 #--------------------------------------------------------------------------------#
 from sklearn.utils import all_estimators
 import warnings
