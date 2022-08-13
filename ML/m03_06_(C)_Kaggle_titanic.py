@@ -1,6 +1,4 @@
-# [실습]
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler
 import pandas as pd
 import numpy as np
 #----------------------------------------------------------------------------------------------------------------#
@@ -12,7 +10,7 @@ from sklearn.ensemble import RandomForestClassifier             # 결정트리�
 #----------------------------------------------------------------------------------------------------------------#
 
 
-# 1. 데이터
+#1. 데이터
 path = './_data/kaggle_titanic/'
 train_set = pd.read_csv(path + 'train.csv')
 test_set = pd.read_csv(path + 'test.csv')
@@ -22,32 +20,34 @@ train_set['Age'].fillna(train_set['Age'].mean(), inplace=True)
 train_set['Embarked'].fillna(train_set['Embarked'].mode()[0], inplace=True)
 train_set.replace({'Sex':{'male':0,'female':1}, 'Embarked':{'S':0,'C':1,'Q':2}}, inplace=True)
 
+test_set = test_set.drop(columns='Cabin', axis=1)
+test_set['Age'].fillna(test_set['Age'].mean(), inplace=True)
+test_set['Fare'].fillna(test_set['Fare'].mean(), inplace=True)
+test_set['Embarked'].fillna(test_set['Embarked'].mode()[0], inplace=True)
+test_set.replace({'Sex':{'male':0,'female':1}, 'Embarked':{'S':0,'C':1,'Q':2}}, inplace=True)
+test_set = test_set.drop(columns = ['PassengerId','Name','Ticket'],axis=1)
+
 y = train_set['Survived']
-x = train_set.drop(columns = ['PassengerId','Name','Ticket','Survived'], axis=1)
+x = train_set.drop(columns = ['PassengerId','Name','Ticket','Survived'],axis=1) 
 y = np.array(y).reshape(-1, 1)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
 
-scaler = RobustScaler()
-scaler.fit(x_train)                     
-x_train = scaler.transform(x_train)    
-x_test = scaler.transform(x_test)      
-test_set = scaler.transform(test_set)  
-
 
 #2. 모델구성
-model_list = [LinearSVC, Perceptron, LogisticRegression, KNeighborsClassifier, DecisionTreeClassifier, RandomForestClassifier]
+models = [LinearSVC, SVC, Perceptron, LogisticRegression, KNeighborsClassifier, DecisionTreeClassifier, RandomForestClassifier]
 
-for x in model_list:
-     model = x()
-     model.fit(x_train, y_train)
-     score = model.score(x_test, y_test)
-     model_name = str(model)
-     print(model_name, 'acc: ', score) 
-     
-# LinearSVC() acc:  0.7541899441340782
-# Perceptron() acc:  0.6815642458100558
-# LogisticRegression() acc:  0.770949720670391
-# KNeighborsClassifier() acc:  0.6759776536312849
-# DecisionTreeClassifier() acc:  0.7541899441340782
-# RandomForestClassifier() acc:  0.7877094972067039
+for i in models:
+    model = i()
+    model.fit(x_train, y_train)
+    score = model.score(x_test, y_test)
+    model_name = str(model) # str(model)을 model 가능
+    print(model_name, '- acc :', score)
+
+# LinearSVC() - acc : 0.7821229050279329
+# SVC() - acc : 0.6312849162011173
+# Perceptron() - acc : 0.6815642458100558
+# LogisticRegression() - acc : 0.770949720670391
+# KNeighborsClassifier() - acc : 0.6759776536312849
+# DecisionTreeClassifier() - acc : 0.7541899441340782
+# RandomForestClassifier() - acc : 0.776536312849162
