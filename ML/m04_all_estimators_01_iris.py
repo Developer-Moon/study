@@ -10,23 +10,9 @@ warnings.filterwarnings('ignore') # warning 출력X
 
 # 1. 데이터
 datasets = load_iris()
-print(datasets.DESCR)
-'''
-- class:
-                - Iris-Setosa
-                - Iris-Versicolour
-                - Iris-Virginica
-y값이 3개
-이 3개 꽃 중 하나가 나와야 함
-3중 분류
-'''
-print(datasets.feature_names)
 x = datasets['data']
 y = datasets['target']
-print(x, '\n', y)
-print(x.shape) # (150, 4)
-print(y.shape) # (150,)
-print('y의 라벨값: ', np.unique(y))
+
 
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8,shuffle=True, random_state=9)
