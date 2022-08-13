@@ -27,3 +27,10 @@ for i in models:
     model_name = str(model) # str(model)을 model 가능
     print(model_name, '- acc :', score)
 
+# LinearSVC() - acc : 0.612247532335654
+# SVC() - acc : 0.7155495124910717
+# Perceptron() - acc : 0.6229185132913952
+# LogisticRegression() - acc : 0.6207154720618229
+# KNeighborsClassifier() - acc : 0.9690455495985474
+# DecisionTreeClassifier() - acc : 0.940741633176424
+# RandomForestClassifier() - acc : 0.9556121614760377
