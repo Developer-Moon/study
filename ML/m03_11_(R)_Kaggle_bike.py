@@ -51,3 +51,11 @@ for i in models:
     score = model.score(x_test, y_test)
     model_name = str(model) # str(model)을 model 가능
     print(model_name, '- acc :', score)
+
+# LinearSVR() - acc : 0.3403638767806796
+# SVR() - acc : 0.359680459244206
+# Perceptron() - acc : 0.004591368227731864
+# LinearRegression() - acc : 0.405725214519028
+# KNeighborsRegressor() - acc : 0.6877143881694286
+# DecisionTreeRegressor() - acc : 0.88244729818891
+# RandomForestRegressor() - acc : 0.9480004559769161
