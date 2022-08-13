@@ -50,4 +50,4 @@ for i in models:
     model.fit(x_train, y_train)
     score = model.score(x_test, y_test)
     model_name = str(model) # str(model)을 model 가능
-    print(model_name, '- acc :', score)
+    print(model_name, '- r2 :', score)
