@@ -1,7 +1,7 @@
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score, GridSearchCV, \
     RandomizedSearchCV # 그리드 서치로 파라미터 가져오는 것 중, 랜덤으로 적용해본다
 from sklearn.svm import LinearSVC, SVC    
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import r2_score, accuracy_score
 from sklearn.datasets import load_iris
 import time
 
