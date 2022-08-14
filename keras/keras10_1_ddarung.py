@@ -164,15 +164,15 @@ print('r2 :', r2)
 
 
 
-# y_summit = model.predict(test_set)
+y_summit = model.predict(test_set)
 
-# print(y_summit)
-# print(y_summit.shape) # (715, 1)
+print(y_summit)
+print(y_summit.shape) # (715, 1)
 
-# submission = pd.read_csv('./_data/ddarung/submission.csv')
-# submission['count'] = y_summit
-# print(submission)
-# submission.to_csv('./_data/ddarung/submission2.csv', index = False)
+submission = pd.read_csv('./_data/ddarung/submission.csv')
+submission['count'] = y_summit
+print(submission)
+submission.to_csv('./_data/ddarung/submission2.csv', index = False)
 
 
 # loss : 3058.065673828125
