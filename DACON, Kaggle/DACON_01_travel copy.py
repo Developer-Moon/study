@@ -27,23 +27,10 @@ test  = pd.read_csv(path + 'test.csv', index_col=0)
 # print(train.info())
 # print(test.info())  # ProdTaken 없음
 
-train['Age'].fillna(train['Age'].mean(), inplace=True)                                           # 나이 : 평균
-train['TypeofContact'].fillna('empty', inplace=True)                                             # 제품 인지 방법? 경로 회사초대, 개인 : empty    
-train['DurationOfPitch'].fillna(train['DurationOfPitch'].mean(), inplace=True)                   # 영업사원이 고객에게 제공하는 pt 시간 : 평균 
-train['NumberOfFollowups'].fillna(train['NumberOfFollowups'].mean(), inplace=True)               # pt후 후속조치 건 : 평균
-train['PreferredPropertyStar'].fillna(train['PreferredPropertyStar'].mean(), inplace=True)       # 숙박업소 등급 : 평균
-train['NumberOfTrips'].fillna(train['NumberOfTrips'].mean(), inplace=True)                       # 평균 여행 횟수 : 평균 
-train['NumberOfChildrenVisiting'].fillna(train['NumberOfChildrenVisiting'].mean(), inplace=True) # 5세 미만 어린이 : 평균
-train['MonthlyIncome'].fillna(train['MonthlyIncome'].mean(), inplace=True)                       # 월급 : 평균                         
+train = train.dropna()                      
+test = test.dropna()                      
 
-test['Age'].fillna(test['Age'].mean(), inplace=True)
-test['TypeofContact'].fillna('empty', inplace=True)
-test['DurationOfPitch'].fillna(test['DurationOfPitch'].mean(), inplace=True)
-test['NumberOfFollowups'].fillna(test['NumberOfFollowups'].mean(), inplace=True)
-test['PreferredPropertyStar'].fillna(test['PreferredPropertyStar'].mean(), inplace=True)
-test['NumberOfTrips'].fillna(test['NumberOfTrips'].mean(), inplace=True)
-test['NumberOfChildrenVisiting'].fillna(test['NumberOfChildrenVisiting'].mean(), inplace=True)
-test['MonthlyIncome'].fillna(test['MonthlyIncome'].mean(), inplace=True)  
+
 
 
 # print(train.info())
