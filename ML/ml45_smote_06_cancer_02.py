@@ -82,6 +82,6 @@ score = model.score(x_test, y_test)
 from sklearn.metrics import accuracy_score, f1_score
 # print('model.score :', score)
 print('acc_score :', accuracy_score(y_test, y_predict))
-print('f1_score(macro) :', f1_score(y_test, y_predict)) # 이진에서 는 그냥 다중에서는 에버리지 사용
+print('f1_score(macro) :', f1_score(y_test, y_predict)) # 이진에서 는 그냥 다중에서는 
 
 
