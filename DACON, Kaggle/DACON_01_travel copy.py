@@ -23,6 +23,9 @@ path  = './_data/dacon_travel/'
 train = pd.read_csv(path + 'train.csv', index_col=0)
 test  = pd.read_csv(path + 'test.csv', index_col=0)
 
+
+print(train.describe())
+
 le = LabelEncoder() 
 train_cols = np.array(train.columns)
 
