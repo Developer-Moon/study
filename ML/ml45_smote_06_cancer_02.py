@@ -85,13 +85,3 @@ print('acc_score :', accuracy_score(y_test, y_predict))
 print('f1_score(macro) :', f1_score(y_test, y_predict)) # 이진에서 는 그냥 다중에서는 에버리지 사용
 
 
-
-# 일반
-# acc_score : 0.9649122807017544
-# f1_score(macro) : 0.971830985915493
-
-
-# smote - k_neighbors=50
-# acc_score : 0.9824561403508771
-# f1_score(macro) : 0.9859154929577464
-
