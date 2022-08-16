@@ -23,13 +23,13 @@ parameters = [
 ]                                                                                                # 총 42회 파라미터를 한다
                  
                       
-#2. 모델구성
+#2. 모델구성 
 # model = SVC(C=1, kernel='linear', degree=3)
 model = GridSearchCV(SVC(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1) # 모델에 wrapper 개념으로 사용한다
-                                                           # refit=True면 최적의 파라미터로 훈련,
+##### 그리드 서치는 파라미터가 있을때만 사용가능 #####                                 # refit=True면 최적의 파라미터로 훈련,
                                                            #      =False면 해당 파라미터로 훈련하지 않고 마지막 파라미터로 훈련
                                                            # n_jobs: cpu의 갯수를 몇개 사용할것인지
-
+                                                           
 
 #3. 컴파일, 훈련
 start = time.time()
