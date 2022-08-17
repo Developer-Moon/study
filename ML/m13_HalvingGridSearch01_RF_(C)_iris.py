@@ -1,14 +1,12 @@
-from sklearn.datasets import load_iris
-from sklearn.metrics import accuracy_score
-import numpy as np
-import pandas as pd
 from sklearn.experimental import enable_halving_search_cv
-from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score,\
-    GridSearchCV, HalvingGridSearchCV
+from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold, GridSearchCV, HalvingGridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.datasets import load_iris
 
-# 1. 데이터
+
+#1. 데이터
 datasets = load_iris()
-
 x = datasets['data']
 y = datasets['target']
 
@@ -23,14 +21,15 @@ parameters = [
     {'min_samples_leaf':[3,5,7,10], 'min_samples_split':[2,3,5,10], 'n_jobs':[-1,2,4]},
     {'n_estimators':[100,200], 'max_depth':[6,8,10,12], 'min_samples_split':[2,3,5,10]},
     ]                                                                                       
+            
                       
 #2. 모델구성
-from sklearn.ensemble import RandomForestClassifier
 model = HalvingGridSearchCV(RandomForestClassifier(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1, factor=10)
 # aggressive_elimination=True // 워닝 무시
 # factor=10 (디폴트) // min_resources로 처음에 빼서 사용하고 다음회차부터는 min_resources*factor로 n_resources값을 정해줌
 # 만약 max_resources가 factor*min_resources, 즉 다음회차의 n_resources보다 적어져버리게 된다면 min_resources로만 한번 돌리고 만다
 # 만약 max_resources >= factor*min_resources 이고 그다음 회차도 그렇다면 max_resouces <= factor*min_resources가 될때까지 반복수행한다
+
 
 # 3. 컴파일, 훈련
 import time

@@ -2,8 +2,9 @@ import pandas as pd
 import numpy as np
 import glob
 from sklearn.model_selection import train_test_split
-from xgboost import XGBClassifier, XGBRegressor
 from sklearn.metrics import r2_score, accuracy_score
+from xgboost import XGBClassifier, XGBRegressor
+
 
 
 
@@ -92,8 +93,3 @@ all_input_list = sorted(glob.glob(path + 'train_input/*.csv'))
 all_target_list = sorted(glob.glob(path + 'train_target/*.csv'))
 
 # 5. 제출 준비
-y_submit = model.predict(test)
-
-submission = pd.read_csv(path+'sample_submission.csv', index_col=0)
-submission['ProdTaken'] = y_submit
-submission.to_csv(path + 'sample_submission2.csv', index = True)
