@@ -42,7 +42,6 @@ print(x.shape, y.shape) # (4898, 11) (4898,)
 
 print(np.unique(y, return_counts=True))   # numpy에서 유니크 보는법 (array([3., 4., 5., 6., 7., 8., 9.]), array([  20,  163, 1457, 2198,  880,  175,    5], dtype=int64))
 print(datasets['quality'].value_counts()) # pandas에서 유니크 보는법
-
 # 6    2198
 # 5    1457
 # 7     880

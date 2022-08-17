@@ -1,9 +1,8 @@
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, f1_score
-from sklearn.datasets import load_wine
 from sklearn.ensemble import RandomForestClassifier
-# pip insatll imblearn
-from imblearn.over_sampling import SMOTE 
+from sklearn.datasets import load_wine
+from imblearn.over_sampling import SMOTE # pip insatll imblearn
 import pandas as pd
 import numpy as np
 
@@ -37,12 +36,6 @@ print(pd.Series(y).value_counts())
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=123, stratify=y)
 
 
-# 1    57
-# 0    47
-# 2     6
-
-
-
 #2. 모델구성
 model = RandomForestClassifier()
 
@@ -55,11 +48,9 @@ model.fit(x_train, y_train)
 y_predict = model.predict(x_test)
 score = model.score(x_test, y_test)
 
-from sklearn.metrics import accuracy_score, f1_score
-# print('model.score :', score)
 print('acc_score :', accuracy_score(y_test, y_predict))
 print('f1_score(macro) :', f1_score(y_test, y_predict, average='macro')) # 다중분류에서 쓰기위해 average='macro'사용
-# print('f1_score(micro) :', f1_score(y_test, y_predict, average='micro')) # 
+# print('f1_score(micro) :', f1_score(y_test, y_predict, average='micro')) 
 
 # acc_score : 0.9722222222222222
 # f1_score(macro) : 0.9743209876543211
@@ -67,6 +58,10 @@ print('f1_score(macro) :', f1_score(y_test, y_predict, average='macro')) # 다�
 # 데이터 축소 후(2번 라벨 40개 줄인 후)
 # acc_score : 0.9666666666666667
 # f1_score(macro) : 0.9743209876543211
+
+
+
+
 
 
 print('___________________ smote사용 후 ___________________')
@@ -79,7 +74,7 @@ print(pd.Series(y_train).value_counts())
 # 2    57
 
 
-#2. 평가
+#2. 모델구성
 model = RandomForestClassifier()
 model.fit(x_train, y_train) #test는 평가라서 train만 훈련
 
@@ -87,8 +82,6 @@ model.fit(x_train, y_train) #test는 평가라서 train만 훈련
 y_predict = model.predict(x_test)
 score = model.score(x_test, y_test)
 
-from sklearn.metrics import accuracy_score, f1_score
-# print('model.score :', score)
 print('acc_score :', accuracy_score(y_test, y_predict))
 print('f1_score(macro) :', f1_score(y_test, y_predict, average='macro')) # 다중분류에서 쓰기위해 average='macro'사용
 # print('f1_score(micro) :', f1_score(y_test, y_predict, average='micro')) # 

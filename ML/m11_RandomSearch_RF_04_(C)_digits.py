@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score, GridSearchCV, \
     RandomizedSearchCV # 그리드 서치로 파라미터 가져오는 것 중, 랜덤으로 적용해본다
-from sklearn.svm import LinearSVC, SVC    
+from sklearn.ensemble import RandomForestClassifier   
 from sklearn.metrics import r2_score, accuracy_score
 from sklearn.datasets import load_digits
 import time
@@ -17,14 +17,15 @@ n_splits = 5
 kfold = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=9)
 
 parameters = [
-    {'C':[1,10,100,1000], 'kernel':['linear'], 'degree':[3,4,5]},                                # 12
-    {'C':[1,10,100], 'kernel':['rbf'], 'gamma':[0.001, 0.0001]},                                 # 6
-    {'C':[1,10,100,1000], 'kernel':['sigmoid'], 'gamma':[0.01,0.001,0.0001], 'degree':[3,4]}     # 24
-]                                                                                                # 총 42회 파라미터 해봄
-                
-                      
+    {'n_estimators':[100,200], 'max_depth':[6,8,10,12], 'n_jobs':[-1,2,4]},
+    {'max_depth':[6,8,10,12], 'min_samples_leaf':[3,5,7,10], 'n_jobs':[-1,2,4]},
+    {'min_samples_leaf':[3,5,7,10], 'min_samples_split':[2,3,5,10], 'n_jobs':[-1,2,4]},
+    {'n_estimators':[100,200], 'max_depth':[6,8,10,12], 'min_samples_split':[2,3,5,10]},
+    ]                                                                                       
+                                                                                                        
+                                    
 #2. 모델구성
-model = RandomizedSearchCV(SVC(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1, n_iter=15) # n_iter=10 디폴트, 파라미터 조합 중 열가지만 해본다
+model = RandomizedSearchCV(RandomForestClassifier(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1, n_iter=15) # n_iter=10 디폴트, 파라미터 조합 중 열가지만 해본다
 
 
 # 3. 컴파일, 훈련
@@ -43,10 +44,12 @@ print('acc score :', accuracy_score(y_test, ypred))
 print('best tuned acc :', accuracy_score(y_test, ypred_best))
 print('걸린시간 :', round(end-start,2),'초')
 
-# 최적의 매개변수 : SVC(C=10, gamma=0.0001)
-# 최적의 파라미터 : {'kernel': 'rbf', 'gamma': 0.0001, 'C': 10}
-# best_score : 0.983986643437863
-# model.score : 0.9888888888888889
-# acc score : 0.9888888888888889
-# best tuned acc : 0.9888888888888889
-# 걸린시간 : 1.84 초
+
+# Fitting 5 folds for each of 15 candidates, totalling 75 fits
+# 최적의 매개변수 : RandomForestClassifier(max_depth=12, n_estimators=200)
+# 최적의 파라미터 : {'n_estimators': 200, 'min_samples_split': 2, 'max_depth': 12}
+# best_score : 0.973548199767712
+# model.score : 0.9777777777777777
+# acc score : 0.9777777777777777
+# best tuned acc : 0.9777777777777777
+# 걸린시간 : 5.29 초

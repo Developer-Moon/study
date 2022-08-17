@@ -1,6 +1,6 @@
 import numpy as np
 aaa = np.array([1,2,-10,4,5,6,7,8,50,10,11])
-
+print(aaa)
 def outliers(data_out):
     quartile_1, q2, quartile_3 = np.percentile(data_out, [25, 50, 75])
     
