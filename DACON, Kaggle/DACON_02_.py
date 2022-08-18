@@ -13,6 +13,7 @@ import math
 import time
 import joblib as jb
 
+
 # 1. 데이터
 path = './_data/dacon_antena/'      
 train = pd.read_csv(path + 'train.csv', index_col=0)
