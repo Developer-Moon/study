@@ -1,6 +1,3 @@
-import numpy as np
-import pandas as pd
-
 from sklearn.ensemble import VotingRegressor, RandomForestRegressor
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsRegressor
@@ -12,6 +9,7 @@ from sklearn.datasets import load_boston
 from sklearn.metrics import r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+
 
 # 1. 데이터
 dataset = load_boston()
@@ -33,9 +31,9 @@ xg = XGBRegressor(n_estimators=100, learning_rate=1, max_depth=2, gamma=0, min_c
                    tree_method='gpu_hist', predictor='gpu_predictor', gpu_id=0, random_state=1234,)
 lg = LGBMRegressor()
 cat = CatBoostRegressor(verbose=0)
-# rf = RandomForestRegressor(n_estimators=400, max_depth=None, min_samples_leaf=1 ,min_samples_split=2)
+rf = RandomForestRegressor(n_estimators=400, max_depth=None, min_samples_leaf=1 ,min_samples_split=2)
 
-model = VotingRegressor(estimators=[('XG', xg), ('LG', lg), ('CAT', cat)],
+model = VotingRegressor(estimators=[('XG', xg), ('LG', lg), ('CAT', cat), ('RF', rf)],
                         #  voting='hard'
                          )
 
@@ -49,7 +47,7 @@ print('voting result: ', round(r2, 4))
 
 
 
-classifiers = [xg, lg, cat]
+classifiers = [xg, lg, cat, rf]
 for model2 in classifiers:
     model2.fit(x_train, y_train)
     y_pred = model2.predict(x_test)
