@@ -1,6 +1,6 @@
 from sklearn.preprocessing import StandardScaler, PolynomialFeatures
 from sklearn.linear_model import LinearRegression, LogisticRegression # 회귀, 이진분류
-from sklearn.model_selection import train_test_split, cross_val_score, KFold
+from sklearn.model_selection import train_test_split, cross_val_score, KFold, StratifiedKFold
 from sklearn.pipeline import make_pipeline
 from sklearn.datasets import load_iris
 from sklearn.svm import LinearSVC
@@ -40,8 +40,8 @@ print('CV 엔빵 :', np.mean(scores))
 
 
 # PolynomialFeatures
-pf = PolynomialFeatures(degree=2, include_bias=False) # include_bias=False 첫번째 컬럼 1을 안나오게 한다??
-xp = pf.fit_transform(x)
+pf = PolynomialFeatures(degree=2, include_bias=False) # include_bias=False 데이터를 증폭 시킬때 첫번째에 1을 안 나오게 한다 
+xp = pf.fit_transform(x)                              # 결과에 따라 쓰는 정도의 파라미터로 사용
 print(xp.shape) # (150, 14)
 
 x_train, x_test, y_train, y_test = train_test_split(xp, y, train_size=0.8, random_state=1234, stratify=y)
