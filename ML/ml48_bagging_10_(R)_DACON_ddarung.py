@@ -6,7 +6,7 @@ from xgboost import XGBClassifier, XGBRegressor
 from imblearn.over_sampling import SMOTE # pip insatll imblearn
 #----------------------------------------------------------------------------------------------------------------#
 from sklearn.ensemble import BaggingClassifier, RandomForestClassifier, RandomForestRegressor 
-from sklearn.linear_model import LogisticRegression # (논리회귀)이진분류
+from sklearn.linear_model import LogisticRegression # (논리회귀)이진분류 
 from sklearn.tree import DecisionTreeClassifier
 #----------------------------------------------------------------------------------------------------------------#
 

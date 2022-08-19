@@ -40,6 +40,8 @@ model = VotingRegressor(estimators=[('XG', xg), ('LG', lg), ('CAT', cat), ('RF',
 # 3. 훈련
 model.fit(x_train,y_train)
 
+
+
 # 4. 평가, 예측
 y_pred = model.predict(x_test)
 r2 = r2_score(y_test, y_pred)
