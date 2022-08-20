@@ -1,7 +1,7 @@
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler, PolynomialFeatures
 from sklearn.linear_model import LinearRegression, LogisticRegression # 회귀, 이진분류
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
-from sklearn.pipeline import make_pipeline
+
 from sklearn.datasets import load_boston
 from sklearn.svm import LinearSVC
 import numpy as np
