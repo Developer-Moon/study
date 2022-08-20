@@ -36,40 +36,42 @@ x_test = scaler.transform(x_test)
 
 
 #2. 모델 
-
-
-# 'n_estimators' : [100, 200, 300, 400, 500, 1000] # 디폴트 100 / 1~inf  (inf: 무한대)
-# 'learning_rate': [0.1, 0.2, 0.3, 0.5, 1, 0.01, 0.001] 디폴트 0.3/ 0~1 / eta라고 써도 먹힘
-# 'max_depth': [None, 2, 3, 4, 5, 6, 7, 8, 9, 10] 디폴트 6 / 0~ inf / 정수
-# 'gamma': [0, 1, 2, 3, 4, 5, 7, 10, 100] 디폴트 0/ 0~inf
-# 'min_child_weight': [0, 0.01, 0.001, 0.1, 0.5, 1, 5, 10] 디폴트 1 / 0~inf
-# 'subsample': [0, 0.1, 0.2, 0.3, 0.5, 0.7, 1] 디폴트 1 / 0~1
-# 'colsample_bytree': [0, 0.1, 0.2, 0.3, 0.5, 0.7, 1] 디폴트 1 / 0~1
-# 'colsample_bylevel': [0, 0.1, 0.2, 0.3, 0.5, 0.7, 1] 디폴트 1 / 0~1
-# 'colsample_bynode': [0, 0.1, 0.2, 0.3, 0.5, 0.7, 1] 디폴트 1 / 0~1
-# 'reg_alpha': [0, 0.1, 0.01, 0.001, 1, 2, 10] 디폴트 0/ 0~inf / L1 절대값 가중치 규제 /alpha
-# 'reg_lambda':[0, 0.1, 0.01, 0.001, 1, 2, 10] 디폴트 1/ 0~inf/ L2 제곱 가중치 규제 /lambda
-
 bayesian_params = {
-    'n_estimators' : (100, 1000),   
-    'learning_rate' : (0.001, 0.1),   
-    
-    
+    # 'n_estimators' : (100, 1000),   
+    # 'learning_rate' : (0.001, 0.1),
+    'max_depth' : (2, 10),
+    'gamma' : (0, 100),
+    'min_child_weight' : (0, 10),
+    'subsample' : (0, 1),
+    'colsample_bytree' : (0, 1),
+    'colsample_bylevel' : (0, 1),
+    'colsample_bynode' : (0, 1),
+    'reg_alpha' : (0, 10),
+    'reg_lambda' : (0, 10),
 }
 
-def lgb_hamsu(max_depth, num_leaves, min_child_samples, min_child_weight, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha):
+def lgb_hamsu(max_depth, gamma, ):
+    # num_leaves, min_child_samples, min_child_weight, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha
     params = {
         'n_estimators':500,                              # 무조건 정수형
         'learning_rate':0.02,
         'max_depth':int(round(max_depth)),
-        'num_leaves':int(round(num_leaves)),
-        'min_child_samples':int(round(min_child_samples)),
-        'min_child_weight':int(round(min_child_weight)), # 무조건 정수
-        'subsample':max(min(subsample, 1), 0), # 0~1 사이의 값이 들어와야 한다 1이상이면 1
-        'colsample_bytree':max(min(colsample_bytree, 1), 0),
-        'max_bin':max(int(round(max_bin)), 10), # 10이상의 정수
-        'reg_lambda':max(reg_lambda, 0),        # 무조건 양수만
-        'reg_alpha':max(reg_alpha, 0)           # 무조건 양수만
+                 # 정수만
+        'min_child_weight' : int(round(min_child_weight)),
+        'subsample' : max(min(subsample,1),0),                  # 0~1 사이값만
+        'colsample_bytree' : max(min(colsample_bytree,1),0),
+        'reg_lambda' : max(reg_lambda,0),                       # 양수만
+        'reg_alpha' : max(reg_alpha,0),
+            
+            
+        # 'num_leaves':int(round(num_leaves)),
+        # 'min_child_samples':int(round(min_child_samples)),
+        # 'min_child_weight':int(round(min_child_weight)), # 무조건 정수
+        # 'subsample':max(min(subsample, 1), 0),  # 0~1 사이의 값이 들어와야 한다 1이상이면 1
+        # 'colsample_bytree':max(min(colsample_bytree, 1), 0),
+        # 'max_bin':max(int(round(max_bin)), 10), # 10이상의 정수
+        # 'reg_lambda':max(reg_lambda, 0),        # 무조건 양수만
+        # 'reg_alpha':max(reg_alpha, 0)           # 무조건 양수만
     }
     # *여러개의인자를받겠다     
     # **키워드받겠다(딕셔너리형태)

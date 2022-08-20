@@ -15,7 +15,7 @@ import seaborn as sns
 from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import train_test_split, StratifiedKFold,\
     HalvingRandomSearchCV, RandomizedSearchCV, GridSearchCV
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, RobustScaler
 from imblearn.over_sampling import SMOTE                                     
 
 
@@ -28,7 +28,7 @@ train = pd.read_csv(path + 'train.csv', index_col=0)
 test  = pd.read_csv(path + 'test.csv', index_col=0)
 
 
-print(train.info())
+# print(train.info())
 '''
 0   Age                       1861 non-null   float64
 1   TypeofContact             1945 non-null   object
@@ -69,70 +69,50 @@ ProductPitched = -0.15
 MonthlyIncome  = -0.14
 '''
 
+
+# print(test.isnull().sum())
 train = train.dropna()
-train.drop(['ProdTaken', 'Age', 'ProductPitched'], axis=1, inplace=True)
-test.drop(['Age', 'ProductPitched'], axis=1, inplace=True)
-
-print(test.isnull().sum())
-
 
 test['DurationOfPitch'].fillna(test['DurationOfPitch'].mean(), inplace=True) 
 test['NumberOfFollowups'].fillna(test['NumberOfFollowups'].mean(), inplace=True) 
-test['PreferredPropertyStar'].fillna(test['PreferredPropertyStar'].mean(), inplace=True) 
-test['NumberOfTrips'].fillna(test['NumberOfTrips'].mean(), inplace=True) 
-test['NumberOfChildrenVisiting'].fillna(test['NumberOfChildrenVisiting'].mean(), inplace=True) 
-test['MonthlyIncome'].fillna(test['MonthlyIncome'].mean(), inplace=True) 
+test['PreferredPropertyStar'].fillna(test['PreferredPropertyStar'].median(), inplace=True) 
+test['NumberOfTrips'].fillna(test['NumberOfTrips'].median(), inplace=True) 
+test['NumberOfChildrenVisiting'].fillna(test['NumberOfChildrenVisiting'].median(), inplace=True) 
 
-
-train = np.array(train)
-
-
-
-def outliers(data_out):
-    quartile_1, q2, quartile_3 = np.percentile(data_out, [25, 50, 75])
-    
-    print('1사분위 :', quartile_1)
-    print('q2 :', q2)
-    print('3사분위 :', quartile_3)
-    iqr = quartile_3 - quartile_1
-    print('iqr :', iqr)
-    lower_bound = quartile_1 - (iqr * 1.5)
-    upper_bound = quartile_3 + (iqr * 1.5)
-    
-    return np.where((data_out>upper_bound) | (data_out<lower_bound)) # 괄호안의 만족하는 것을 반환한다
-outliers_loc1 = outliers(test[:,10])
-print('이상치의 위치 :', outliers_loc1)
-
-
-import matplotlib.pyplot as plt
-plt.boxplot(outliers_loc1)
-plt.show()
-
-
-
-
-
-
-
-
-
-'''
-
-x = train.drop(['ProdTaken', 'Age', 'ProductPitched'], axis=1)
-# x = train.drop(['ProdTaken', 'Age', 'ProductPitched'], axis=1) model.score : 0.8757575757575757
-
+x = train.drop(['ProdTaken', 'Age', 'MonthlyIncome'], axis=1)
 y = train['ProdTaken']
+test = test.drop(['Age', 'MonthlyIncome'], axis=1)
 
 
+# print(x.isnull().sum())
+
+# TypeofContact               0
+# CityTier                    0
+# DurationOfPitch             0
+# Occupation                  0
+# Gender                      0
+# NumberOfPersonVisiting      0
+# NumberOfFollowups           0
+# ProductPitched              0
+# PreferredPropertyStar       0
+# MaritalStatus               0
+# NumberOfTrips               0
+# Passport                    0
+# PitchSatisfactionScore      0
+# OwnCar                      0
+# NumberOfChildrenVisiting    0
+# Designation                 0
 
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, shuffle=True, random_state=702, stratify=y)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.9, shuffle=True, random_state=40, stratify=y)
 
-                                                                                
+                                                                       
                                                                                                         
                                                                                                         
 #2. 모델구성
-model = XGBClassifier(tree_method='gpu_hist', predictor='gpu_predictor', gpu_id=0)
+model = XGBClassifier(tree_method='gpu_hist', predictor='gpu_predictor', gpu_id=0,
+                      )
+
 # model = RandomizedSearchCV(RandomForestClassifier(), parameters, cv=kfold, verbose=1, refit=True, n_jobs=-1, n_iter=15)
 
 
@@ -170,4 +150,3 @@ print('accuracy_score :', acc)
 # accuracy_score : 0.8900255754475703
 
 
-'''
