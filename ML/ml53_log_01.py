@@ -29,6 +29,7 @@ x_test = scaler.transform(x_test)
 
 
 
+
 #2. 모델구성
 model = LinearRegression()
 # model = RandomForestRegressor()
