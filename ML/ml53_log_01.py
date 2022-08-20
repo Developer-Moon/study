@@ -10,11 +10,11 @@ import warnings
 
 warnings.filterwarnings('ignore')
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-import matplotlib.pyplot as plt
+
 
 from sklearn.metrics import r2_score, accuracy_score
 
-
+import matplotlib.pyplot as plt
 
 # 데이터가 크면 로그변환 해도 좋을때가 있다
 
