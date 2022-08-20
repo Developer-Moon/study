@@ -16,7 +16,7 @@ from sklearn.metrics import r2_score, accuracy_score
 
 import matplotlib.pyplot as plt
 
-# 데이터가 크면 로그변환 해도 좋을때가 있다
+# 데이터에따라 로그변환이 스케일러보다 좋을때가 있다
 
 #1. 데이터
 datasets = load_boston()
