@@ -5,17 +5,23 @@ from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from xgboost import XGBRegressor, XGBClassifier
 from lightgbm import LGBMClassifier, LGBMRegressor
 from catboost import CatBoostClassifier, CatBoostRegressor
+import pandas as pd
 import warnings
 warnings.filterwarnings('ignore')
-from sklearn.datasets import load_boston
 #----------------------------------------------------------------------------------------#
 from sklearn.preprocessing import QuantileTransformer, PowerTransformer # 이상치에 자유롭다
 #----------------------------------------------------------------------------------------#
 
 
 #1. 데이터
-datasets = load_boston()
-x, y = datasets.data, datasets.target
+path = './_data/ddarung/'
+train_set = pd.read_csv(path + 'train.csv',index_col=0)
+test_set = pd.read_csv(path + 'test.csv', index_col=0)
+
+train_set = train_set.fillna(0)
+
+x = train_set.drop(['count'], axis=1)
+y = train_set['count']
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=1234)
 
@@ -48,28 +54,28 @@ for i in scalers:
         else:
             print(str(model).replace('()',' -'), str(scaler).replace('()',' :'), round(result, 4))    
         
-# LGBMRegressor - StandardScaler : 0.9226
-# CatBoostClassifier - StandardScaler : 0.9245
-# XGBClassifier - StandardScaler : 0.9112
-# RandomForestRegressor - StandardScaler : 0.9125
-# LGBMRegressor - MinMaxScaler : 0.9246
-# CatBoostClassifier - MinMaxScaler : 0.9245
-# XGBClassifier - MinMaxScaler : 0.9111
-# RandomForestRegressor - MinMaxScaler : 0.9122
-# LGBMRegressor - MaxAbsScaler : 0.9246
-# CatBoostClassifier - MaxAbsScaler : 0.9245
-# XGBClassifier - MaxAbsScaler : 0.9111
-# RandomForestRegressor - MaxAbsScaler : 0.9127
-# LGBMRegressor - RobustScaler : 0.9186
-# CatBoostClassifier - RobustScaler : 0.9245
-# XGBClassifier - RobustScaler : 0.9112
-# RandomForestRegressor - RobustScaler : 0.9188
-# LGBMRegressor - QuantileTransformer : 0.9246
-# CatBoostClassifier - QuantileTransformer : 0.9248
-# XGBClassifier - QuantileTransformer : 0.9116
-# RandomForestRegressor - QuantileTransformer : 0.9175
-# LGBMRegressor - PowerTransformer : 0.9196
-# CatBoostClassifier - PowerTransformer : 0.9247
-# XGBClassifier - PowerTransformer : 0.9116
-# RandomForestRegressor - PowerTransformer : 0.9161
+# LGBMRegressor - StandardScaler : 0.794
+# CatBoostClassifier - StandardScaler : 0.7999
+# XGBClassifier - StandardScaler : 0.7677
+# RandomForestRegressor - StandardScaler : 0.7867
+# LGBMRegressor - MinMaxScaler : 0.7849
+# CatBoostClassifier - MinMaxScaler : 0.7997
+# XGBClassifier - MinMaxScaler : 0.7677
+# RandomForestRegressor - MinMaxScaler : 0.7891
+# LGBMRegressor - MaxAbsScaler : 0.7849
+# CatBoostClassifier - MaxAbsScaler : 0.7997
+# XGBClassifier - MaxAbsScaler : 0.7677
+# RandomForestRegressor - MaxAbsScaler : 0.7853
+# LGBMRegressor - RobustScaler : 0.7899
+# CatBoostClassifier - RobustScaler : 0.7997
+# XGBClassifier - RobustScaler : 0.7682
+# RandomForestRegressor - RobustScaler : 0.7892
+# LGBMRegressor - QuantileTransformer : 0.7848
+# CatBoostClassifier - QuantileTransformer : 0.7988
+# XGBClassifier - QuantileTransformer : 0.773
+# RandomForestRegressor - QuantileTransformer : 0.7929
+# LGBMRegressor - PowerTransformer : 0.7917
+# CatBoostClassifier - PowerTransformer : 0.7989
+# XGBClassifier - PowerTransformer : 0.772
+# RandomForestRegressor - PowerTransformer : 0.7806
 # 진짜 도덕책이네...

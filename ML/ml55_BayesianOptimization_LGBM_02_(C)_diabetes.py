@@ -8,8 +8,8 @@ warnings.filterwarnings('ignore')
 from bayes_opt import BayesianOptimization
 from lightgbm import LGBMRegressor
 #------------------------------------------#
-
 # 알고리즘으로 파라미터를 찾는데 - 이 알고리즘을 신뢰할 수 있냐 없냐 이걸 또 나온 파라미터로 돌려서 확인한다
+
 
 #1. 데이터
 datasets = load_diabetes()
@@ -25,15 +25,15 @@ x_test = scaler.transform(x_test)
 
 #2. 모델 
 bayesian_params = {
-    'max_depth' : (6, 16),   
+    'max_depth' : (8, 10),   
     'num_leaves' : (24, 64),
-    'min_child_samples' :(10, 200),
-    'min_child_weight' :(1, 50),
+    'min_child_samples' :(10, 50),
+    'min_child_weight' :(2, 10),
     'subsample' : (0.5, 1),
-    'colsample_bytree' : (0.5, 1),
-    'max_bin' : (10, 500),
-    'reg_lambda': (0.001, 10),
-    'reg_alpha' : (0.01, 50)
+    'colsample_bytree' : (0.5, 0.6),
+    'max_bin' : (450, 500),
+    'reg_lambda': (0.2, 8),
+    'reg_alpha' : (0.01, 20)
 }
 
 
@@ -79,3 +79,9 @@ print(lgb_bo.max)
 #  'params': {'colsample_bytree': 0.5580545971517282, 'max_bin': 352.3787406911987, 'max_depth': 8.622177408360672,
 #             'min_child_samples': 30.1967820112652, 'min_child_weight': 6.626825838545455, 'num_leaves': 30.428571403804987,
 #             'reg_alpha': 3.2579282045866855, 'reg_lambda': 6.687917975673115, 'subsample': 0.9256921192141869}}
+
+
+# {'target': 0.6244620004074347,
+#  'params': {'colsample_bytree': 0.5, 'max_bin': 467.5279426141011, 'max_depth': 10.0, 'min_child_samples': 26.140458826519446,
+# 'min_child_weight': 15.370614753704304, 'num_leaves': 44.36553407936451, 'reg_alpha': 10.524827466978067,
+# 'reg_lambda': 0.5761097710580022, 'subsample': 0.5}}

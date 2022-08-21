@@ -1,13 +1,12 @@
-from sklearn.preprocessing import StandardScaler, PolynomialFeatures
-from sklearn.linear_model import LinearRegression, LogisticRegression # 회귀, 이진분류
-from sklearn.model_selection import train_test_split, cross_val_score, KFold
+from sklearn.model_selection import train_test_split, cross_val_score, KFold, StratifiedKFold
+from sklearn.preprocessing import MinMaxScaler, PolynomialFeatures
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import make_pipeline
-from sklearn.datasets import fetch_covtype
-from sklearn.svm import LinearSVC
 import pandas as pd
 import numpy as np
 import warnings
 warnings.filterwarnings('ignore')
+
 
 
 #1. 데이터
@@ -38,46 +37,51 @@ kfold = KFold(n_splits=5, shuffle=True, random_state=1234)
 
 
 #2. 모델구성
-model = make_pipeline(StandardScaler(), LogisticRegression())
+model = make_pipeline(MinMaxScaler(), RandomForestClassifier())
 model.fit(x_train, y_train)
 
 
 
 #3 훈련, 결과, 예측
 scores = cross_val_score(model, x_train, y_train, cv=kfold, scoring='accuracy')
-print('일반 score :', model.score(x_test, y_test)) 
-print('CV :', scores)
-print('CV 엔빵 :', np.mean(scores))
+
+print(x.shape)
+print('Normal score :', model.score(x_test, y_test)) 
+print('CV score:', scores)
+print('CV score mean :', np.mean(scores))
 
 
 
 
 
-
-
-
-# PolynomialFeatures
-pf = PolynomialFeatures(degree=2, include_bias=False) # include_bias=False 첫번째 컬럼 1을 안나오게 한다??
-xp = pf.fit_transform(x)
-print(xp.shape) # (150, 14)
+# PolynomialFeatures -------------------------------------------------------------------------------------------------
+pf = PolynomialFeatures(degree=2, include_bias=False) # include_bias=False 데이터를 증폭 시킬때 첫번째 열에 1을 안 나오게 한다 
+xp = pf.fit_transform(x)                              # 결과에 따라 쓰는 정도의 파라미터로 사용
+print(xp.shape)
 
 x_train, x_test, y_train, y_test = train_test_split(xp, y, train_size=0.8, random_state=1234, stratify=y)
 
-kfold = KFold(n_splits=5, shuffle=True, random_state=1234)
+
 
 #2. 모델구성
-model = make_pipeline(StandardScaler(), LogisticRegression())
+model = make_pipeline(MinMaxScaler(), RandomForestClassifier())
 model.fit(x_train, y_train)
+
+
+
+#3 훈련, 결과, 예측
 scores = cross_val_score(model, x_train, y_train, cv=kfold, scoring='accuracy')
 
-print('폴리 score :', model.score(x_test, y_test))
-print('폴리CV :', scores)
-print('폴리CV 엔빵 :', np.mean(scores))
+print('PolynomialFeatures score :', model.score(x_test, y_test))
+print('PolynomialFeatures CV score :', scores)
+print('PolynomialFeatures CV score mean :', np.mean(scores))
 
-# 일반 score : 0.8100558659217877
-# CV : [0.79020979 0.8041958  0.76056338 0.77464789 0.77464789]
-# CV 엔빵 : 0.7808529498670344
-# (891, 35)
-# 폴리 score : 0.8044692737430168
-# 폴리CV : [0.84615385 0.84615385 0.8028169  0.8028169  0.82394366]
-# 폴리CV 엔빵 : 0.8243770314192849
+# shape - (891, 7)
+# Normal score : 0.7988826815642458
+# CV score: [0.8041958  0.83216783 0.83098592 0.8028169  0.78873239]
+# CV score mean : 0.8117797695262483
+#  -------------------------------------------------------------------------------------
+# shape - (891, 35)
+# PolynomialFeatures score : 0.770949720670391
+# PolynomialFeatures CV score : [0.83216783 0.83916084 0.78873239 0.78169014 0.84507042]
+# PolynomialFeatures CV score mean : 0.8173643258150299

@@ -1,31 +1,22 @@
-param_bounds = {'x1' : (-1, 5), # 딕셔너리 형태
+from bayes_opt import BayesianOptimization # pip install bayesian_Optimization
+
+
+param_bounds = {'x1' : (-1, 5),       # 딕셔너리 형태
                 'x2' : (0,4)}
 
 def eval_function(x1, x2):
-    return -x1 **2 - (x2 -2) **2 + 10 # 최대값
+    return -x1 **2 - (x2 -2) **2 + 10 # 최대값 10
 
-from bayes_opt import BayesianOptimization # pip install bayesian_Optimization
 
-optimizer = BayesianOptimization(f=eval_function,      # 파라미터를 찾고싶은 함수 : model에 평가 지표로 나온 값?
-                                 pbounds=param_bounds, # 그 함수의 들어가는 파라미터를 딕셔너리 형태로 넣는다
+optimizer = BayesianOptimization(f=eval_function,        # 파라미터를 찾고싶은 함수 : model에 평가 지표로 나온 값?
+                                 pbounds=param_bounds,   # 그 함수의 들어가는 파라미터를 딕셔너리 형태로 넣는다
                                  random_state=1234)
-optimizer.maximize(init_points=2,# init_points=초기치를 잡아주는 것       # maximize - 가장높은것, 
-                   n_iter=20    # 20번 돌릴꺼다
+
+optimizer.maximize(init_points=2, # init_points=초기치를 잡아주는 것       # maximize - 가장높은것, 
+                   n_iter=20      # 20번 돌릴꺼다
                    ) 
 
 print(optimizer.max) # {'target': 9.999835918969607, 'params': {'x1': 0.00783279093916099, 'x2': 1.9898644972252864}}
-
-
-
-
-
-
-
-
-
-
-
-
 
 # |   iter    |  target   |    x1     |    x2     |
 # -------------------------------------------------

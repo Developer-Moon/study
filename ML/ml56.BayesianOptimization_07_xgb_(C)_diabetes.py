@@ -37,31 +37,26 @@ x_test = scaler.transform(x_test)
 
 #2. 모델 
 bayesian_params = {
-    # 'n_estimators' : (100, 1000),   
-    # 'learning_rate' : (0.001, 0.1),
-    'max_depth' : (2, 10),
-    'gamma' : (0, 100),
-    'min_child_weight' : (0, 10),
-    'subsample' : (0, 1),
-    'colsample_bytree' : (0, 1),
-    'colsample_bylevel' : (0, 1),
-    'colsample_bynode' : (0, 1),
-    'reg_alpha' : (0, 10),
-    'reg_lambda' : (0, 10),
+    'colsample_bytree' : (0.5, 0.7),
+    'max_depth' : (10,18),
+    'min_child_weight' : (30, 35),
+    'reg_alpha' : (43, 47),
+    'reg_lambda' : (0.001, 0.01),
+    'subsample' : (0.4, 0.7)
 }
 
-def lgb_hamsu(max_depth, gamma, ):
-    # num_leaves, min_child_samples, min_child_weight, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha
-    params = {
-        'n_estimators':500,                              # 무조건 정수형
-        'learning_rate':0.02,
-        'max_depth':int(round(max_depth)),
-                 # 정수만
+
+
+def xgb_function(max_depth, min_child_weight,subsample, colsample_bytree, reg_lambda,reg_alpha):
+    params ={
+        'n_estimators' : 500, 'learning_rate' : 0.02,
+        'max_depth' : int(round(max_depth)),                    # 정수만
         'min_child_weight' : int(round(min_child_weight)),
         'subsample' : max(min(subsample,1),0),                  # 0~1 사이값만
         'colsample_bytree' : max(min(colsample_bytree,1),0),
         'reg_lambda' : max(reg_lambda,0),                       # 양수만
         'reg_alpha' : max(reg_alpha,0),
+    }
             
             
         # 'num_leaves':int(round(num_leaves)),
@@ -72,7 +67,7 @@ def lgb_hamsu(max_depth, gamma, ):
         # 'max_bin':max(int(round(max_bin)), 10), # 10이상의 정수
         # 'reg_lambda':max(reg_lambda, 0),        # 무조건 양수만
         # 'reg_alpha':max(reg_alpha, 0)           # 무조건 양수만
-    }
+    
     # *여러개의인자를받겠다     
     # **키워드받겠다(딕셔너리형태)
     
@@ -89,7 +84,7 @@ def lgb_hamsu(max_depth, gamma, ):
     
     return result
 
-lgb_bo = BayesianOptimization(f=lgb_hamsu,
+lgb_bo = BayesianOptimization(f=xgb_function,
                               pbounds=bayesian_params,
                               random_state=1234)
 
