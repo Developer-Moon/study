@@ -2,26 +2,14 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, accuracy_score
 from sklearn.datasets import load_iris
-
 from bayes_opt import BayesianOptimization
-from lightgbm import LGBMRegressor
 from xgboost import XGBClassifier, XGBRegressor
-import numpy as np
-
 import warnings
 warnings.filterwarnings('ignore')
 
 
-
 # LGBMRegressor도 하고
 # XGBoost나 cat머시기로 과제하기 
-
-
-
-
-
-
-
 
 #1. 데이터
 datasets = load_iris()
@@ -44,8 +32,6 @@ bayesian_params = {
     'reg_lambda' : (0.001, 0.01),
     'subsample' : (0.4, 0.7)
 }
-
-
 
 def xgb_function(max_depth, min_child_weight,subsample, colsample_bytree, reg_lambda,reg_alpha):
     params ={

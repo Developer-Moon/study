@@ -6,7 +6,6 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 import pandas as pd 
-import numpy as np
 from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
 from catboost import CatBoostClassifier
@@ -24,16 +23,10 @@ x_test = scaler.transform(x_test)
 
 #2. 모델구성
 xg = XGBClassifier()
-
-
-
-
 lg = LGBMClassifier()
 cat = CatBoostClassifier(verbose=0)
 
-model = VotingClassifier(estimators=[('XG', xg), ('LG', lg), ('CAT', cat)],
-                         voting='soft' # hard 
-                         )
+model = VotingClassifier(estimators=[('XG', xg), ('LG', lg), ('CAT', cat)], voting='soft') # voting='hard'
 
 #3. 훈련
 model.fit(x_train, y_train)
@@ -44,7 +37,7 @@ model.fit(x_train, y_train)
 y_predict = model.predict(x_test)
 
 score = accuracy_score(y_test, y_predict)
-print('보팅결과 :', round(score, 4)) # 보팅결과 : 0.9912
+print('보팅결과 :', round(score, 4))
 
 calssifiers =[xg, lg, cat]
 for model2 in calssifiers:

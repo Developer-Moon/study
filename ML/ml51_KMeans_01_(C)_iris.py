@@ -1,6 +1,6 @@
-from sklearn.datasets import load_iris
 from sklearn.cluster import KMeans # 비지도학습 y값이 필요없다 - 회귀는 X
 from sklearn.metrics import accuracy_score
+from sklearn.datasets import load_iris
 import pandas as pd
 import numpy as np
 
@@ -11,7 +11,7 @@ datasets = load_iris()
 df = pd.DataFrame(datasets.data, columns=[datasets.feature_names])
 
 datasets.target = np.array(datasets.target)
-print(np.unique(datasets.target, return_counts=True))
+print(np.unique(datasets.target, return_counts=True)) # (array([0, 1, 2]), array([50, 50, 50], dtype=int64))
 
 kmeans = KMeans(n_clusters=3, random_state=1234) # n_clusters=3 라벨의 개수
 kmeans.fit(df)

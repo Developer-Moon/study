@@ -1,6 +1,6 @@
-from sklearn.datasets import load_breast_cancer
-from sklearn.cluster import KMeans # 비지도학습 y값이 필요없다 
+from sklearn.cluster import KMeans # 비지도학습 y값이 필요없다 - 회귀는 X
 from sklearn.metrics import accuracy_score
+from sklearn.datasets import load_breast_cancer
 import pandas as pd
 import numpy as np
 
@@ -11,35 +11,15 @@ datasets = load_breast_cancer()
 df = pd.DataFrame(datasets.data, columns=[datasets.feature_names])
 
 datasets.target = np.array(datasets.target)
-print(np.unique(datasets.target, return_counts=True))
-print(datasets.data.shape)
+print(np.unique(datasets.target, return_counts=True)) # (array([0, 1]), array([212, 357], dtype=int64))
 
-kmeans = KMeans(n_clusters=2, random_state=100000) # n_clusters=3 라벨의 개수
-kmeans.fit(df) # (569, 30)
-
-print(kmeans.labels_) # ->  생성된 y값
-# [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-#  0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-#  1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 1 2 2 2 2 1 2 2 2 2
-#  2 2 1 1 2 2 2 2 1 2 1 2 1 2 2 1 1 2 2 2 2 2 1 2 2 2 2 1 2 2 2 1 2 2 2 1 2
-#  2 1]
-
-print(datasets.target) # ->  원래의 y값
-# [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-#  0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-#  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2
-#  2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-#  2 2]
-
+kmeans = KMeans(n_clusters=2, random_state=824)
+kmeans.fit(df)
 
 df['clusters'] = kmeans.labels_
 df['target'] = datasets.target
 x1 = df['clusters']
 x2 = df['target']
 
-print(df)
-
-print(accuracy_score(x1, x2)) # 0.14586994727592267
-
-
+print(accuracy_score(x1, x2)) # 0.8541300527240774
 
