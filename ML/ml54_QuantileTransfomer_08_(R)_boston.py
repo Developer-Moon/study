@@ -41,35 +41,29 @@ for i in scalers:
         y_predict = model.predict(x_test)
         result = r2_score(y_test, y_predict)   
         
-        if str(model).startswith('<cat'):
-            print('CatBoostClassifier -', str(scaler).replace('()',' :'), round(result, 4))
-        elif str(model).startswith('XGB'):
-            print('XGBClassifier -', str(scaler).replace('()',' :'), round(result, 4))
-        else:
-            print(str(model).replace('()',' -'), str(scaler).replace('()',' :'), round(result, 4))    
+        print(i.__class__.__name__, '-', model.__class__.__name__, ':', round(result, 4))
         
-# LGBMRegressor - StandardScaler : 0.9226
-# CatBoostClassifier - StandardScaler : 0.9245
-# XGBClassifier - StandardScaler : 0.9112
-# RandomForestRegressor - StandardScaler : 0.9125
-# LGBMRegressor - MinMaxScaler : 0.9246
-# CatBoostClassifier - MinMaxScaler : 0.9245
-# XGBClassifier - MinMaxScaler : 0.9111
-# RandomForestRegressor - MinMaxScaler : 0.9122
-# LGBMRegressor - MaxAbsScaler : 0.9246
-# CatBoostClassifier - MaxAbsScaler : 0.9245
-# XGBClassifier - MaxAbsScaler : 0.9111
-# RandomForestRegressor - MaxAbsScaler : 0.9127
-# LGBMRegressor - RobustScaler : 0.9186
-# CatBoostClassifier - RobustScaler : 0.9245
-# XGBClassifier - RobustScaler : 0.9112
-# RandomForestRegressor - RobustScaler : 0.9188
-# LGBMRegressor - QuantileTransformer : 0.9246
-# CatBoostClassifier - QuantileTransformer : 0.9248
-# XGBClassifier - QuantileTransformer : 0.9116
-# RandomForestRegressor - QuantileTransformer : 0.9175
-# LGBMRegressor - PowerTransformer : 0.9196
-# CatBoostClassifier - PowerTransformer : 0.9247
-# XGBClassifier - PowerTransformer : 0.9116
-# RandomForestRegressor - PowerTransformer : 0.9161
-# 진짜 도덕책이네...
+# StandardScaler - LGBMRegressor : 0.9226
+# StandardScaler - CatBoostRegressor : 0.9245
+# StandardScaler - XGBRegressor : 0.9112
+# StandardScaler - RandomForestRegressor : 0.9138
+# MinMaxScaler - LGBMRegressor : 0.9246
+# MinMaxScaler - CatBoostRegressor : 0.9245
+# MinMaxScaler - XGBRegressor : 0.9111
+# MinMaxScaler - RandomForestRegressor : 0.9184
+# MaxAbsScaler - LGBMRegressor : 0.9246
+# MaxAbsScaler - CatBoostRegressor : 0.9245
+# MaxAbsScaler - XGBRegressor : 0.9111
+# MaxAbsScaler - RandomForestRegressor : 0.9127
+# RobustScaler - LGBMRegressor : 0.9186
+# RobustScaler - CatBoostRegressor : 0.9245
+# RobustScaler - XGBRegressor : 0.9112
+# RobustScaler - RandomForestRegressor : 0.9161
+# QuantileTransformer - LGBMRegressor : 0.9246
+# QuantileTransformer - CatBoostRegressor : 0.9248
+# QuantileTransformer - XGBRegressor : 0.9116
+# QuantileTransformer - RandomForestRegressor : 0.9117
+# PowerTransformer - LGBMRegressor : 0.9196
+# PowerTransformer - CatBoostRegressor : 0.9247
+# PowerTransformer - XGBRegressor : 0.9116
+# PowerTransformer - RandomForestRegressor : 0.9203

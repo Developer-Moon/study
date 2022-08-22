@@ -117,8 +117,8 @@ bayesian_params = {
     'subsample' : (0.4, 0.7)
 }
 
-{'target': 0.793939393939394, 'params': {'colsample_bytree': 0.5383038900757784, 'max_depth': 14.976870168318655, 'min_child_weight': 32.18863869503557, 'reg_alpha': 46.14143433485508,
-                                         'reg_lambda': 0.008019782273069233, 'subsample': 0.4817777815847925}}
+# {'target': 0.793939393939394, 'params': {'colsample_bytree': 0.5383038900757784, 'max_depth': 14.976870168318655, 'min_child_weight': 32.18863869503557, 'reg_alpha': 46.14143433485508,
+#                                          'reg_lambda': 0.008019782273069233, 'subsample': 0.4817777815847925}}
 
 
 

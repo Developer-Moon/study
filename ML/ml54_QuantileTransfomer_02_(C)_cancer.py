@@ -41,35 +41,29 @@ for i in scalers:
         y_predict = model.predict(x_test)
         result = accuracy_score(y_test, y_predict)   
         
-        if str(model).startswith('<cat'):
-            print('CatBoostClassifier -', str(scaler).replace('()',' :'), round(result, 4))
-        elif str(model).startswith('XGB'):
-            print('XGBClassifier -', str(scaler).replace('()',' :'), round(result, 4))
-        else:
-            print(str(model).replace('()',' -'), str(scaler).replace('()',' :'), round(result, 4))    
+        print(i.__class__.__name__, '-', model.__class__.__name__, ':', round(result, 4))
         
-# LGBMClassifier - StandardScaler : 0.9386
-# CatBoostClassifier - StandardScaler : 0.9386
-# XGBClassifier - StandardScaler : 0.9386
-# RandomForestClassifier - StandardScaler : 0.9386
-# LGBMClassifier - MinMaxScaler : 0.9298
-# CatBoostClassifier - MinMaxScaler : 0.9386
-# XGBClassifier - MinMaxScaler : 0.9386
-# RandomForestClassifier - MinMaxScaler : 0.9298
-# LGBMClassifier - MaxAbsScaler : 0.9298
-# CatBoostClassifier - MaxAbsScaler : 0.9386
-# XGBClassifier - MaxAbsScaler : 0.9386
-# RandomForestClassifier - MaxAbsScaler : 0.9298
-# LGBMClassifier - RobustScaler : 0.9386
-# CatBoostClassifier - RobustScaler : 0.9386
-# XGBClassifier - RobustScaler : 0.9386
-# RandomForestClassifier - RobustScaler : 0.9123
-# LGBMClassifier - QuantileTransformer : 0.9298
-# CatBoostClassifier - QuantileTransformer : 0.9386
-# XGBClassifier - QuantileTransformer : 0.9386
-# RandomForestClassifier - QuantileTransformer : 0.9211
-# LGBMClassifier - PowerTransformer : 0.9386
-# CatBoostClassifier - PowerTransformer : 0.9386
-# XGBClassifier - PowerTransformer : 0.9386
-# RandomForestClassifier - PowerTransformer : 0.9035
-# 진짜 도덕책이네...
+# StandardScaler - LGBMClassifier : 0.9386
+# StandardScaler - CatBoostClassifier : 0.9386
+# StandardScaler - XGBClassifier : 0.9386
+# StandardScaler - RandomForestClassifier : 0.9123
+# MinMaxScaler - LGBMClassifier : 0.9298
+# MinMaxScaler - CatBoostClassifier : 0.9386
+# MinMaxScaler - XGBClassifier : 0.9386
+# MinMaxScaler - RandomForestClassifier : 0.9123
+# MaxAbsScaler - LGBMClassifier : 0.9298
+# MaxAbsScaler - CatBoostClassifier : 0.9386
+# MaxAbsScaler - XGBClassifier : 0.9386
+# MaxAbsScaler - RandomForestClassifier : 0.9035
+# RobustScaler - LGBMClassifier : 0.9386
+# RobustScaler - CatBoostClassifier : 0.9386
+# RobustScaler - XGBClassifier : 0.9386
+# RobustScaler - RandomForestClassifier : 0.9298
+# QuantileTransformer - LGBMClassifier : 0.9298
+# QuantileTransformer - CatBoostClassifier : 0.9386
+# QuantileTransformer - XGBClassifier : 0.9386
+# QuantileTransformer - RandomForestClassifier : 0.9386
+# PowerTransformer - LGBMClassifier : 0.9386
+# PowerTransformer - CatBoostClassifier : 0.9386
+# PowerTransformer - XGBClassifier : 0.9386
+# PowerTransformer - RandomForestClassifier : 0.9298

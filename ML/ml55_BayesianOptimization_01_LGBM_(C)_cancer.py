@@ -75,6 +75,8 @@ lgb_bo = BayesianOptimization(f=lgb_hamsu,
 lgb_bo.maximize(init_points=5, n_iter=100)
 
 print(lgb_bo.max)
+
+
 # {'target': 0.6190694981953919,
 #  'params': {'colsample_bytree': 0.5580545971517282, 'max_bin': 352.3787406911987, 'max_depth': 8.622177408360672,
 #             'min_child_samples': 30.1967820112652, 'min_child_weight': 6.626825838545455, 'num_leaves': 30.428571403804987,
