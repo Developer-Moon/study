@@ -37,11 +37,8 @@ for step in range(21) :
     loss_history.append(loss_v)
     
     
-############################ [실습] R2로 맹그려봐!!! ############################
 y_predict = x_test * w_v
-
 print('y예측 :', y_predict)
-
 
 r2 = r2_score(y_test, y_predict)
 print('r2 :', r2)

@@ -18,27 +18,3 @@ sess = tf.compat.v1.Session()
 sess.run(tf.global_variables_initializer())
 print(sess.run(W))
 print(sess.run(b))
-
-
-'''
-#2. 모델구성
-hypothesis = x * W + b
-
-
-
-#3-1 컴파일
-loss = tf.reduce_mean(tf.square(hypothesis - y))
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
-train = optimizer.minimize(loss)
-
-
-
-#3-2 훈련
-with tf.compat.v1.Session() as sess : # sess = tf.compat.v1.Session() 대신 with문을 써서 마지막에 sess close()를 쓰지 않는다
-    sess.run(tf.global_variables_initializer())
-    epochs = 4001
-    for step in range(epochs):
-        sess.run(train)
-        if step % 20 == 0:
-            print(step, sess.run(loss), sess.run(W), sess.run(b))
-'''        

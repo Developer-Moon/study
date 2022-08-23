@@ -11,17 +11,14 @@ W = tf.Variable(tf.random_normal([1]), dtype=tf.float32)
 b = tf.Variable(tf.random_normal([1]), dtype=tf.float32) 
 
 
-
 #2. 모델구성
 hypothesis = x * W + b
-
 
 
 #3-1 컴파일
 loss = tf.reduce_mean(tf.square(hypothesis - y))
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
 train = optimizer.minimize(loss)
-
 
 
 #3-2 훈련
@@ -36,4 +33,3 @@ with tf.compat.v1.Session() as sess : # sess = tf.compat.v1.Session() 대신 wit
         if step %20 == 0:
             # print(step, sess.run(loss), sess.run(W), sess.run(b))
             print(step, loss_val, W_val, b_val)
-       

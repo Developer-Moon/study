@@ -41,5 +41,5 @@ for step in range(epochs): # epochs 2001번
     if step %20 == 0:      # 20번에 1번만 출력 verbose 조절, 훈련수를 20으로 나눴을때 0이면 출력한다 
         print(step, sess.run(loss), sess.run(W), sess.run(b))
         
-sess.close()               # 끝날때 마다 세션을 닫아줘야한다(에러방지)
+sess.close()               # 끝날때 마다 세션을 닫아줘야한다.
 

@@ -11,17 +11,14 @@ W = tf.Variable(333, dtype=tf.float32)
 b = tf.Variable(77, dtype=tf.float32)
 
 
-
 #2. 모델구성
 hypothesis = x * W + b
-
 
 
 #3-1 컴파일
 loss = tf.reduce_mean(tf.square(hypothesis - y))
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
 train = optimizer.minimize(loss)
-
 
 
 #3-2 훈련
