@@ -35,7 +35,7 @@ for step in range(21) :
     
     w_history.append(w_v)
     loss_history.append(loss_v)
-    ㄴ
+    ㄴㄴ
     
 ############################ [실습] R2로 맹그려봐!!! ############################
 y_predict = x_test * w_v
