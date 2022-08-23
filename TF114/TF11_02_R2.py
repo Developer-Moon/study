@@ -49,4 +49,4 @@ print('r2 :', r2)
 mae = mean_absolute_error(y_test, y_predict)
 print('mae :', mae)
 
-sess.close()1
+sess.close()
