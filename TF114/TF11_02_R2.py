@@ -43,7 +43,7 @@ y_predict = x_test * w_v
 print('y예측 :', y_predict)
 
 
-r2 = r2_score(y_test, y_predict)
+r2 = r2_score(y_test, y_predict)ㄴ
 print('r2 :', r2)
 
 mae = mean_absolute_error(y_test, y_predict)
