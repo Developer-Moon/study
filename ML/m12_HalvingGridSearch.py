@@ -4,8 +4,6 @@ from sklearn.model_selection import train_test_split, cross_val_score, Stratifie
 from sklearn.svm import LinearSVC, SVC
 from sklearn.metrics import r2_score, accuracy_score
 from sklearn.datasets import load_iris
-import pandas as pd
-import numpy as np
 import time
 
 

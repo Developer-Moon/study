@@ -2,13 +2,11 @@ from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import train_test_split, cross_val_score, KFold, StratifiedKFold, GridSearchCV, HalvingGridSearchCV
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.metrics import r2_score, accuracy_score
-from sklearn.datasets import load_diabetes
-import warnings
-warnings.filterwarnings('ignore')
+from sklearn.datasets import fetch_california_housing
 
 
 #1. 데이터
-datasets = load_diabetes()
+datasets = fetch_california_housing()
 x = datasets['data']
 y = datasets['target']
 
@@ -50,27 +48,15 @@ print('best tuned r2: ', r2_score(y_test, ypred_best))
 
 print('걸린시간: ', round(end-start,2), '초')
 
-
-# n_iterations: 2
-# n_required_iterations: 3
-# n_possible_iterations: 2
-# min_resources_: 10
-# max_resources_: 353
-# aggressive_elimination: False
-# factor: 10
-# ----------
-# iter: 0
-# n_candidates: 152
-# n_resources: 10
-# ----------
-# iter: 1
-# n_candidates: 16
-# n_resources: 100
-# Fitting 5 folds for each of 16 candidates, totalling 80 fits
-# 최적의 매개변수:  RandomForestRegressor(max_depth=10, min_samples_leaf=7, n_jobs=-1)
-# 최적의 파라미터:  {'max_depth': 10, 'min_samples_leaf': 7, 'n_jobs': -1}
-# best_score_:  0.15538803182462865
-# model.score:  0.5571672205425238
-# r2 score:  0.5571672205425238
-# best tuned r2:  0.5571672205425238
-# 걸린시간:  24.92 초
+n_iterations: 3
+n_required_iterations: 3
+n_possible_iterations: 3
+min_resources_: 165
+max_resources_: 16512
+aggressive_elimination: False
+factor: 10
+----------
+iter: 0
+n_candidates: 152
+n_resources: 165
+Fitting 5 folds for each of 152 candidates, totalling 760 fits

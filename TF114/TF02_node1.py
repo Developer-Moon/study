@@ -8,10 +8,7 @@ node_03 = node_01 + node_02
 node_03 = tf.add(node_01, node_02) # 위에꺼랑 같다
 
 
-# print(node_03) 
-# Tensor("add:0", shape=(), dtype=float32)
-# sess = tf.Session()
-sess = tf.compat.v1.Session()
-print(sess.run(node_03))  # 7.0
+# print(node_03) - Tensor("add:0", shape=(), dtype=float32)
 
-s
+sess = tf.compat.v1.Session()      # sess = tf.Session()
+print(sess.run(node_03))           # 7.0
