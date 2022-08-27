@@ -67,4 +67,4 @@ with tf.compat.v1.Session() as sess :
     print('acc :', acc)
 
     # mae = mean_absolute_error(y_data, hy_val)
-    # print('mae :', mae)
+    # print('mae :', mae)11
