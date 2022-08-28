@@ -93,4 +93,4 @@ lgb_bo.maximize(init_points=5, n_iter=50)
 print(lgb_bo.max)
 # {'target': 0.4862677564010508,
 #  'params': {'colsample_bytree': 0.5, 'max_bin': 442.51857689138404, 'max_depth': 7.566720006436481, 'min_child_samples': 23.294048382587064,
-#             'min_child_weight': 49.396474502081844, 'num_leaves': 24.0, 'reg_alpha': 22.195728846767462, 'reg_lambda': 10.0, 'subsample': 0.5}}
+#             'min_child_weight': 49.396474502081844, 'num_leaves': 24.0, 'reg_alpha': 22.195728846767462, 'reg_lambda': 10.0, 'subsample': 0.5}
