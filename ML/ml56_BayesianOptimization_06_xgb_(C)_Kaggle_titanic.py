@@ -19,7 +19,6 @@ warnings.filterwarnings('ignore')
 
 
 
-
 #1. 데이터
 datasets = load_iris()
 x, y = datasets.data, datasets.target
