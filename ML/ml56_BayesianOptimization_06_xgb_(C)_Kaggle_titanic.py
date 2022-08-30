@@ -39,7 +39,6 @@ bayesian_params = {
 }
 
 
-
 def xgb_function(max_depth, min_child_weight,subsample, colsample_bytree, reg_lambda,reg_alpha):
     params ={
         'n_estimators' : 500, 'learning_rate' : 0.02,
