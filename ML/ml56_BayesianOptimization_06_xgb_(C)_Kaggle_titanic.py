@@ -17,7 +17,6 @@ warnings.filterwarnings('ignore')
 # XGBoost나 cat머시기로 과제하기 
 
 
-
 #1. 데이터
 datasets = load_iris()
 x, y = datasets.data, datasets.target
