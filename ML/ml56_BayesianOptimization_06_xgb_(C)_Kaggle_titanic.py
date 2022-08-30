@@ -12,7 +12,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-
 # LGBMRegressor도 하고
 # XGBoost나 cat머시기로 과제하기 
 
