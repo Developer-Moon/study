@@ -67,7 +67,7 @@ with tf.compat.v1.Session() as sess :
     # y_predict = x1_data * W1_val + x2_data *W2_val + x3_data * W3_val + b_val # r2 : 0.9538024379634447
     
     
-    
+    1
     print('y예측 :', y_predict)
 
     r2 = r2_score(y_data, y_predict)
