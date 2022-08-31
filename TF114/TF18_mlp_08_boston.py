@@ -61,7 +61,7 @@ with tf.compat.v1.Session() as sess :
     for step in range(epochs):
         cost_val, hy_val, _ = sess.run([loss, hypothesis, train], feed_dict={x:x_data, y:y_data})
         if step %20 == 0:
-            print(epochs, 'loss :', cost_val, '\n', hy_val)
+            print(epochs, 'loss :', cost_val, '\n', hy_val)2
    
     y_predict = sess.run(tf.cast(hy_val>=0.5, dtype=tf.float32)) # 이 값이 참이면 1 거짓이면 0
     # y_predict = x1_data * W1_val + x2_data *W2_val + x3_data * W3_val + b_val # r2 : 0.9538024379634447
