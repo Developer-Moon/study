@@ -1,75 +1,86 @@
-from sklearn.metrics import r2_score, accuracy_score
+import tensorflow as tf
+from sklearn.metrics import accuracy_score, r2_score, mean_squared_error
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_breast_cancer
-import tensorflow as tf
-import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 tf.compat.v1.set_random_seed(123)
 
-
-#1. 데이터
+# 1. 데이터
 datasets = load_breast_cancer()
-x_data = datasets.data
-y_data = datasets.target
+x_data, y_data = datasets.data, datasets.target
+print(x_data.shape, y_data.shape) # (569, 30) (569,)
+print(type(x_data))
+print(x_data.dtype, y_data.dtype)
 
-print(x_data.shape) # (569, 30)
-print(y_data.shape) # (569,
-print(np.unique(y_data, return_counts=True)) # (array([0, 1]), array([212, 357], dtype=int64))
+# y_data = y_data.astype(np.float)
 y_data = y_data.reshape(-1, 1)
-print(y_data.shape) # (569, 1)
 
-x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, train_size=0.75, random_state=123, stratify=y_data)
+x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, train_size=0.8, random_state=123, stratify=y_data)
+scaler = MinMaxScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
 
-x = tf.placeholder(tf.float32, shape=[None, 30])
-y = tf.placeholder(tf.float32, shape=[None, 1])
+# 2. 모델 / sigmoid
+x = tf.compat.v1.placeholder(tf.float32, shape=[None, 30])
+y = tf.compat.v1.placeholder(tf.float32, shape=[None, 1])
 
-# hidden layer
-w1 = tf.compat.v1.Variable(tf.random_normal([30, 50]), name='weight') # 히든레이어를 20개 하려면
-b1 = tf.compat.v1.Variable(tf.random_normal([50]), name='bias')      # bias도 20개
+w = tf.compat.v1.Variable(tf.compat.v1.zeros([30,5]), name='weight')
+b = tf.compat.v1.Variable(tf.compat.v1.zeros([5]), name='bias')
+hidden = tf.compat.v1.nn.relu(tf.compat.v1.matmul(x, w) + b)
 
-hidden_layer_01 = tf.compat.v1.matmul(x, w1) + b1
+w = tf.compat.v1.Variable(tf.compat.v1.zeros([5,50]), name='weight')
+b = tf.compat.v1.Variable(tf.compat.v1.zeros([50]), name='bias')
+hidden = tf.compat.v1.matmul(hidden, w) + b
 
-# hidden layer
-w2 = tf.compat.v1.Variable(tf.random_normal([50, 10]), name='weight') # 두번째 층이 받아 들이는 것
-b2 = tf.compat.v1.Variable(tf.random_normal([10]), name='bias')
+w = tf.compat.v1.Variable(tf.compat.v1.zeros([50,40]), name='weight')
+b = tf.compat.v1.Variable(tf.compat.v1.zeros([40]), name='bias')
+hidden = tf.compat.v1.nn.relu(tf.compat.v1.matmul(hidden, w) + b)
 
-hidden_layer_02 = tf.compat.v1.matmul(hidden_layer_01, w2) + b2
+w = tf.compat.v1.Variable(tf.compat.v1.zeros([40,100]), name='weight')
+b = tf.compat.v1.Variable(tf.compat.v1.zeros([100]), name='bias')
+hidden = tf.compat.v1.nn.relu(tf.compat.v1.matmul(hidden, w) + b)
 
-# output layer
-w3 = tf.compat.v1.Variable(tf.random_normal([10, 1]), name='weight') # 두번째 층이 받아 들이는 것
-b3 = tf.compat.v1.Variable(tf.random_normal([1]), name='bias')
+w = tf.compat.v1.Variable(tf.compat.v1.zeros([100,20]), name='weight')
+b = tf.compat.v1.Variable(tf.compat.v1.zeros([20]), name='bias')
+hidden = tf.compat.v1.nn.relu(tf.compat.v1.matmul(hidden, w) + b)
 
+w = tf.compat.v1.Variable(tf.compat.v1.zeros([20,10]), name='weight')
+b = tf.compat.v1.Variable(tf.compat.v1.zeros([10]), name='bias')
+hidden = tf.compat.v1.nn.relu(tf.compat.v1.matmul(hidden, w) + b)
 
-#2. 모델구성
-hypothesis = tf.compat.v1.nn.softmax(tf.matmul(hidden_layer_02, w3) + b3)          
-                                        
+w = tf.compat.v1.Variable(tf.compat.v1.zeros([10,1]), name='weight')
+b = tf.compat.v1.Variable(tf.compat.v1.zeros([1]), name='bias')
+hypothesis = tf.compat.v1.sigmoid(tf.compat.v1.matmul(hidden, w) + b)
 
+# 3-1. 컴파일
+loss = -tf.reduce_mean(y*tf.log(hypothesis)+(1-y)*tf.log(1-hypothesis)) # binary_crossentropy
 
-#3-1 컴파일 
-loss = tf.reduce_mean(-tf.reduce_sum(y * tf.log(hypothesis), axis=1))
-optimizer = tf.train.AdadeltaOptimizer(learning_rate=0.01) 
+# optimizer = tf.train.GradientDescentOptimizer(learning_rate=1e-3)
+optimizer = tf.train.AdamOptimizer(learning_rate=0.00000117)
 train = optimizer.minimize(loss)
 
+# 3-2. 훈련
+sess = tf.compat.v1.Session()
+sess.run(tf.global_variables_initializer())
 
+epochs = 1001
+for step in range(epochs):
+    _, hy_val, cost_val, b_val = sess.run([train,hypothesis,loss,b], feed_dict={x:x_train, y:y_train})
+    if step%20 == 0:
+        print(step, cost_val, hy_val)
+        
+print('최종: ', cost_val, hy_val)
 
-with tf.compat.v1.Session() as sess : 
-    sess.run(tf.global_variables_initializer())
-    
-    epochs = 1001
-    for step in range(epochs):
-        cost_val, hy_val, _ = sess.run([loss, hypothesis, train], feed_dict={x:x_data, y:y_data})
-        if step %20 == 0:
-            print(epochs, 'loss :', cost_val, '\n', hy_val) 
-    
-    y_predict = sess.run(hypothesis, feed_dict={x:x_data, y:y_data}) 
-    print('y예측 :', y_predict)
-    
-    y_predict = np.argmax(y_predict, axis=1)
-    y_data = np.argmax(y_data, axis=1)
+# 4. 평가, 예측
+y_predict = sess.run(tf.cast(hy_val>=0.5, dtype=tf.float32))
+acc = accuracy_score(y_train, y_predict)
+print('acc: ', acc)
 
-    acc = accuracy_score(y_data, y_predict)
-    print('acc :', acc)     
-    
-    
-    
+mae = mean_squared_error(y_train, hy_val)
+print('mae: ', mae)
 
-# acc : 0.6274165202108963
+sess.close()
+
+# acc:  0.6263736263736264
+# mae:  0.24999260398557477

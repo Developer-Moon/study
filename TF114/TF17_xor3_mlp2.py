@@ -7,38 +7,39 @@ tf.compat.v1.set_random_seed(123)
 x_data = [[0, 0], [0, 1], [1, 0], [1, 1]] # (4, 2)
 y_data = [[0], [1], [1], [0]]             # (4, 1)
 
+
+#2. 모델구성
 # input later
 x = tf.compat.v1.placeholder(tf.float32, shape=[None, 2])
 y = tf.compat.v1.placeholder(tf.float32, shape=[None, 1])
 
 # hidden layer
-w1 = tf.compat.v1.Variable(tf.random_normal([2, 20]), name='weight') # 히든레이어를 20개 하려면
-b1 = tf.compat.v1.Variable(tf.random_normal([20]), name='bias')      # bias도 20개
+w1 = tf.compat.v1.Variable(tf.compat.v1.random_normal([2,20]), name='weight1')
+b1 = tf.compat.v1.Variable(tf.compat.v1.random_normal([20]), name='bias1')
 
-hidden_layer_01 = tf.compat.v1.matmul(x, w1) + b1
+hidden_layer1 = tf.compat.v1.matmul(x, w1) + b1
 
-# hidden layer
-w2 = tf.compat.v1.Variable(tf.random_normal([20, 1]), name='weight') # 두번째 층이 받아 들이는 것
-b2 = tf.compat.v1.Variable(tf.random_normal([1]), name='bias')
+w2 = tf.compat.v1.Variable(tf.compat.v1.random_normal([20,30]), name='weight2')
+b2 = tf.compat.v1.Variable(tf.compat.v1.random_normal([30]), name='bias2')
 
-hidden_layer_02 = tf.compat.v1.sigmoid(tf.matmul(hidden_layer_01, w2) + b2)
+hidden_layer2 = tf.compat.v1.sigmoid(tf.compat.v1.matmul(hidden_layer1, w2) + b2)
+
+w3 = tf.compat.v1.Variable(tf.compat.v1.random_normal([30,20]), name='weight3')
+b3 = tf.compat.v1.Variable(tf.compat.v1.random_normal([20]), name='bias3')
+
+hidden_layer3 = tf.compat.v1.sigmoid(tf.compat.v1.matmul(hidden_layer2, w3) + b3)
 
 # output layer
-w3 = tf.compat.v1.Variable(tf.random_normal([1, 1]), name='weight') # 두번째 층이 받아 들이는 것
-b3 = tf.compat.v1.Variable(tf.random_normal([1]), name='bias')
+w4 = tf.compat.v1.Variable(tf.compat.v1.random_normal([20,1]), name='weight4')
+b4 = tf.compat.v1.Variable(tf.compat.v1.random_normal([1]), name='bias4')
 
-
-#2. 모델구성
-hypothesis = tf.compat.v1.sigmoid(tf.matmul(hidden_layer_02, w3) + b3)
-                                                       
+hypothesis = tf.compat.v1.sigmoid(tf.compat.v1.matmul(hidden_layer3, w4) + b4)
 
 
 #3-1 컴파일                   
 loss = -tf.reduce_mean(y * tf.log(hypothesis) + (1 - y) * tf.log(1 - hypothesis))
-optimizer = tf.train.AdamOptimizer(learning_rate=1e-2) 
+optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=1e-3)   
 train = optimizer.minimize(loss)
-
-
 
 with tf.compat.v1.Session() as sess : 
     sess.run(tf.global_variables_initializer())
@@ -49,13 +50,9 @@ with tf.compat.v1.Session() as sess :
         if step %20 == 0:
             print(epochs, 'loss :', cost_val, '\n', hy_val)
    
-    y_predict = sess.run(tf.cast(hy_val>=0.5, dtype=tf.float32)) # 이 값이 참이면 1 거짓이면 0
-    # y_predict = x1_data * W1_val + x2_data *W2_val + x3_data * W3_val + b_val # r2 : 0.9538024379634447
+    y_predict = sess.run(tf.cast(hy_val>0.5, dtype=tf.float32)) # 이 값이 참이면 1 거짓이면 0
     
-    
-    
-    print('y예측 :', y_predict)
-
     acc = accuracy_score(y_data, y_predict)
-    print('acc :', acc) 
+    print('acc : ', acc)    
 
+    # acc :  1.0
