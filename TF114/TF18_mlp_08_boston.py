@@ -73,4 +73,4 @@ with tf.compat.v1.Session() as sess :
     r2 = r2_score(y_data, y_predict)
     print('acc :', r2) 
 
-s2sss
+s2ssss
