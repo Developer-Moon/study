@@ -20,12 +20,6 @@ print(datasets.describe()) # std = 표준편차
 print(datasets.info())     # 결측지X - quality가 float라면 int로 바꿔주던가 생각을 해야한다
 
 
-
-
-
-
-
-
 # pandas보다 numpy가 계산이 좀 더 빠르다
 # datasets = np.array(datasets)
 

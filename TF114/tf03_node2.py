@@ -4,7 +4,7 @@ import tensorflow as tf
 node_01 = tf.constant(2.0)
 node_02 = tf.constant(3.0)
 
-sess = tf.Session() # sess = tf.compat.v1.Session()
+sess = tf.Session()                     # sess = tf.compat.v1.Session()
 
 node_03 = tf.add(node_01, node_02)      # 더하기
 node_03 = node_01 + node_02

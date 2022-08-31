@@ -21,6 +21,6 @@ model.fit(x_train, y_train)
 
 #4. 평가, 예측
 result = model.score(x_test, y_test) # evaluate대신 score사용
-print('r2 :', result)               # 분류모델에서는 accuracy // 회귀모델에서는 R2가 자동
+print('r2 :', result)                # 분류모델에서는 accuracy // 회귀모델에서는 R2가 자동
 
 # ML - r2 : -4.091840035772175

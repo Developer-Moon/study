@@ -23,7 +23,7 @@ y_data = [[0, 0, 1],    # 2 (8, 3)
 
 x = tf.compat.v1.placeholder(tf.float32, shape=[None, 4])
 w = tf.compat.v1.Variable(tf.random_normal([4, 3]), name='weight')
-b = tf.compat.v1.Variable(tf.random_normal([1, 3]), name='bias')    # bias 설명좀 부탁드립니다ㅜㅜ
+b = tf.compat.v1.Variable(tf.random_normal([1, 3]), name='bias')   
 y = tf.compat.v1.placeholder(tf.float32, shape=[None, 3])
 
 

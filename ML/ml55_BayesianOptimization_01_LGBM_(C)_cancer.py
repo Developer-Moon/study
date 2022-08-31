@@ -14,6 +14,7 @@ from lightgbm import LGBMRegressor, LGBMClassifier
 #1. 데이터
 datasets = load_breast_cancer()
 x, y = datasets.data, datasets.target
+print(x.shape, y.shape)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.8, random_state=123)
 
@@ -40,8 +41,6 @@ bayesian_params = {
 #  'params': {'colsample_bytree': 0.5999501602563202, 'max_bin': 489.09670792402494, 'max_depth': 8.55114395865311, 'min_child_samples': 22.123493601764473, 
 #             'min_child_weight': 4.0525661624453715, 'num_leaves': 25.884143332887273, 'reg_alpha': 19.063482110706488, 'reg_lambda': 3.2980846707219853,
 #             'subsample': 0.6137176721140486}}
-
-
 
 
 def lgb_hamsu(max_depth, num_leaves, min_child_samples, min_child_weight, subsample, colsample_bytree, max_bin, reg_lambda, reg_alpha):
