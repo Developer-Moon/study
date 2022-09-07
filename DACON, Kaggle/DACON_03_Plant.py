@@ -1,9 +1,13 @@
 import pandas as pd
 import numpy as np
+import os
 import glob
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, accuracy_score
 from xgboost import XGBClassifier, XGBRegressor
+from tensorflow.python.keras.models import Sequential 
+from tensorflow.python.keras.layers import Dense, GRU, LSTM, Dropout
+
 
 
 
@@ -62,34 +66,61 @@ print(y_train)   # 1440
 print(x_train.shape, y_train.shape)   # (1607, 1440, 37) (1607,)
 print(x_test.shape, y_test.shape)     # (206 , 1440, 37) (206,)
 
-x_train = x_train.reshape(1607, 1440*37)
-x_test = x_test.reshape(206 , 1440*37)
+# x_train = x_train.reshape(1607, 1440*37)
+# x_test = x_test.reshape(206 , 1440*37)
 
 #2. 모델구성
-model = model = XGBRegressor(tree_method='gpu_hist', predictor='gpu_predictor', gpu_id=0)
+# model = XGBRegressor(tree_method='gpu_hist', predictor='gpu_predictor', gpu_id=0)
 
-
+model = Sequential()  
+# model.add(SimpleRNN(10, input_shape=(3, 1))) # [batch, timesteps, feature].
+model.add(LSTM(units=100, input_shape=(1440, 37))) # input_shape가  input_length=3, input_dim=1 로 사용가능
+model.add(Dense(100, activation='relu'))
+model.add(Dense(100, activation='relu'))
+model.add(Dense(100, activation='relu'))
+model.add(Dense(100, activation='relu'))
+model.add(Dense(1))
 
 #3. 훈련
-model.fit(x_train, y_train)
+model.compile(loss='mse', optimizer='adam')
+model.fit(x_train, y_train, batch_size=150, epochs=1)
 
 
 
 #4. 결과, 예측
-result = model.score(x_test, y_test)
+result = model.evaluate(x_test, y_test)
 print('model.score :', result)
 
 y_predict = model.predict(x_test)
-r2 = r2_score(y_test, y_predict)
-print('r2_score :', r2)
+# r2 = r2_score(y_test, y_predict)
+# print('r2_score :', r2)
 
 
 # model.score : -1.1955752854294874
 # r2_score : -1.1955752854294874
 
 
-path = './_data/dacon_plant/'
-all_input_list = sorted(glob.glob(path + 'train_input/*.csv'))
-all_target_list = sorted(glob.glob(path + 'train_target/*.csv'))
+
+
+
+
+# y_predict -> TEST_ files
+for i in range(6):
+    thislen=0
+    thisfile = './_data/dacon_plant/sample_submission/'+'TEST_0'+str(i+1)+'.csv' 
+    test = pd.read_csv(thisfile, index_col=False)
+    test['rate'] = y_predict[thislen:thislen+len(test['rate'])]
+    test.to_csv(thisfile, index=False)
+    thislen+=len(test['rate'])
+
+
+# TEST_ files -> zip file
+import zipfile
+filelist = ['TEST_01.csv','TEST_02.csv','TEST_03.csv','TEST_04.csv','TEST_05.csv', 'TEST_06.csv']
+os.chdir("./_data/dacon_plant/sample_submission/")
+with zipfile.ZipFile("submissionKeras.zip", 'w') as my_zip:
+    for i in filelist:
+        my_zip.write(i)
+    my_zip.close()
 
 # 5. 제출 준비

@@ -10,6 +10,8 @@ datasets = load_boston()
 x = datasets.data
 y = datasets.target      
                   
+print(datasets.head())                  
+                  
 print(x.shape, y.shape)         # (506, 13) (506,) - 데이터 : 506개,   컬럼 : 13 - input_dim (506개의 스칼라 1개의 벡터)
 print(datasets.feature_names)   # ['CRIM' 'ZN' 'INDUS' 'CHAS' 'NOX' 'RM' 'AGE' 'DIS' 'RAD' 'TAX' 'PTRATIO' 'B' 'LSTAT'] # 열 별로 이름
 print(datasets.DESCR)           # 컬럼들의 소개가 나온다
