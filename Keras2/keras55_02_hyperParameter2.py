@@ -4,6 +4,7 @@ from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Input, Dropout
 import keras
+from keras.optimizers import Adam
 
 # 하이퍼 파라미터에 노드 추가, learning_rate추가
 
@@ -30,8 +31,10 @@ def build_model(drop=0.5, optimizer='adam', activation='relu', nodes=256, lr=0.0
     outputs = Dense(10, activation='softmax', name='outputs')(x)
     
     model = Model(inputs=inputs, outputs=outputs)
+    optimizer = Adam(lr=lr)
     
     model.compile(optimizer=optimizer, metrics=['acc'], loss='sparse_categorical_crossentropy')
+    
     
     return model
 
@@ -71,12 +74,12 @@ from sklearn.metrics import accuracy_score
 y_pred = model.predict(x_test)
 print('acc score: ', accuracy_score(y_test, y_pred))
 
-# 걸린 시간:  401.42858624458313
-# model.best_params:  {'optimizer': 'rmsprop', 'nodes': 256, 'lr': 0.001, 'drop': 0.4, 'batch_size': 400, 'activation': 'relu'}
-# model.best_estimator:  <keras.wrappers.scikit_learn.KerasClassifier object at 0x000002553AED25E0>
-# model.best_score:  0.9703500072161356
+# 걸린 시간:  275.9897768497467
+# model.best_params:  {'optimizer': 'rmsprop', 'nodes': 128, 'lr': 0.001, 'drop': 0.3, 'batch_size': 200, 'activation': 'relu'}
+# model.best_estimator:  <keras.wrappers.scikit_learn.KerasClassifier object at 0x00000245454083A0>
+# model.best_score:  0.9672833482424418
 # model.score:  <bound method BaseSearchCV.score of RandomizedSearchCV(cv=3,
-#                    estimator=<keras.wrappers.scikit_learn.KerasClassifier object at 0x000002557DE4A070>,
+#                    estimator=<keras.wrappers.scikit_learn.KerasClassifier object at 0x00000245200E8040>,
 #                    param_distributions={'activation': ['relu', 'linear',
 #                                                        'sigmoid', 'selu',
 #                                                        'elu'],
@@ -86,6 +89,6 @@ print('acc score: ', accuracy_score(y_test, y_pred))
 #                                         'nodes': [64, 128, 256],
 #                                         'optimizer': ['adam', 'rmsprop',
 #                                                       'adadelta']})>
-# 313/313 [==============================] - 1s 2ms/step
-# acc score:  0.977
+# 313/313 [==============================] - 0s 1ms/step
+# acc score:  0.9767
 

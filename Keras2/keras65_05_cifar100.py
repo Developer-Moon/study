@@ -54,8 +54,9 @@ model.add(Dense(100))
 model.add(Dense(100, activation='softmax'))
 
 
+
 #3. 컴파일
-from tensorflow.keras.optimizers import Adam
+from keras.optimizers import Adam
 learning_rate = 0.01
 optimizer = Adam(lr=learning_rate)
 
