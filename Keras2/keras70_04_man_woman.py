@@ -57,7 +57,7 @@ y_test = np.argmax(y_test, axis= 1)
 
 from sklearn.metrics import accuracy_score
 acc = accuracy_score(y_test, y_predict)
-print('acc스코어: ', acc) 
+print('acc스코어: ', acc) #
 
 
 
