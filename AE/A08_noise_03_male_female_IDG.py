@@ -86,7 +86,7 @@ def autoencoder(hidden_layer_size) :
 #     model.add(Dense(units=hidden_layer_size, input_shape=(150 * 150 * 3,), activation='relu'))
 #     model.add(Dense(units=150 * 150 * 3, activation='sigmoid'))
 #     return model
-
+#
 model = autoencoder(hidden_layer_size=64)
 # model = autoencoder(hidden_layer_size=154) # PCA의 95% 성능
 # model = autoencoder(hidden_layer_size=331) # PCA의 95% 성능
