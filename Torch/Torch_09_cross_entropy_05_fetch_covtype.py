@@ -125,5 +125,4 @@ from sklearn.metrics import accuracy_score
 score = accuracy_score(y_test.cpu(), y_predict.cpu())
 # score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())
 print('accuracy :', score) 
-# accuracy : 0.9630
-# accuracy : 0.9629629629629629
+# 안나옵니다
