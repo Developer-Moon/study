@@ -17,20 +17,11 @@ datasets = load_iris()
 x = datasets.data
 y = datasets['target']
 
-x = torch.FloatTensor(x)
-y = torch.LongTensor(y) # 원핫이 필요없다 LongTensorfh 바꿔준다
-
-
-
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=123, stratify=y)
-
-print(x_train.shape) # (105, 4)
 
 scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test) 
-
-
 
 # x_train = torch.FloatTensor(x_train).to(DEVICE)
 # x_test = torch.FloatTensor(x_test).to(DEVICE)

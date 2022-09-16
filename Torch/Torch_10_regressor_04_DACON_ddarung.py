@@ -77,8 +77,6 @@ model = nn.Sequential(
     nn.ReLU(),
     nn.Linear(300, 300),
     nn.ReLU(),
-    nn.Linear(300, 300),
-    nn.Sigmoid(),
     nn.Linear(300, 128),
     nn.ReLU(),
     nn.Linear(128, 1), # y의 유니크 값이 3개라서
@@ -134,4 +132,4 @@ from sklearn.metrics import accuracy_score, r2_score
 score = r2_score(y_test.cpu().detach().numpy(), y_predict.cpu().detach().numpy())
 # score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())
 print('r2_score :', score) 
-
+# r2_score : 0.6090922985749021

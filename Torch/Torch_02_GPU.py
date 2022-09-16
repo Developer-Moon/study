@@ -1,26 +1,29 @@
+import numpy as np
 import torch
-print(torch.__version__)
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-import numpy as np
 
+USE_CUDA = torch.cuda.is_available()                   # 쿠다 사용할 수 있는지 여부
+DEVICE = torch.device('cuda:0' if USE_CUDA else 'cpu') # 쿠다 사용 가능하면 'cuda' 모드, 안되면 'cpu' 모드 / device id 생략 가능
+print(torch.__version__, '사용DVICE:', DEVICE)
+# data 와 model 을 GPU로 보내준다
 
-# 1. Data
+# 1. data
 x = np.array([1,2,3]) # (3, )
-y = np.array([1,2,3]) # (3, )
+y = np.array([1,2,3])
 
-x = torch.FloatTensor(x).unsqueeze(1)  # 1번째자리 쉐이프 늘려주기, 0이면 0번째, -1 마지막 번째
-y = torch.FloatTensor(y).unsqueeze(-1) # 만약 2라면 (3,1,1)이 된다
+x = torch.FloatTensor(x).unsqueeze(1).to(DEVICE) # 1번째자리 쉐이프 늘려주기, 0이면 0번째, -1 마지막 번째
+y = torch.FloatTensor(y).unsqueeze(-1).to(DEVICE) # 만약 2라면 (3,1,1)이 된다
 
 print(x, y)
 print(x.shape, y.shape) # torch.Size([3, 1]) torch.Size([3, 1])
 
-# 2. Model
+# 2. model
 # model = Sequnential()
-model = nn.Linear(1, 1) # 인풋 열, 아웃풋 열 / 단층레이어
+model = nn.Linear(1, 1).to(DEVICE) # 인풋 열, 아웃풋 열 / 단층레이어
 
-# 3. Compile, fit
+# 3. compile, fit
 # model.compile(loss='mse', optimizer='SGD')
 criterion = nn.MSELoss() # = loss
 optimizer = optim.SGD(model.parameters(), lr=0.001) # 정의한 모델의 파라미터에 러닝레이트를 적용한 옵티마이저를 쓰겠다
@@ -36,9 +39,9 @@ def train(model, criterion, optimizer, x, y):
     loss.backward()  # 역전파하겠다
     optimizer.step() # 역전파한거 가지고 가중치를 갱신시키겠다
 
-    return loss.item() # item() : 텐서 내의 한개의 숫자를 스칼라형태로 반환. 숫자만 뽑아서 딱 주는 것.
+    return loss.item() # item() : 텐서형태가 아닌 알아들을 수 있는 형태로 반환한다는 뜻. sess.run() 느낌
     
-epochs = 2000
+epochs = 20000
 for epoch in range(1, epochs+1): # 1 ~ 100 까지 돌리기
     loss = train(model, criterion, optimizer, x, y)
     print('epoch: {}, loss: {}'.format(epoch, loss))
@@ -58,5 +61,5 @@ result_loss = evaluate(model, criterion, x, y)
 print(f'최종 loss: {result_loss}')
 
 # y_predict = model.predict([4])
-results = model(torch.Tensor([[4]])) # (1, 1) 형태의 텐서로 넣어서 예측값 뽑기
+results = model(torch.Tensor([[4]]).to(DEVICE)) # (1, 1) 형태의 텐서로 넣어서 예측값 뽑기
 print(f'4의 예측값: {results.item()}')

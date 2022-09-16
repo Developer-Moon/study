@@ -1,88 +1,73 @@
-import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-
-
-#1. 데이터
-import numpy as np
 import torch
-
 import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
 
-USE_CUDA = torch.cuda.is_available()                   
-DEVICE = torch.device('cuda:0' if USE_CUDA else 'cpu')
-print(torch.__version__, '사용DVICE:', DEVICE)
+import numpy as np
+from sklearn.model_selection import train_test_split
+
+USE_CUDA = torch.cuda.is_available()
+DEVICE = torch.device('cuda' if USE_CUDA else 'cpu')
 
 # 1. data
-x_train = np.array([1, 2, 3, 4, 5, 6, 7]) # (7, )
-x_test = np.array([8, 9, 10])             # (3, )
-y_train = np.array([1, 2, 3, 4, 5, 6, 7]) # (7, )
-y_test = np.array([8, 9, 10])             # (3, )
-x_ptrdict = np.array([11, 12, 13])
+x = np.array([1,2,3,4,5,6,7,8,9,10])
+y = np.array([1,2,3,4,5,6,7,8,9,10])
 
-x_train = torch.FloatTensor(x_train).to(DEVICE)
-x_test = torch.FloatTensor(x_test).to(DEVICE)
-y_train = torch.FloatTensor(y_train).to(DEVICE)
-y_test = torch.FloatTensor(y_test).to(DEVICE)
-x_ptrdict = torch.FloatTensor(x_ptrdict).to(DEVICE)
+x = torch.Tensor(x).unsqueeze(-1).to(DEVICE)
+y = torch.Tensor(y).unsqueeze(-1).to(DEVICE)
 
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.85, shuffle=True, random_state=1234)
 
-###### 스케일링 ######
-x_test= (x_test - torch.mean(x_train)) / torch.std(x_train) # 
-x_train = (x_train - torch.mean(x_train)) / torch.std(x_train)           # 
+### scaling ###
+x_test = (x_test - torch.mean(x_train)) / torch.std(x_train)
+x_train = (x_train - torch.mean(x_train)) / torch.std(x_train)
 
-# print(x.shape, y.shape, x_test.shape)
-                                    
+print(x_train.shape, y_train.shape)
+
 # 2. model
 model = nn.Sequential(
-    nn.Linear(3,4),
-    nn.Linear(4,5),
-    nn.Linear(5,3),
-    # nn.ReLU(),          # 위에 적용됨
-    # nn.dropout(),
-    nn.Linear(3,2),
-    nn.Linear(2,2)
+    nn.Linear(1, 64),
+    nn.SELU(),
+    nn.Linear(64, 128),
+    nn.ReLU(),
+    nn.Linear(128, 64),
+    nn.Linear(64, 1)
 ).to(DEVICE)
 
-# 3. compile, fit
-optimizer = optim.SGD(model.parameters(), lr=0.001) # model.parameters() 모델에 있는 파라미터로 넣어달라
-
+# compile, fit
+optimizer = optim.Adam(model.parameters(), lr=0.001)
 def train(model, optimizer, x, y):
-    optimizer.zero_grad() # 기울기 값을 초기화 하는 이유
+    model.train()
+    optimizer.zero_grad()
     
     hypothesis = model(x)
-    loss = F.mse_loss(hypothesis, y) # model에 x를 넣은걸 hypothesis y값의 차이를 
+    loss = nn.MSELoss()(hypothesis, y)
     
-    loss.backward() # loss로 역전파를 하겠다
-    optimizer.step() # 그 값을 옵티마이져로 가중치를 업데이트 하겠다
-
+    loss.backward()
+    optimizer.step()
     return loss.item()
-    
-epochs = 12000
+
+epochs = 1000
 for epoch in range(1, epochs+1):
-    loss = train(model, optimizer, x, y)
-    print('epoch: {}, loss: {}'.format(epoch, loss))
+    loss = train(model, optimizer, x_train, y_train)
+    print(epoch, '\t', loss)
     
-# 4. eval
-def evaluate(model, x, y): 
-    model.eval() # 평가모드
+# eval, pred
+def evaluate(model, x_test, y_test):
+    model.eval()
     
-    with torch.no_grad(): # 가중치를 갱신할 필요가 없으니까 
-        x_predict = model(x)
-        results = nn.MSELoss()(x_predict, y)
-    
-    return results.item()
+    with torch.no_grad():
+        pred_y = model(x_test)
+        result = nn.MSELoss()(pred_y, y_test)
+        
+        return result.item()
 
-result_loss = evaluate(model, x, y)
-print(f'최종 loss: {result_loss}')
+loss = evaluate(model, x_test, y_test)
+result = model(x_test).cpu().detach().numpy()
 
-results = model(x_test)
-results = results.cpu().detach().numpy()
-print(f'예측값: {results}')
+print(f'loss:{loss}')
+print(f'예측:{result}')
 
-# 예측: [[9, 30, 210]] -> 예상 y값 [[10, 1.9]]
 
-# 최종 loss: 4.7168261517072096e-05
-# 예측값: [[10.004651   1.9085085]]
+# loss:1.942571543622762e-05
+# 예측:[[8.001041 ]
+#  [2.9938545]]
