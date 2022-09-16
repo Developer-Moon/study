@@ -47,7 +47,7 @@ for epoch in range(1, epochs+1): # 1 ~ 100 까지 돌리기
 # loss = model.evaluate(x, y)
 def evaluate(model, criterion, x, y): # 평가에서는 가중치 갱신할 필요가 없음
     model.eval() # 평가모드 켜기. 가중치 갱신 안한다는 뜻
-    
+    /
     with torch.no_grad(): # gradient 아예 안쓰겠다. 순전파만 사용해서 x에 대한 예상값만 사용 할 것임
         x_predict = model(x)
         results = criterion(x_predict, y)
