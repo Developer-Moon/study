@@ -1,4 +1,4 @@
-from sklearn.datasets import load_iris
+from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 import torch
 import torch.nn as nn
@@ -13,25 +13,24 @@ DEVICE = torch.device('cuda:0' if USE_CUDA else 'cpu') # ['cuda:0', 'cuda:1'] 2�
 
 
 #1. 데이터
-datasets = load_iris()
+datasets = load_digits()
 x = datasets.data
 y = datasets['target']
 
+print(np.unique(y, return_counts=True)) # (array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), array([178, 182, 177, 183, 181, 182, 181, 179, 174, 180], dtype=int64))
+# x = torch.FloatTensor(x)
+# y = torch.LongTensor(y) # 원핫이 필요없다 LongTensorfh 바꿔준다
+
+
+
 x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=123, stratify=y)
+
 
 scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test) 
 
-# x_train = torch.FloatTensor(x_train).to(DEVICE)
-# x_test = torch.FloatTensor(x_test).to(DEVICE)
-# y_train = torch.FloatTensor(y_train).unsqueeze(-1).to(DEVICE)
-# y_test = torch.FloatTensor(y_test).unsqueeze(-1).to(DEVICE)
 
-# x_train = torch.FloatTensor(x_train).to(DEVICE)
-# x_test = torch.FloatTensor(x_test).to(DEVICE)
-# y_train = torch.FloatTensor(y_train).to(DEVICE)
-# y_test = torch.FloatTensor(y_test).to(DEVICE)
 
 x_train = torch.FloatTensor(x_train).to(DEVICE)
 x_test = torch.FloatTensor(x_test).to(DEVICE)
@@ -39,31 +38,52 @@ y_train = torch.LongTensor(y_train).to(DEVICE)
 y_test = torch.LongTensor(y_test).to(DEVICE)
 
 
-# scaler = StandardScaler()
-# x_train = scaler.fit_transform(x_train)
-# x_test = scaler.transform(x_test) # TypeError: can't convert cuda:0 device type tensor to numpy. Use Tensor.cpu() to copy the tensor to host memory first.
-
-# x_train = torch.FloatTensor(x_train).to(DEVICE)
-# x_test = torch.FloatTensor(x_test).to(DEVICE)
-
 # print(x_train.size())
+print(np.unique(y, return_counts=True))
 print(x_train.shape)
 print(x_test.shape) # torch.Size([171, 30, 1])
 print(y_train.shape)
 print(y_test.shape)
-
+print(x_train.dtype)
+print(x_test.dtype) # torch.Size([171, 30, 1])
+print(y_train.dtype)
+print(y_test.dtype)
 
 #2. 모델
-model = nn.Sequential(
-    nn.Linear(4, 64),
-    nn.ReLU(),
-    nn.Linear(64, 32),
-    nn.ReLU(),
-    nn.Linear(32, 3), # y의 유니크 값이 3개라서
-    nn.Softmax()      # softmax를 안해도 된다
-).to(DEVICE)
+# model = nn.Sequential(
+#     nn.Linear(64, 32),
+#     nn.ReLU(),
+#     nn.Linear(32, 16),
+#     nn.ReLU(),
+#     nn.Linear(16, 10), # y의 유니크 값이 3개라서
+#     nn.Softmax()      # softmax를 안해도 된다
+# ).to(DEVICE)
 
-criterion = nn.CrossEntropyLoss() # criterion = Loss, 
+class Model(nn.Module) :                         # Model class를 정의하고 nn.Module(안에 있는 변수들)을 상속하겠다 ()안의 자리는 상위 클래스만 가능하다
+    def __init__(self, input_dim, output_dim) :  # init 정의 단계 - 클래스 안에는 __init__라는 함수(생성자)가 들어간다 - 정의 하는 순간 실행된다 input_dim은 매개변수
+        # super().__init__()                     # super - nn.Module(아빠)의 생성자까지 다 쓰겠다(정의 하지 않으면 에러 발생)
+        super(Model, self).__init__()            # 위에꺼와 같은 표현
+        self.linear1 = nn.Linear(input_dim, 64)  # self - 이 클래스 안에서 쓸꺼다
+        self.linear2 = nn.Linear(64, 32)        
+        self.linear3 = nn.Linear(32, 16)
+        self.linear4 = nn.Linear(16, output_dim)
+        self.relu = nn.ReLU()
+        self.softmax = nn.Softmax()             # init과 forward 는 nn.Module을 상속 받는다
+        
+    def forward(self, input_size) :              # 실행 단계 - 모델구성
+        x = self.linear1(input_size)
+        x = self.relu(x)
+        x = self.linear2(x)
+        x = self.relu(x)
+        x = self.linear3(x)
+        x = self.relu(x)
+        x = self.linear4(x)
+        x = self.softmax(x)
+        return x
+
+model = Model(64, 10).to(DEVICE)
+
+criterion = nn.CrossEntropyLoss() # CrossEntropyLoss 고유의 라벨값을 알아서 맞춰준다
 
 optimizer = optim.Adam(model.parameters(), lr=0.01)
 
@@ -113,5 +133,8 @@ from sklearn.metrics import accuracy_score
 score = accuracy_score(y_test.cpu(), y_predict.cpu())
 # score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())
 print('accuracy :', score) 
-# accuracy : 0.9333
-# accuracy : 0.9333333333333333
+# accuracy : 0.9648
+# accuracy : 0.9648148148148148
+
+# accuracy : 0.9630
+# accuracy : 0.9629629629629629

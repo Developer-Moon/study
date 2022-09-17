@@ -31,8 +31,8 @@ x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test) 
 
 
- 
-x_train = torch.FloatTensor(x_train).to(DEVICE)        
+
+x_train = torch.FloatTensor(x_train).to(DEVICE)
 x_test = torch.FloatTensor(x_test).to(DEVICE)
 y_train = torch.FloatTensor(y_train).unsqueeze(-1).to(DEVICE)
 y_test = torch.FloatTensor(y_test).unsqueeze(-1).to(DEVICE)
@@ -66,16 +66,39 @@ print(y_train.dtype)
 print(y_test.dtype)
 
 #2. 모델
-model = nn.Sequential(
-    nn.Linear(10, 64),
-    nn.ReLU(),
-    nn.Linear(64, 128),
-    nn.ReLU(),
-    nn.Linear(128, 32),
-    nn.ReLU(),
-    nn.Linear(32, 1) # 아키텍쳐, FOMM first order motion model,  원스테이지, 투스테이지, [리눅스, 도커 무조건 +알파]
-                     #         
-).to(DEVICE)
+# model = nn.Sequential(
+#     nn.Linear(10, 64),
+#     nn.ReLU(),
+#     nn.Linear(64, 128),
+#     nn.ReLU(),
+#     nn.Linear(128, 32),
+#     nn.ReLU(),
+#     nn.Linear(32, 1) # 아키텍쳐, FOMM first order motion model,  원스테이지, 투스테이지, [리눅스, 도커 무조건 +알파]
+#                      #         
+# ).to(DEVICE)
+
+class Model(nn.Module) :                         # Model class를 정의하고 nn.Module(안에 있는 변수들)을 상속하겠다 ()안의 자리는 상위 클래스만 가능하다
+    def __init__(self, input_dim, output_dim) :  # init 정의 단계 - 클래스 안에는 __init__라는 함수(생성자)가 들어간다 - 정의 하는 순간 실행된다 input_dim은 매개변수
+        # super().__init__()                     # super - nn.Module(아빠)의 생성자까지 다 쓰겠다(정의 하지 않으면 에러 발생)
+        super(Model, self).__init__()            # 위에꺼와 같은 표현
+        self.linear1 = nn.Linear(input_dim, 64)  # self - 이 클래스 안에서 쓸꺼다
+        self.linear2 = nn.Linear(64, 32)        
+        self.linear3 = nn.Linear(32, 16)
+        self.linear4 = nn.Linear(16, output_dim)
+        self.relu = nn.ReLU()
+        # self.softmax = nn.Softmax()             # init과 forward 는 nn.Module을 상속 받는다
+        
+    def forward(self, input_size) :              # 실행 단계 - 모델구성
+        x = self.linear1(input_size)
+        x = self.relu(x)
+        x = self.linear2(x)
+        x = self.relu(x)
+        x = self.linear3(x)
+        x = self.relu(x)
+        x = self.linear4(x)
+        return x
+    
+model = Model(10, 1).to(DEVICE)
 
 criterion = nn.MSELoss() # CrossEntropyLoss 고유의 라벨값을 알아서 맞춰준다
 
@@ -125,3 +148,4 @@ score = r2_score(y_test.cpu().detach().numpy(), y_predict.cpu().detach().numpy()
 # score = accuracy_score(y_test.cpu().numpy(), y_predict.cpu().numpy())
 print('r2_score :', score) 
 # r2_score : 0.2001693591135375
+# r2_score : 0.3625912095608995

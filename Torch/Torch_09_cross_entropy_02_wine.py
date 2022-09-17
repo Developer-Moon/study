@@ -29,7 +29,7 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffl
 scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test) 
-
+print(np.unique(y, return_counts=True))
 
 
 x_train = torch.FloatTensor(x_train).to(DEVICE)
