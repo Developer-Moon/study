@@ -56,7 +56,7 @@ test_loader = DataLoader(test_set, batch_size=40, shuffle=True)
 # model = nn.Sequential(
 #     nn.Linear(30, 64),
 #     nn.ReLU(),
-#     nn.Linear(64, 32),
+#     nn.Linear(64, 32),#
 #     nn.ReLU(),
 #     nn.Linear(32, 1),
 #     nn.Sigmoid()
