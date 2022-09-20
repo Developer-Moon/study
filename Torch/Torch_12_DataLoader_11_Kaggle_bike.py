@@ -90,7 +90,7 @@ train_set = TensorDataset(x_train, y_train)
 test_set = TensorDataset(x_test, y_test)
 
 train_loader = DataLoader(train_set, batch_size=40, shuffle=True)
-test_loader = DataLoader(test_set, batch_size=40, shuffle=True)
+test_loader = DataLoader(test_set, batch_size=40)
 
 class Model(nn.Module) :                         # Model class를 정의하고 nn.Module(안에 있는 변수들)을 상속하겠다 ()안의 자리는 상위 클래스만 가능하다
     def __init__(self, input_dim, output_dim) :  # init 정의 단계 - 클래스 안에는 __init__라는 함수(생성자)가 들어간다 - 정의 하는 순간 실행된다 input_dim은 매개변수

@@ -57,7 +57,7 @@ train_set = TensorDataset(x_train, y_train)
 test_set = TensorDataset(x_test, y_test)
 
 train_loader = DataLoader(train_set, batch_size=40, shuffle=True)
-test_loader = DataLoader(test_set, batch_size=40, shuffle=True)
+test_loader = DataLoader(test_set, batch_size=40)
 
 
 class Model(nn.Module) :                         # Model class를 정의하고 nn.Module(안에 있는 변수들)을 상속하겠다 ()안의 자리는 상위 클래스만 가능하다

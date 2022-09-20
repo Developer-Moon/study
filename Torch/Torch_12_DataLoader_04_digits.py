@@ -42,7 +42,7 @@ train_set = TensorDataset(x_train, y_train)
 test_set = TensorDataset(x_train, y_train)
 
 train_loader = DataLoader(train_set, batch_size=20, shuffle=True)
-test_loader = DataLoader(test_set, batch_size=20, shuffle=True)
+test_loader = DataLoader(test_set, batch_size=20)
 
 
 #2. Model

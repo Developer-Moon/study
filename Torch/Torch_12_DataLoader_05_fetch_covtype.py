@@ -43,7 +43,7 @@ train_set = TensorDataset(x_train, y_train)
 test_set = TensorDataset(x_test, y_test)
 print(len(train_set)) # 406708
 train_loader = DataLoader(train_set, batch_size=500, shuffle=True)
-test_loader = DataLoader(test_set, batch_size=500, shuffle=True)
+test_loader = DataLoader(test_set, batch_size=500)
 
 
 #2. 모델

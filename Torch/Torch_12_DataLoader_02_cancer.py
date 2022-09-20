@@ -49,7 +49,7 @@ print(len(train_set))  # 398개
 
 # x, y 배치 합체
 train_loader = DataLoader(train_set, batch_size=40, shuffle=True) # 배치 사이즈 40개로 trainset을 섞어서 합친다 
-test_loader = DataLoader(test_set, batch_size=40, shuffle=True) 
+test_loader = DataLoader(test_set, batch_size=40) 
 
 
 #2. 모델
