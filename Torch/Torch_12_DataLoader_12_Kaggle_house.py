@@ -62,7 +62,7 @@ y_test = torch.FloatTensor(y_test.values).unsqueeze(-1).to(DEVICE)
 print(x_train.shape)
 print(x_test.shape) # torch.Size([171, 30, 1])
 print(y_train.shape)
-print(y_test.shape)
+print(y_test.shape)# 
 
 
 from torch.utils.data import TensorDataset, DataLoader
