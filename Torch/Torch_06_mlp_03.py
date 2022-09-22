@@ -8,7 +8,7 @@ import torch.nn.functional as F
 USE_CUDA = torch.cuda.is_available()                   
 DEVICE = torch.device('cuda:0' if USE_CUDA else 'cpu')
 print(torch.__version__, '사용DVICE:', DEVICE)
-
+        
 # 1. data
 x = np.array([range(10), range(21, 31), range(201,211)]) # 0부터 10 전까지, 21부터 31 전 까지
 y = np.array([[1,2,3,4,5,6,7,8,9,10],
