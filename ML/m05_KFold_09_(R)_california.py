@@ -18,6 +18,7 @@ kfold = KFold(n_splits=n_splits, shuffle=True, random_state=66)
                                       
 #2. 모델구성
 model = SVR()
+#
 
 
 #3. 컴파일, 훈련, 평가, 예측

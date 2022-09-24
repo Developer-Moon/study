@@ -6,7 +6,6 @@ import torch.nn as nn
 import torch.optim as optim
 
 
-
 USE_CUDA = torch.cuda.is_available
 DEVICE = torch.device('cuda:0' if USE_CUDA else 'cpu') # ['cuda:0', 'cuda:1'] 2개 이상일때는 list
 
