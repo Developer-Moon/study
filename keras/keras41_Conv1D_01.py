@@ -28,7 +28,7 @@ model.add(Flatten())
 model.add(Dense(3, activation='relu'))
 model.add(Dense(1))
 model.summary()
-
+#
 
 # Total params: 517
 # Trainable params: 517
