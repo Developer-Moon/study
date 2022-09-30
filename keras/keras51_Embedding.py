@@ -85,3 +85,4 @@ acc = model.evaluate(pad_x, labels)[1] # acc
 print('acc :', acc)
 # acc : 0.5
 # acc : 0.6922626495361328
+#
