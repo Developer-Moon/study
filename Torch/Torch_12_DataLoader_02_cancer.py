@@ -60,7 +60,7 @@ test_loader = DataLoader(test_set, batch_size=40)
 #     nn.ReLU(),
 #     nn.Linear(32, 1),
 #     nn.Sigmoid()
-# ).to(DEVICE)
+# ).to(DEVICE)#
 class Model(nn.Module) :                         # Model class를 정의하고 nn.Module(안에 있는 변수들)을 상속하겠다 ()안의 자리는 상위 클래스만 가능하다
     def __init__(self, input_dim, output_dim) :  # init 정의 단계 - 클래스 안에는 __init__라는 함수(생성자)가 들어간다 - 정의 하는 순간 실행된다 input_dim은 매개변수
         # super().__init__()                     # super - nn.Module(아빠)의 생성자까지 다 쓰겠다(정의 하지 않으면 에러 발생)
