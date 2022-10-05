@@ -173,7 +173,7 @@ submission = pd.read_csv('./_data/ddarung/submission.csv')
 submission['count'] = y_summit
 print(submission)
 submission.to_csv('./_data/ddarung/submission2.csv', index = False)
-
+#
 
 # loss : 3058.065673828125
 # RMSE : 55.299774499917866
