@@ -163,7 +163,7 @@ print('r2 :', r2)
 # r2 : 0.6209826631438036
 
 
-
+#
 y_summit = model.predict(test_set)
 
 print(y_summit)
