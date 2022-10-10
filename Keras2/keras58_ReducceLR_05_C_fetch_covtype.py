@@ -33,7 +33,7 @@ y_test = to_categorical(y_test)
 activation='relu'
 drop=0.2
 optimizer='adam'
-
+#
 inputs = Input(shape=(54), name='input')
 x = Dense(64, activation=activation, name='hidden1')(inputs)
 x = Dense(128, activation=activation, name='hidden2')(x)
