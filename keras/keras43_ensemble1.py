@@ -55,7 +55,7 @@ model.summary()
 
 
 
-#3. 컴파일, 훈련
+#3. 컴파일, 훈련#
 model.compile(loss='mse', optimizer='adam')
 model.fit([x1_train, x2_train], y_train, epochs=200, batch_size=10, validation_split=0.2)
 
