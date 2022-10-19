@@ -8,7 +8,7 @@ import warnings
 warnings.filterwarnings('ignore') # warning 출력X
 #--------------------------------------------------------------------------------#
 
-
+#
 #1. 데이터
 datasets = load_diabetes()
 x = datasets.data
