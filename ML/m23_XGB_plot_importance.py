@@ -29,7 +29,7 @@ model = XGBRegressor()
 
 #3. 훈련
 model.fit(x_train, y_train)
-
+#
 
 #4. 평가, 예측
 result = model.score(x_test, y_test)
