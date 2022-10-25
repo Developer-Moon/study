@@ -82,6 +82,8 @@ def solution_model():
         shuffle=True
         )
 
+    scale_datagen = ImageDataGenerator(rescale=1./255)
+    
     x_train = train_generator[0][0]
     y_train = train_generator[0][1]
     x_test = validation_generator[0][0]
@@ -104,15 +106,15 @@ def solution_model():
     model = tf.keras.models.Sequential([
         # Note the input shape specified on your first layer must be (300,300,3)
         # Your Code here
-        tf.keras.layers.Conv2D(64, (2,2), input_shape=(300,300,3), activation='relu')
-        tf.keras.layers.Flatten()
-        tf.keras.layers.Dense(64, activation='relu')
+        tf.keras.layers.Conv2D(64, (2,2), input_shape=(300,300,3), activation='relu'),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(64, activation='relu'),
         # This is the last layer. You should not change this code.
         tf.keras.layers.Dense(1, activation='sigmoid')
     ])
     return model
 
-
+    
     model.compile(loss='binary_crossentropy', optimizer='adam')
 
     model.fit(x_train, y_train, epochs=100, batch_size=10)
@@ -124,7 +126,7 @@ def solution_model():
     y_test = tf.argmax(y_test, axis=1)
     img_test_predict = tf.argmax(img_test_predict, axis=1)
 
-    # NOTE: If training is taking a very long time, you should consider setting the batch size
+    # : If training is taking a very long time, you should consider setting the batch size
     # appropriately on the generator, and the steps per epoch in the model.fit() function.
 
 # Note that you'll need to save your model as a .h5 like this.
