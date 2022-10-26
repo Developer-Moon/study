@@ -57,7 +57,7 @@ r2 = r2_score(y_test, y_pred)
 print('Time :', end)
 print('Loss :', loss[0])
 print('R2 :', r2)
-
+#
 # Time : 10.686009407043457
 # Loss : 2972.12353515625
 # R2 : 0.5001029924437237
