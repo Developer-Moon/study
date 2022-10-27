@@ -15,7 +15,7 @@ model.add(Dense(2))
 model.add(Dense(1))
 
 model.summary()
-
+#
 print(model.weights)
 print("==================================================================================")
 print(model.trainable_weights)
