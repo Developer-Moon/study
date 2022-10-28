@@ -2,7 +2,12 @@
 *.jpg
 *.csv
 *.h5
+*.tsv
+*.json
+
 _save
 _data
 _ModelCheckpoint
-catboost_info
+
+tmp
+learn
