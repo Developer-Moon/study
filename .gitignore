@@ -1,7 +1,0 @@
-*.png
-*.jpg
-*.csv
-*.h5
-_save
-_data
-_ModelCheckpoint
