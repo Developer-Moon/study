@@ -1,0 +1,9 @@
+The dataset is from: https://www.eia.gov/dnav/pet/pet_pri_gnd_dcus_nus_w.htm#
+
+This is the time indexed data for Diesel (On - Highway) - All Types from 1994 - 2021.
+The dataset has been cleaned up to remove the header columns and reverse the order of the
+observations to be from 1994 - 2021 as opposed to 2021 - 1994 in the original dataset.
+
+The Copyright and Terms of Use of the dataset can be found here:
+        https://www.eia.gov/about/copyrights_reuse.php
+

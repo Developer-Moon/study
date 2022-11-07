@@ -61,7 +61,7 @@ print(x_test.shape)  # (191734, 54)
 x_train = x_train.reshape(389278, 54, 1)
 x_test = x_test.reshape(191734, 54, 1)
 
-#
+
 #2. 모델구성
 model = Sequential()
 model.add(Conv1D(200,2,activation='relu', input_shape=(54,1))) 

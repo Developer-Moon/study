@@ -1,0 +1,2 @@
+model_checkpoint_path: "cats_dogs_checkpoint_0624.ckpt"
+all_model_checkpoint_paths: "cats_dogs_checkpoint_0624.ckpt"
