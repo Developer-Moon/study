@@ -1,1 +1,0 @@
-# numpy 예측 keras01과 비슷

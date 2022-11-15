@@ -1,1 +1,0 @@
-# 자연어 처리 embeding 으로 불러서 conv1D로 돌리기
