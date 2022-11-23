@@ -77,6 +77,13 @@ results = model.score(x_test, y_test)
 print('최종점수 :', results)  # 0.9736842105263158
 
 y_predict = model.predict(x_test)
+
+
+print(y_test)
+print(y_predict)
+
+
+
 acc = accuracy_score(y_test, y_predict)
 print('진짜 최종점수 test 점수 :', acc)
 

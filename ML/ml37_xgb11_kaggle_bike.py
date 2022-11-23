@@ -61,5 +61,9 @@ model.fit(x_train,y_train)
 print('최상의 매개변수 : ', model.best_params_)
 print('최상의 점수 : ', model.best_score_)
 
+
+
+
+
 results = model.score(x_test,y_test)
 print(results)
