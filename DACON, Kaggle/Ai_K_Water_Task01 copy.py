@@ -1,3 +1,17 @@
+'''
+비오면 물 덜 쓴다 - 날씨
+여름이라도 장마철에는 물 덜 쓴다
+
+추운날에 관 동파되면 물이 새서 물 많이 나간다
+
+혁신도시면 공장 돌리는 시간에 많이 나간다
+설날 추석에 물 많이 씀 - 도심같은 경우는 줄어들고
+반도체
+밥시간 설거지
+
+기상자료개방포털
+'''
+
 import pandas as pd
 import datetime as dt
 import numpy as np
@@ -10,10 +24,9 @@ from sklearn.preprocessing import StandardScaler,MinMaxScaler
 from bayes_opt import BayesianOptimization
 from xgboost import XGBClassifier, XGBRegressor
 from sklearn.metrics import r2_score, accuracy_score
-
-
-
-
+import warnings
+warnings.filterwarnings('ignore')
+from matplotlib import pyplot as plt
 
 # Data
 # pd.set_option("display.max_columns", None)
@@ -25,14 +38,55 @@ test_set = pd.read_csv(path + 'data_ts_city.csv')
 
 
 train_set['datetime'] = pd.to_datetime(train_set['datetime'])
-train_set['연도별'] = train_set['datetime'].dt.year
-train_set['월별'] = train_set['datetime'].dt.month
-train_set['일별'] = train_set['datetime'].dt.day
-train_set['시간별'] = train_set['datetime'].dt.hour
-# train_set['요일별'] = 
+train_set['연도'] = train_set['datetime'].dt.year
+train_set['월'] = train_set['datetime'].dt.month
+train_set['일'] = train_set['datetime'].dt.day
+train_set['시간'] = train_set['datetime'].dt.hour
 
+
+# train_set['요일'] = 
 train_set = train_set.drop(['datetime'], axis=1)
+
+
+
+
+print(tabulate(train_set.head(), headers='keys', numalign='right', stralign='right' ))
+
+
+
+
 train_set = train_set[['연도별', '월별', '일별', '시간별', '구미 혁신도시배수지 유출유량 적산차']]
+
+train_set['구미 혁신도시배수지 유출유량 적산차'] = train_set['구미 혁신도시배수지 유출유량 적산차'].fillna(train_set['구미 혁신도시배수지 유출유량 적산차'].mean())
+test_set['구미 혁신도시배수지 유출유량 적산차'] = test_set['구미 혁신도시배수지 유출유량 적산차'].fillna(test_set['구미 혁신도시배수지 유출유량 적산차'].mean())
+
+
+# 기존값 : -6093821 -> 이상치 - 2018-12-31 15:00 : 577, 2019-01-07 15:00 : 304 평균으로 바꿈
+train_set['구미 혁신도시배수지 유출유량 적산차'][17558] = 440 
+
+# 기존값 : -2584551 -> 이상치 - 2017-03-23 16:00 : 101, 2017-04-06 16:00 : 215 평균으로 바꿈
+train_set['구미 혁신도시배수지 유출유량 적산차'][2127] = 158
+
+
+
+print()
+
+
+# print(train_set['구미 혁신도시배수지 유출유량 적산차'][2127])
+          
+#         23         101
+# 2017-03-30 16:00	-2584551
+#                    215
+          
+
+plt.plot(train_set['연도별'], train_set['구미 혁신도시배수지 유출유량 적산차'])
+plt.show()
+
+
+
+
+
+
 
 
 
@@ -51,8 +105,7 @@ test_set = train_set[['연도별', '월별', '일별', '시간별', '구미 혁�
 
 # list = train_set[train_set['구미 혁신도시배수지 유출유량 적산차'].isnull()]
 # print(list)
-train_set['구미 혁신도시배수지 유출유량 적산차'] = train_set['구미 혁신도시배수지 유출유량 적산차'].fillna(train_set['구미 혁신도시배수지 유출유량 적산차'].mean())
-test_set['구미 혁신도시배수지 유출유량 적산차'] = test_set['구미 혁신도시배수지 유출유량 적산차'].fillna(test_set['구미 혁신도시배수지 유출유량 적산차'].mean())
+
 
 print(train_set.isnull().sum()) # 구미 혁신도시배수지 유출유량 적산차    8
 print(test_set.isnull().sum())
@@ -104,6 +157,15 @@ x_test = scaler.transform(x_test)
 
 
 
+
+
+
+
+
+
+
+
+
 bayesian_params = {
     'colsample_bytree' : (0.5, 0.7),
     'max_depth' : (10,18),
@@ -146,7 +208,7 @@ def xgb_function(max_depth, min_child_weight,subsample, colsample_bytree, reg_la
               )
     
     y_predict = model.predict(x_test)
-    result = accuracy_score(y_test, y_predict)
+    result = r2_score(y_test, y_predict)
     
     return result
 
