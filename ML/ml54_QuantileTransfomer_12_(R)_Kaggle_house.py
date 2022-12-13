@@ -17,7 +17,7 @@ from sklearn.preprocessing import QuantileTransformer, PowerTransformer # 이상
 #1. 데이터
 path = './_data/kaggle_house/'
 train_set = pd.read_csv(path + 'train.csv', index_col=0)
-test_set = pd.read_csv(path + 'test.csv', index_col=0)
+test_set = pd.read_csv(path + 'test.csv', index_col=0)cc
 
 drop_cols = ['Alley', 'PoolQC', 'Fence', 'MiscFeature'] 
 
